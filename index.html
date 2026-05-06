@@ -1,0 +1,3195 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <title>大会・支援スケジュール｜ちはやふる基金</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand:  { DEFAULT: '#f08080', dark: '#c85a5a', light: '#fde8e8', pale: '#fff4f4' },
+            navy:   { DEFAULT: '#1e3a6e', mid: '#2d5299', light: '#e8eef8' },
+            sage:   { DEFAULT: '#3d7a55', light: '#e8f3ed', border: '#a8d0b8' },
+            ink:    { DEFAULT: '#2d1a1a', soft: '#5c3a3a', muted: '#9a7070' },
+            gold:   { DEFAULT: '#c9943a', soft: '#fdf3e3', border: '#e8cc9a' },
+            sakura: { bg: '#fff8f8', card: '#ffffff', border: '#f5d0d0' },
+          },
+          fontFamily: {
+            sans: ['"Noto Sans JP"', '"Hiragino Sans"', 'sans-serif'],
+          },
+          boxShadow: {
+            card: '0 2px 16px rgba(240,128,128,0.10)',
+            hero: '0 8px 40px rgba(200,90,90,0.25)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    #sakura-canvas { position:fixed; inset:0; pointer-events:none; z-index:0; }
+
+    .type1-glow { box-shadow:0 4px 32px rgba(30,58,110,0.22), 0 2px 10px rgba(30,58,110,0.12); }
+    .type2-glow { box-shadow:0 2px 16px rgba(240,128,128,0.15); }
+    .type3-glow { box-shadow:0 1px 8px rgba(180,120,120,0.08); }
+    .event-past { opacity:0.42; filter:grayscale(60%); }
+
+    /* ── ポップアップ ── */
+    #popup-overlay {
+      position:fixed; inset:0; z-index:200;
+      background:rgba(45,26,26,0.52);
+      backdrop-filter:blur(4px);
+      -webkit-backdrop-filter:blur(4px);
+      display:flex; align-items:center; justify-content:center;
+      padding:16px;
+    }
+    #popup-card {
+      background:#fff;
+      border-radius:20px;
+      max-width:540px;
+      width:100%;
+      max-height:88vh;
+      overflow-y:auto;
+      box-shadow:0 24px 64px rgba(0,0,0,0.28);
+      animation:popIn .16s ease;
+    }
+    @keyframes popIn {
+      from { transform:scale(.93); opacity:0; }
+      to   { transform:scale(1);   opacity:1; }
+    }
+
+    /* ── タブ横スクロール ── */
+    .tab-scroll {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .tab-scroll::-webkit-scrollbar { display: none; }
+    .tab-scroll-inner {
+      display: flex;
+      gap: 8px;
+      width: max-content;
+      min-width: 100%;
+      padding-bottom: 4px;
+    }
+
+    @media print {
+      #sakura-canvas, .no-print, #popup-overlay { display:none !important; }
+      body { background:#fff !important; }
+      article, section { break-inside:avoid; }
+      @page { margin:14mm 12mm; size:A4; }
+    }
+  </style>
+</head>
+<body class="bg-sakura-bg text-ink antialiased leading-relaxed min-h-screen relative">
+
+  <canvas id="sakura-canvas"></canvas>
+
+  <!-- ツールバー -->
+  <div class="no-print relative z-10 max-w-5xl mx-auto px-3 sm:px-4 pt-3 sm:pt-4 pb-2">
+    <div class="flex items-center justify-between gap-3 rounded-2xl bg-white/80 backdrop-blur border border-sakura-border px-4 sm:px-5 py-3 shadow-sm">
+      <div class="flex-1 min-w-0">
+        <p class="text-sm font-bold text-ink truncate">ちはやふる基金 月次レポート</p>
+        <p class="hidden sm:block text-xs text-ink-muted mt-0.5">「PDF保存」で出力 → Slackに添付　または画面スクショで画像投稿</p>
+      </div>
+      <button type="button" onclick="window.print()"
+        class="shrink-0 rounded-xl bg-brand text-white font-bold text-sm px-4 py-2 hover:bg-brand-dark transition-colors shadow-sm whitespace-nowrap">
+        PDF保存
+      </button>
+    </div>
+  </div>
+
+  <main id="app" class="relative z-10 max-w-5xl mx-auto px-3 sm:px-4 pb-20 pt-3 sm:pt-4">
+    <p class="text-ink-muted text-sm">読み込み中…</p>
+  </main>
+
+  <footer class="relative z-10 max-w-5xl mx-auto px-3 sm:px-4 pb-12 pt-4 border-t border-sakura-border">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <img src="assets/logo_color.png" alt="ちはやふる基金" class="h-6 sm:h-7 w-auto opacity-80">
+      <p class="text-xs text-ink-muted">ちはやふる基金 月次レポート ／ 内部資料</p>
+    </div>
+  </footer>
+
+  <!-- ポップアップモーダル（JS で内容を差し込む） -->
+  <div id="popup-overlay" style="display:none;" onclick="closePopup()"
+    role="dialog" aria-modal="true" aria-label="大会詳細">
+    <div id="popup-card" onclick="event.stopPropagation()"></div>
+  </div>
+
+  <!-- ================================================================
+       月次データ（毎月ここだけ書き換えます）
+       ================================================================ -->
+  <script type="application/json" id="report-data">
+{
+  "reportTitle": "大会・支援スケジュール",
+  "heroSubtitle": "公式大会（全日本かるた協会 主催・公認・後援）と基金支援情報の一覧です。KPIは前月末時点の確定値です。",
+  "tournaments": [
+  {
+    "type": 2,
+    "name": "第１０５回全国競技かるた横浜大会（E）",
+    "date": "2026-04-03",
+    "venue": "神奈川県 横浜市 横浜武道館",
+    "grade": "E級",
+    "organizer": "横浜かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 4,
+    "name": "第五回かるフェス！",
+    "date": "2026-04-05",
+    "venue": "東京都 文京区 文京総合体育館",
+    "grade": "初心者〜一般",
+    "organizer": "Karuta Club",
+    "supportNote": "後援・副賞提供",
+    "overlapNote": null,
+    "docs": [
+      {
+        "label": "支援申請 Slack",
+        "url": "https://app.slack.com/"
+      },
+      {
+        "label": "副賞内容メモ",
+        "url": "https://app.slack.com/"
+      }
+    ]
+  },
+  {
+    "type": 3,
+    "name": "第１６回北海道競技かるた選手権大会",
+    "date": "2026-04-12",
+    "venue": "北海道 札幌市 東区体育館",
+    "grade": "",
+    "organizer": "北海道かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第５回百人一首競技かるた 杉並若葉杯",
+    "date": "2026-04-12",
+    "venue": "東京都 台東区 台東リバーサイドスポーツセンター",
+    "grade": "",
+    "organizer": "杉並かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "春季奈良かるた大会（ＡＢＣ）",
+    "date": "2026-04-12",
+    "venue": "奈良県 生駒郡 信貴山 成福院",
+    "grade": "",
+    "organizer": "奈良県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２７回こばえちゃ山形全国競技かるた酒田大会",
+    "date": "2026-04-19",
+    "venue": "",
+    "grade": "A級・B級・C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "春季奈良かるた大会（ＤＥ）",
+    "date": "2026-04-19",
+    "venue": "奈良県 生駒郡 信貴山 成福院",
+    "grade": "",
+    "organizer": "奈良県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２０回全国競技かるた兵庫大会(Ａ－Ｅ)",
+    "date": "2026-04-25",
+    "venue": "",
+    "grade": "A級・B級・C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４１回福井県高等学校かるた大会",
+    "date": "2026-04-25",
+    "venue": "福井県 あわら市 美松",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第６５回全日本選手権大会",
+    "date": "2026-04-26",
+    "venue": "愛知県 豊田市 名鉄トヨタホテル",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４２回全国競技かるた熊本大会(ＡＢ) ※",
+    "date": "2026-04-26",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 4,
+    "name": "とよたかるフェス2026",
+    "date": "2026-04-26",
+    "venue": "愛知県 豊田市 GAZA 2階セントラルコート",
+    "grade": "入場無料",
+    "organizer": "豊田市・（公財）豊田市文化振興財団",
+    "supportNote": "チャリティグッズ販売ブース出展",
+    "overlapNote": "① 主催大会と同日（全日本選手権パブリックビューイング）",
+    "docs": [
+      {
+        "label": "ブース詳細 Slack",
+        "url": "https://app.slack.com/"
+      }
+    ]
+  },
+  {
+    "type": 2,
+    "name": "第４０回全国競技かるたさがみ野大会(ＢＣ) ※",
+    "date": "2026-04-29",
+    "venue": "",
+    "grade": "B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２５回競技かるた鳳玉大会 (ＤＥ) 令和８年４月東京",
+    "date": "2026-04-29",
+    "venue": "東京都 台東区 台東リバーサイドスポーツセンター 武道場",
+    "grade": "",
+    "organizer": "鳳玉大会運営委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４４回全国競技かるた東京吉野会大会(Ｄ) ※",
+    "date": "2026-05-02",
+    "venue": "",
+    "grade": "D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４４回全国競技かるた東京吉野会大会(ＣＥ) ※",
+    "date": "2026-05-03",
+    "venue": "",
+    "grade": "C級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第十四回奥の細道むすびの地 全国競技かるた大垣大会(ＢＣＥ)※",
+    "date": "2026-05-03",
+    "venue": "",
+    "grade": "B級・C級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "令和８年度熊本県競技かるた春季大会",
+    "date": "2026-05-03",
+    "venue": "熊本県 上益城郡 益城町総合体育館",
+    "grade": "",
+    "organizer": "熊本県かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４４回鹿児島県かるた選手権大会",
+    "date": "2026-05-03",
+    "venue": "鹿児島県 鹿児島市 鹿児島県武道館",
+    "grade": "",
+    "organizer": "鹿児島県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 4,
+    "name": "第十四回奥の細道むすびの地 全国競技かるた大垣大会",
+    "date": "2026-05-03",
+    "venue": "岐阜県 大垣市 大垣市武道館",
+    "grade": "全級",
+    "organizer": "岐阜県かるた協会",
+    "supportNote": "協賛（確定）",
+    "overlapNote": "② 公認大会と重複",
+    "docs": [
+      {
+        "label": "協賛決定 Slack",
+        "url": "https://app.slack.com/"
+      }
+    ]
+  },
+  {
+    "type": 2,
+    "name": "第十四回奥の細道むすびの地 全国競技かるた大垣大会(ＡＤ)※",
+    "date": "2026-05-04",
+    "venue": "",
+    "grade": "A級・D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２１回千葉県中学生かるた大会",
+    "date": "2026-05-04",
+    "venue": "千葉県 流山市 キッコーマンアリーナ(流山市民総合体育館)",
+    "grade": "",
+    "organizer": "千葉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第５３回Friendshipジュニア杯交流大会",
+    "date": "2026-05-05",
+    "venue": "東京都 台東区 台東リバーサイドスポーツセンター",
+    "grade": "",
+    "organizer": "Friendship杯実行委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 4,
+    "name": "第1回 Friendshipジュニア杯",
+    "date": "2026-05-05",
+    "venue": "東京都 台東区 台東リバーサイドスポーツセンター",
+    "grade": "",
+    "organizer": "Friendship杯実行委員会",
+    "supportNote": "協賛",
+    "overlapNote": "③ 後援事業と重複",
+    "docs": [
+      {
+        "label": "協賛依頼 Slack",
+        "url": "https://app.slack.com/"
+      }
+    ]
+  },
+  {
+    "type": 3,
+    "name": "第３回全国競技かるた世代別交流大会",
+    "date": "2026-05-06",
+    "venue": "千葉県 千葉市 Yohasアリーナ ～本能に、感動を。～ (千葉公園総合体育館）",
+    "grade": "",
+    "organizer": "関東支部",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１０６回全国競技かるた横浜大会（E ）",
+    "date": "2026-05-06",
+    "venue": "神奈川県 横浜市 横浜武道館",
+    "grade": "",
+    "organizer": "横浜隼会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１４回滋賀県中学生選手権大会",
+    "date": "2026-05-06",
+    "venue": "滋賀県 大津市 近江勧学館",
+    "grade": "",
+    "organizer": "滋賀県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２４回滋賀県高校生選手権",
+    "date": "2026-05-06",
+    "venue": "滋賀県 大津市 近江勧学館",
+    "grade": "",
+    "organizer": "滋賀県高等学校文化連盟 滋賀県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１８回千葉県初心者かるた大会",
+    "date": "2026-05-10",
+    "venue": "千葉県 千葉市 Yohasアリーナ ～本能に、感動を。～ (千葉公園総合体育館）",
+    "grade": "",
+    "organizer": "千葉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２６回競技かるた鳳玉大会 (ＣＤＥ) 令和８年５月東京",
+    "date": "2026-05-10",
+    "venue": "東京都 台東区 台東リバーサイドスポーツセンター 武道場",
+    "grade": "",
+    "organizer": "鳳玉大会運営委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４回全道高等学校小倉百人一首かるた選手権大会",
+    "date": "2026-05-16",
+    "venue": "北海道 札幌市 厚別区体育館",
+    "grade": "",
+    "organizer": "北海道高等学校文化連盟",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２回SHIKIBU（水無瀬神宮で魅せる、競技かるたの新章）",
+    "date": "2026-05-16",
+    "venue": "大阪府 三島郡 水無瀬神宮",
+    "grade": "",
+    "organizer": "SHIKIBU実行委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７回小倉百人一首競技かるた北九州大会 (ＣＤＥ)",
+    "date": "2026-05-17",
+    "venue": "福岡県 北九州市 第一警備スポーツセンター一戸畑",
+    "grade": "",
+    "organizer": "福岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２６回全国競技かるた富山大会(ＤＥ) ※",
+    "date": "2026-05-24",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２８回青森県高校かるた選手権大会",
+    "date": "2026-05-24",
+    "venue": "青森県 青森市 西部市民センター",
+    "grade": "",
+    "organizer": "青森県高文連小倉百人一首かるた部",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４回たちばな杯 かるた大会",
+    "date": "2026-05-24",
+    "venue": "長野県 長野市 たちばな長野本店",
+    "grade": "",
+    "organizer": "株式会社たちばな、長野県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第９０回椿杯争奪全国競技かるた大会(ＤＥ他) ※",
+    "date": "2026-05-30",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３１回人麿の里・全国競技かるた益田大会(Ｅ) ※",
+    "date": "2026-05-30",
+    "venue": "",
+    "grade": "E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第９回全国競技かるた大阪なにはえ大会(Ｄ)※",
+    "date": "2026-05-30",
+    "venue": "",
+    "grade": "D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７回北海道競技かるた初心者大会",
+    "date": "2026-05-30",
+    "venue": "北海道 札幌市 厚別区民センター",
+    "grade": "",
+    "organizer": "北海道かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第９回全国競技かるた大阪なにはえ大会(Ｃ)※",
+    "date": "2026-05-31",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４回全国競技かるた千葉大会(Ａ)※",
+    "date": "2026-05-31",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５６回全国競技かるた松山大会(ＤＥ) ※",
+    "date": "2026-05-31",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３３回埼玉県百人一首大会（Ｄ）",
+    "date": "2026-05-31",
+    "venue": "埼玉県 戸田市 スポーツセンター",
+    "grade": "",
+    "organizer": "埼玉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４回競技かるた山梨大会 (ＣＤＥ)",
+    "date": "2026-05-31",
+    "venue": "山梨県 甲府市 小瀬スポーツ公園武道館",
+    "grade": "",
+    "organizer": "山梨県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４７回大分県かるた（小倉百人一首）競技大会",
+    "date": "2026-05-31",
+    "venue": "大分県 大分市 コンパルホール",
+    "grade": "",
+    "organizer": "大分県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４０回全国競技かるたさがみ野大会（DE）",
+    "date": "2026-06-07",
+    "venue": "神奈川県 大和市 大和スポーツセンター",
+    "grade": "",
+    "organizer": "さがみ野会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３回全国競技かるた青森大会（ＡＢ）※",
+    "date": "2026-06-13",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２６回全国競技かるた愛知大会(ＣＤＥ) ※",
+    "date": "2026-06-13",
+    "venue": "",
+    "grade": "C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３回全国競技かるた青森大会（ＣＤＥ）※",
+    "date": "2026-06-14",
+    "venue": "",
+    "grade": "C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４回全国競技かるた千葉大会(Ｃ) ※",
+    "date": "2026-06-14",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３９回水無月かるた大会",
+    "date": "2026-06-14",
+    "venue": "長野県 茅野市 マリオローヤル会館",
+    "grade": "",
+    "organizer": "茅野かるた会 (後援：長野県かるた協会)",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８０回全国競技かるた東京東会大会(Ｄ) ※",
+    "date": "2026-06-27",
+    "venue": "",
+    "grade": "D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第７９回全国競技かるた福井大会(C) ※",
+    "date": "2026-06-27",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "藤原定家卿小倉百人一首撰定記念 第７８回全国競技かるた京都大会(Ｂ) ※",
+    "date": "2026-06-27",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７９回全国競技かるた福井大会(D)",
+    "date": "2026-06-27",
+    "venue": "福井県 あわら市 あわら温泉 美松",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第1回福井渚会杯競技かるた世代別選手権大会（仮称）",
+    "date": "2026-06-27",
+    "venue": "福井県 あわら市 あわら温泉 美松",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第７９回全国競技かるた福井大会(AB) ※",
+    "date": "2026-06-28",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "藤原定家卿小倉百人一首撰定記念 第７８回全国競技かるた京都大会(Ａ) ※",
+    "date": "2026-06-28",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８０回全国競技かるた東京東会大会(Ｃ) ※",
+    "date": "2026-07-04",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８０回全国競技かるた東京東会大会(Ｂ) ※",
+    "date": "2026-07-05",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５４回全国競技かるた大分大会(ＡＢ) ※",
+    "date": "2026-07-05",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２回競技かるたカイロ大会",
+    "date": "2026-07-09",
+    "venue": "カイロ The Japan Foundation，Cairo",
+    "grade": "",
+    "organizer": "カイロかるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第６１回宮城県競技かるた団体戦",
+    "date": "2026-07-11",
+    "venue": "宮城県 仙台市 仙台市武道館",
+    "grade": "",
+    "organizer": "宮城県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４２回全国競技かるた宮崎大会(ＡＢＣ) ※",
+    "date": "2026-07-12",
+    "venue": "",
+    "grade": "A級・B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１２回白瀧杯女流かるた高校選手権大会",
+    "date": "2026-07-12",
+    "venue": "東京都 練馬区 白瀧呉服店",
+    "grade": "",
+    "organizer": "白瀧杯実行委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７回信貴山杯争奪奈良県競技かるた学生選手権大会",
+    "date": "2026-07-12",
+    "venue": "奈良県 生駒郡 信貴山 成福院",
+    "grade": "",
+    "organizer": "奈良県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第40回全国競技かるたさがみ野大会(Ａ) ※",
+    "date": "2026-07-25",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３３回全国競技かるた多摩大会(C) ※",
+    "date": "2026-08-01",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３１回人麿の里・全国競技かるた益田大会(ＢＤ) ※",
+    "date": "2026-08-01",
+    "venue": "",
+    "grade": "B級・D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３１回人麿の里・全国競技かるた益田大会(ＡＣ) ※",
+    "date": "2026-08-02",
+    "venue": "",
+    "grade": "A級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３３回全国競技かるた多摩大会(D) ※",
+    "date": "2026-08-08",
+    "venue": "",
+    "grade": "D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３３回全国競技かるた多摩大会(E) ※",
+    "date": "2026-08-09",
+    "venue": "",
+    "grade": "E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第６回小倉百人一首競技かるた 小学生団体戦",
+    "date": "2026-08-09",
+    "venue": "東京都 墨田区 ひがしんアリーナ武道場 （墨田区総合体育館）",
+    "grade": "",
+    "organizer": "小学生団体戦実行委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 4,
+    "name": "第６回小倉百人一首競技かるた 小学生団体戦",
+    "date": "2026-08-09",
+    "venue": "東京都 墨田区 ひがしんアリーナ武道場 （墨田区総合体育館）",
+    "grade": "",
+    "organizer": "小学生団体戦実行委員会",
+    "supportNote": "横断幕継続使用・参加賞クリアファイルへのイラスト提供・記念Tシャツへのイラスト提供",
+    "overlapNote": "③ 後援事業と重複",
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-1（Ｅ）",
+    "date": "2026-08-09",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026 -1（Ｄ）",
+    "date": "2026-08-10",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３３回全国競技かるた多摩大会(B) ※",
+    "date": "2026-08-11",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026 -1（Ｃ）",
+    "date": "2026-08-11",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３回小倉百人一首競技かるた各会対抗中学生団体戦",
+    "date": "2026-08-11",
+    "venue": "東京都 江戸川区 関東第一高等学校 多目的ホール･柔道場",
+    "grade": "",
+    "organizer": "各会対抗中学生団体戦実行委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 4,
+    "name": "第３回小倉百人一首競技かるた各会対抗中学生団体戦",
+    "date": "2026-08-11",
+    "venue": "東京都 江戸川区 関東第一高等学校 多目的ホール･柔道場",
+    "grade": "",
+    "organizer": "各会対抗中学生団体戦実行委員会",
+    "supportNote": "横断幕継続使用・参加賞クリアファイルへのイラスト提供・記念Tシャツへのイラスト提供",
+    "overlapNote": "③ 後援事業と重複",
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１２回ひさかた会競技かるた大会",
+    "date": "2026-08-11",
+    "venue": "神奈川県 横浜市 横浜武道館",
+    "grade": "",
+    "organizer": "ひさかた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３３回全国競技かるた多摩大会(A) ※",
+    "date": "2026-08-15",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１０６回全国競技かるた横浜大会（級未定） ※",
+    "date": "2026-08-15",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１０６回全国競技かるた横浜大会（級未定） ※",
+    "date": "2026-08-16",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第９回全国競技かるた大阪なにはえ大会(Ｂ) ※",
+    "date": "2026-08-16",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４６回全国競技かるた鹿児島大会(ＤＥ) ※",
+    "date": "2026-08-16",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-2（Ｅ）",
+    "date": "2026-08-21",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-2（Ｄ）",
+    "date": "2026-08-22",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第９回全国競技かるた秋田大会(ＤＥ) ※",
+    "date": "2026-08-23",
+    "venue": "",
+    "grade": "E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５４回全国競技かるた大分大会(ＣＤＥ) ※",
+    "date": "2026-08-23",
+    "venue": "",
+    "grade": "C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-2（Ｃ）",
+    "date": "2026-08-23",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７回福井県職域・学生かるた選手権大会",
+    "date": "2026-08-23",
+    "venue": "福井県 吉田郡永平寺町 永平寺四季の森複合施設",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４５回全国競技かるた東京吉野会大会(Ｃ) ※",
+    "date": "2026-08-29",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第19回静岡県競技かるたステップアップ大会（Ｃ・Ｄ）",
+    "date": "2026-08-29",
+    "venue": "静岡県 藤枝市 藤枝市武道館",
+    "grade": "",
+    "organizer": "静岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "静岡県競技かるたチャレンジ大会（Ｅ・Ｆ）",
+    "date": "2026-08-29",
+    "venue": "静岡県 藤枝市 藤枝市武道館",
+    "grade": "",
+    "organizer": "静岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１１回福井県初心者かるた大会",
+    "date": "2026-08-29",
+    "venue": "福井県 福井市 ショッピングシティ ベル",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "蓮生記念第１３回全国競技かるた宇都宮大会(Ｅ) ※",
+    "date": "2026-09-06",
+    "venue": "",
+    "grade": "E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７９回全国競技かるた福井大会D・(Ｅ・F)",
+    "date": "2026-09-06",
+    "venue": "福井県 福井市 ショッピングシティ ベル",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１９回千葉県初心者かるた大会",
+    "date": "2026-09-13",
+    "venue": "千葉県 流山市 キッコーマンアリーナ(流山市民総合体育館)",
+    "grade": "",
+    "organizer": "千葉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "秋季奈良かるた大会（ＡＢＣ）",
+    "date": "2026-09-13",
+    "venue": "奈良県 生駒郡 信貴山 成福院",
+    "grade": "",
+    "organizer": "奈良県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第９回全国競技かるた秋田大会(ＡＢＣＤ) ※",
+    "date": "2026-09-20",
+    "venue": "",
+    "grade": "A級・B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２６回全国競技かるた富山大会(ＡＢＣ) ※",
+    "date": "2026-09-20",
+    "venue": "",
+    "grade": "A級・B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２２回全国競技かるた香川大会(ＡＢ)※",
+    "date": "2026-09-20",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３３回埼玉県百人一首大会（Ｅ）",
+    "date": "2026-09-20",
+    "venue": "埼玉県 戸田市 スポーツセンター",
+    "grade": "",
+    "organizer": "埼玉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１５回千葉県かるた大会",
+    "date": "2026-09-20",
+    "venue": "千葉県 流山市 キッコーマンアリーナ(流山市民総合体育館)",
+    "grade": "",
+    "organizer": "千葉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "小倉百人一首競技かるたおおつ光ルくん杯団体戦世界大会",
+    "date": "2026-09-20",
+    "venue": "滋賀県 大津市 近江勧学館他",
+    "grade": "",
+    "organizer": "おおつ光ルくん杯実行委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-3（Ｅ）",
+    "date": "2026-09-20",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-3（Ｄ）",
+    "date": "2026-09-21",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第９０回椿杯争奪全国競技かるた大会(ＡＢＣ) ※",
+    "date": "2026-09-22",
+    "venue": "",
+    "grade": "A級・B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第８回北海道競技かるた初心者大会",
+    "date": "2026-09-22",
+    "venue": "北海道 札幌市 厚別区民センター",
+    "grade": "",
+    "organizer": "北海道かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２８回福井県高等学校かるた秋季大会",
+    "date": "2026-09-23",
+    "venue": "福井県 あわら市 美松",
+    "grade": "",
+    "organizer": "福井県かるた協会・福井県高文連",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２０回競技かるた兵庫県大会",
+    "date": "2026-09-23",
+    "venue": "兵庫県 加古川市 加古川市立武道館",
+    "grade": "",
+    "organizer": "兵庫県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "秋季奈良かるた大会（ＤＥ）",
+    "date": "2026-09-23",
+    "venue": "奈良県 生駒郡 信貴山 成福院",
+    "grade": "",
+    "organizer": "奈良県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた ねんりんピック彩の国さいたま２０２６協賛イベント 交流大会",
+    "date": "2026-09-27",
+    "venue": "埼玉県 戸田市 スポーツセンター",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第６０回全国競技かるた静岡大会(ＤＥ他) ※",
+    "date": "2026-09-27",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８回全国競技かるた新潟大会(ＡＢ) ※",
+    "date": "2026-10-03",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３２回埼玉県高等学校新人かるた大会",
+    "date": "2026-10-08",
+    "venue": "埼玉県 上尾市 埼玉県立武道館",
+    "grade": "",
+    "organizer": "埼玉県高文連",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３３回全国競技かるた多摩大会(初心者他)",
+    "date": "2026-10-10",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４回全国競技かるた千葉大会(Ｂ)※",
+    "date": "2026-10-11",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１６回足利百人一首かるた競技大会",
+    "date": "2026-10-11",
+    "venue": "栃木県 足利市 足利市民武道館 第二武道場",
+    "grade": "",
+    "organizer": "足利市教育委員会・足利文化協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "ぎふ清流レクリエーションフェスティバル2026 第八回岐阜県かるた選手権大会",
+    "date": "2026-10-11",
+    "venue": "岐阜県 大垣市 中川ふれあいセンター",
+    "grade": "",
+    "organizer": "岐阜県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３７回東員百人一首かるた大会",
+    "date": "2026-10-11",
+    "venue": "三重県 員弁郡 東員町武道館",
+    "grade": "",
+    "organizer": "三重県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４５回全国競技かるた東京吉野会大会(Ａ) ※",
+    "date": "2026-10-12",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４回競技かるた千葉大会（Ｄ）",
+    "date": "2026-10-12",
+    "venue": "千葉県 成田市 重兵衛スポーツフィールド中台体育館",
+    "grade": "",
+    "organizer": "千葉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３回東京吉野会シニアオープン大会",
+    "date": "2026-10-12",
+    "venue": "埼玉県 川口市 川口総合文化センター リリア 10階和室",
+    "grade": "",
+    "organizer": "東京吉野会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第７３期名人位・第７１期クイーン位東日本予選",
+    "date": "2026-10-18",
+    "venue": "東京都 文京区 区立かるた記念大塚会館",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第７３期名人位・第７１期クイーン位西日本予選",
+    "date": "2026-10-18",
+    "venue": "滋賀県 大津市 近江勧学館",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８５回全国競技かるた北國大会（ＡＢ）※",
+    "date": "2026-10-24",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３１回人麿の里・全国競技かるた益田大会(Ｅ) ※",
+    "date": "2026-10-25",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５６回全国競技かるた松山大会(ＤＥ) ※",
+    "date": "2026-10-25",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７４回福井県学校対抗かるた選手権大会",
+    "date": "2026-10-25",
+    "venue": "福井県 越前市 越前市武道館",
+    "grade": "",
+    "organizer": "福井県かるた協会・福井新聞社",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第４１回国民文化祭よさこい高知２０２６全国大会",
+    "date": "2026-10-31",
+    "venue": "高知県 南国市 南国市立スポーツセンター",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４９回全国小･中学生競技かるた選手権福井大会",
+    "date": "2026-11-01",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２回秋田このはな杯",
+    "date": "2026-11-01",
+    "venue": "秋田県 大仙市 大曲武道館",
+    "grade": "",
+    "organizer": "秋田このはな会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１７回全日本グランドチャンピオン大会",
+    "date": "2026-11-01",
+    "venue": "東京都 府中市 片町文化センター",
+    "grade": "",
+    "organizer": "府中白妙会・府中市芸術文化協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３４回全日本新人選手権かるた府中大会",
+    "date": "2026-11-01",
+    "venue": "東京都 府中市 片町文化センター",
+    "grade": "",
+    "organizer": "府中白妙会・府中市芸術文化協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第７回全国競技かるた札幌大会(ＢＤＥ)※",
+    "date": "2026-11-03",
+    "venue": "",
+    "grade": "B級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８回全国競技かるた新潟大会(ＣＤＥ) ※",
+    "date": "2026-11-07",
+    "venue": "",
+    "grade": "C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４回全道高等学校小倉百人一首かるた新人大会",
+    "date": "2026-11-07",
+    "venue": "北海道 札幌市 厚別区体育館",
+    "grade": "",
+    "organizer": "北海道高等学校文化連盟",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４２回全国競技かるた宮崎大会(Ｄ) ※",
+    "date": "2026-11-08",
+    "venue": "",
+    "grade": "D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２３回小倉百人一首交流フェスティバル",
+    "date": "2026-11-08",
+    "venue": "三重県 多気郡 Dreamオーシャン総合体育館 明和町中央公民館",
+    "grade": "",
+    "organizer": "三重県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３４回三池かるた記念館杯 九州新人かるた競技大会",
+    "date": "2026-11-08",
+    "venue": "福岡県 未定",
+    "grade": "",
+    "organizer": "福岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２回みやざき無段者大会",
+    "date": "2026-11-08",
+    "venue": "宮崎県 宮崎市 宮崎県武道館",
+    "grade": "",
+    "organizer": "宮崎県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "蓮生記念第１３回全国競技かるた宇都宮大会(Ａ-Ｄ) ※",
+    "date": "2026-11-14",
+    "venue": "",
+    "grade": "A級・B級・C級・D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第６５回全国競技かるた和歌山大会(Ａ-E)",
+    "date": "2026-11-15",
+    "venue": "",
+    "grade": "A級・B級・C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２２回全国競技かるた香川大会(ＣＤＥ)※",
+    "date": "2026-11-15",
+    "venue": "",
+    "grade": "C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "令和８年度熊本県競技かるた秋季大会",
+    "date": "2026-11-15",
+    "venue": "熊本県 熊本市 川尻公民館",
+    "grade": "",
+    "organizer": "熊本県かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第７３期名人位・第７１期クイーン位挑戦者決定戦",
+    "date": "2026-11-22",
+    "venue": "東京都 文京区 区立かるた記念大塚会館",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３５回全国競技かるた奈良大会(ＤＥ) ※",
+    "date": "2026-11-22",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-4（Ｄ）",
+    "date": "2026-11-22",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３５回全国競技かるた奈良大会(ＢＣ) ※",
+    "date": "2026-11-23",
+    "venue": "",
+    "grade": "B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-4（Ｅ）",
+    "date": "2026-11-23",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１６回全国競技かるた岡山大会(ＢＣ) ※",
+    "date": "2026-11-28",
+    "venue": "",
+    "grade": "B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１６回全国競技かるた岡山大会(ＡＣ) ※",
+    "date": "2026-11-29",
+    "venue": "",
+    "grade": "A級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第７回全国競技かるた札幌大会(ＡＣ)※",
+    "date": "2026-11-29",
+    "venue": "",
+    "grade": "A級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ｅ) ※",
+    "date": "2026-11-29",
+    "venue": "",
+    "grade": "E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２０回千葉県初心者かるた大会",
+    "date": "2026-11-29",
+    "venue": "千葉県 千葉市 Yohasアリーナ ～本能に、感動を。～ (千葉公園総合体育館）",
+    "grade": "",
+    "organizer": "千葉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１０回信州大会 ＤＥ級",
+    "date": "2026-11-29",
+    "venue": "長野県 佐久市 長野県立武道館",
+    "grade": "",
+    "organizer": "長野県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２６回全国競技かるた愛知大会(Ｂ) ※",
+    "date": "2026-12-05",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２６回全国競技かるた愛知大会(Ａ) ※",
+    "date": "2026-12-06",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ｄ) ※",
+    "date": "2026-12-06",
+    "venue": "",
+    "grade": "D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３５回全国競技かるた奈良大会(Ａ) ※",
+    "date": "2026-12-06",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ｃ) ※",
+    "date": "2026-12-13",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２０回静岡県競技かるたステップアップ大会（Ｃ・Ｄ）",
+    "date": "2026-12-13",
+    "venue": "静岡県 藤枝市 藤枝市武道館",
+    "grade": "",
+    "organizer": "静岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "静岡県競技かるたチャレンジ大会（Ｅ・F）",
+    "date": "2026-12-13",
+    "venue": "静岡県 藤枝市 藤枝市武道館",
+    "grade": "",
+    "organizer": "静岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８５回全国競技かるた北國大会（ＣＤＥ）※",
+    "date": "2026-12-19",
+    "venue": "",
+    "grade": "C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１４回全国競技かるた山口大会(ＣＤＥ) ※",
+    "date": "2026-12-19",
+    "venue": "",
+    "grade": "C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１６回つがる市かるた選手権大会",
+    "date": "2026-12-19",
+    "venue": "青森県 つがる市 県立木造高校",
+    "grade": "",
+    "organizer": "つがる市かるた愛好会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた九段大会 2026-5（Ｅ）",
+    "date": "2026-12-19",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１４回全国競技かるた山口大会(ＡＢ) ※",
+    "date": "2026-12-20",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１６回全国競技かるた岡山大会(ＤＥ) ※",
+    "date": "2026-12-20",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４２回全国競技かるた熊本大会(ＣＤ) ※",
+    "date": "2026-12-20",
+    "venue": "",
+    "grade": "C級・D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた九段大会 2026-5（Ｄ）",
+    "date": "2026-12-20",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４５回全国競技かるた東京吉野会大会(Ｂ) ※",
+    "date": "2026-12-27",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第７３期名人位・第７１期クイーン位決定戦",
+    "date": "2027-01-10",
+    "venue": "滋賀県 大津市 近江勧学館",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第９回東北・北海道高校かるたウインタートーナメント",
+    "date": "2027-01-10",
+    "venue": "青森県 八戸市 文化教養センター南部会館",
+    "grade": "",
+    "organizer": "青森県高文連小倉百人一首かるた部門",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた九段大会 2026-6（Ｅ）",
+    "date": "2027-01-10",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "小倉百人一首競技かるた初心者かるた府中教室",
+    "date": "2027-01-10",
+    "venue": "東京都 府中市 府中市分梅町一丁目公会堂",
+    "grade": "",
+    "organizer": "府中白妙会･府中多摩かるた会連盟",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ａ) ※",
+    "date": "2027-01-11",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５６回太宰府小倉百人一首競技かるた大会(Ｃ) ※",
+    "date": "2027-01-11",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた九段大会 2026-6（Ｄ）",
+    "date": "2027-01-11",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１０６回全国競技かるた横浜大会(級未定) ※",
+    "date": "2027-01-16",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８４回全国競技かるた桑名大会(ＤＥ) ※",
+    "date": "2027-01-16",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "藤原定家卿小倉百人一首撰定記念 第７８回全国競技かるた京都大会(ＤＥ) ※",
+    "date": "2027-01-16",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５６回太宰府小倉百人一首競技かるた大会(Ａ) ※",
+    "date": "2027-01-16",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第４０回全国小学生選手権大会",
+    "date": "2027-01-17",
+    "venue": "東京都 文京区 湯島天満宮",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１０６回全国競技かるた横浜大会(級未定) ※",
+    "date": "2027-01-17",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８４回全国競技かるた桑名大会(Ｃ) ※",
+    "date": "2027-01-17",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "藤原定家卿小倉百人一首撰定記念 第７８回全国競技かるた京都大会(ＣＤ) ※",
+    "date": "2027-01-17",
+    "venue": "",
+    "grade": "C級・D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５６回太宰府小倉百人一首競技かるた大会(Ｂ) ※",
+    "date": "2027-01-17",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８０回全国競技かるた東京東会大会(Ａ) ※",
+    "date": "2027-01-17",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第６０回全国競技かるた静岡大会(DE他) ※",
+    "date": "2027-01-17",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ｂ) ※",
+    "date": "2027-01-17",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７８回愛媛かるた選手権大会",
+    "date": "2027-01-17",
+    "venue": "愛媛県 松山市 愛媛県生活文化センター",
+    "grade": "",
+    "organizer": "愛媛かるた会･愛媛新聞社",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３７回埼玉県高等学校かるた大会（個人戦）",
+    "date": "2027-01-18",
+    "venue": "埼玉県 上尾市 埼玉県立武道館",
+    "grade": "",
+    "organizer": "埼玉県高文連",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３５回全国競技かるた広島大会(AB)※",
+    "date": "2027-01-24",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第８回北日本選手権競技かるた大会",
+    "date": "2027-01-24",
+    "venue": "宮城県 仙台市 宮城県武道館",
+    "grade": "",
+    "organizer": "宮城県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第５３回鹿児島県新春かるた大会",
+    "date": "2027-01-24",
+    "venue": "鹿児島県 鹿児島市 西原商会アリーナ（鹿児島アリーナ）",
+    "grade": "",
+    "organizer": "鹿児島県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１０回全国競技かるた信州大会(BC)※",
+    "date": "2027-01-30",
+    "venue": "",
+    "grade": "B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第９回北海道競技かるた初心者大会",
+    "date": "2027-01-30",
+    "venue": "北海道 札幌市 厚別区民センター",
+    "grade": "",
+    "organizer": "北海道かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１０回全国競技かるた信州大会(A) ※",
+    "date": "2027-01-31",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４６回全国競技かるた鹿児島大会(ＤＥ)※",
+    "date": "2027-01-31",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４３回柿本人麿万葉かるた大会",
+    "date": "2027-01-31",
+    "venue": "島根県 益田市 市民学習センター",
+    "grade": "",
+    "organizer": "島根県かるた協会・益田ライオンズクラブ",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２２回八戸市百人一首小中学生大会",
+    "date": "2027-02-07",
+    "venue": "青森県 八戸市 文化教養センター南部会館",
+    "grade": "",
+    "organizer": "八戸市百人一首小中学生大会実行委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第６９回関東北かるた大会",
+    "date": "2027-02-07",
+    "venue": "栃木県 那須塩原市 いきいきふれあいセンター",
+    "grade": "",
+    "organizer": "黒磯いぶき会･黒磯公民館",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２８回稲城市民かるた大会",
+    "date": "2027-02-07",
+    "venue": "東京都 稲城市 総合体育館",
+    "grade": "",
+    "organizer": "稲城市かるた協会 (南多摩かるた会)",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３２回短歌の里百人一首大会",
+    "date": "2027-02-07",
+    "venue": "長野県 塩尻市 原新田公民館",
+    "grade": "",
+    "organizer": "塩尻市･塩尻市教育委員会･塩尻かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第６回近江勧学館フロンティア大会",
+    "date": "2027-02-07",
+    "venue": "滋賀県 大津市 近江勧学館",
+    "grade": "",
+    "organizer": "滋賀県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１４回小倉百人一首競技かるた朝倉大会",
+    "date": "2027-02-07",
+    "venue": "福岡県 朝倉市 サンライズ杷木",
+    "grade": "",
+    "organizer": "福岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第６０回全国競技かるた静岡大会(Ｃ) ※",
+    "date": "2027-02-11",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２２回全国競技かるた香川大会(ＤＥ)※",
+    "date": "2027-02-11",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３５回三重県百人一首かるた競技大会",
+    "date": "2027-02-11",
+    "venue": "三重県 鈴鹿市 鈴鹿市武道館",
+    "grade": "",
+    "organizer": "三重県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第５０回福井県団体対抗かるた大会",
+    "date": "2027-02-13",
+    "venue": "福井県 三方上中郡若狭町 県立三方青年の家",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２４回福井県ジュニアかるた選手権",
+    "date": "2027-02-14",
+    "venue": "福井県 未定",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２１回東海地区競技かるた団体戦",
+    "date": "2027-02-14",
+    "venue": "静岡県 藤枝市 藤枝市武道館",
+    "grade": "",
+    "organizer": "東海支部・静岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第６０回全国競技かるた静岡大会(Ｂ) ※",
+    "date": "2027-02-20",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第８回ちはやふる小倉山杯",
+    "date": "2027-02-21",
+    "venue": "京都府 京都市 嵯峨嵐山文華館",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第６０回全国競技かるた静岡大会(Ａ) ※",
+    "date": "2027-02-21",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３７回小倉百人一首初心者かるた府中大会",
+    "date": "2027-02-28",
+    "venue": "東京都 府中市 片町文化センター",
+    "grade": "",
+    "organizer": "府中白妙会･府中多摩かるた会連盟 ･片町文化センター圏域コミュニティ協議会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７４回福井県かるた選手権大会",
+    "date": "2027-02-28",
+    "venue": "福井県 福井市 福井県立武道館",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３２回小倉百人一首かるた新人宇都宮大会",
+    "date": "2027-03-06",
+    "venue": "栃木県 宇都宮市 栃木県総合運動公園武道館 （ユウケイ武道館）",
+    "grade": "",
+    "organizer": "宇都宮かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１１回千葉県小学生大会",
+    "date": "2027-03-14",
+    "venue": "千葉県 千葉市 Yohasアリーナ ～本能に、感動を。～ (千葉公園総合体育館）",
+    "grade": "",
+    "organizer": "千葉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２１回静岡県競技かるたステップアップ大会（Ｃ・Ｄ）",
+    "date": "2027-03-14",
+    "venue": "静岡県 藤枝市 藤枝市武道館",
+    "grade": "",
+    "organizer": "静岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "静岡県競技かるたチャレンジ大会（Ｅ・Ｆ）",
+    "date": "2027-03-14",
+    "venue": "静岡県 藤枝市 藤枝市武道館",
+    "grade": "",
+    "organizer": "静岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５６回全国競技かるた松山大会(ＡＢＣ) ※",
+    "date": "2027-03-20",
+    "venue": "",
+    "grade": "A級・B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８４回全国競技かるた桑名大会(Ｂ) ※",
+    "date": "2027-03-20",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４３回長野県かるた大会",
+    "date": "2027-03-20",
+    "venue": "長野県 佐久市 長野県立武道館",
+    "grade": "",
+    "organizer": "長野県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた九段大会 2026-７（Ｅ）",
+    "date": "2027-03-20",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８４回全国競技かるた桑名大会(Ａ) ※",
+    "date": "2027-03-21",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３１回人麿の里・全国競技かるた益田大会(Ｄ) ※",
+    "date": "2027-03-21",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた九段大会 2026-７（Ｄ）",
+    "date": "2027-03-21",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第五回高校生卒業記念大会",
+    "date": "2027-03-21",
+    "venue": "岐阜県 大垣市 大垣市青年の家",
+    "grade": "",
+    "organizer": "岐阜県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第５７回全国小・中学生選手権大会",
+    "date": "2027-03-28",
+    "venue": "滋賀県 大津市 滋賀県立武道館 他",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１６回全国競技かるた岡山大会(ＤＥ) ※",
+    "date": "2027-03-28",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  }
+],
+  "kpi": {
+    "monthlySupporters": 119,
+    "monthlyDonationYen": 117391,
+    "supportSummary": "【4月の支援】第五回かるフェス！（4/5・文京総合体育館）後援・副賞提供 ／ 大垣大会協賛（5月開催・支援決定）／ あきた総文ブース出展（7/28〜30・申請済み）／ 高校選手権Tシャツ発注（7月大会向け・4/22入稿〆）",
+    "bankNote": "三井住友銀行 メイン口座残高（2026年3月末）：7,466,934円"
+  }
+}
+  </script>
+
+  <!-- ================================================================
+       桜の花びらアニメーション
+  ================================================================ -->
+  <script>
+  (function () {
+    const canvas = document.getElementById('sakura-canvas');
+    const ctx = canvas.getContext('2d');
+    let W, H;
+    const PETAL_COUNT = 28;
+    const petals = [];
+    const img = new Image();
+    img.src = 'assets/petal.webp';
+
+    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function rand(a, b) { return a + Math.random() * (b - a); }
+    function createPetal() {
+      return {
+        x: rand(0, W), y: rand(-160, -20),
+        size: rand(18, 40), speedY: rand(0.6, 1.6), speedX: rand(-0.5, 0.5),
+        spin: rand(-0.018, 0.018), angle: rand(0, Math.PI * 2),
+        opacity: rand(0.35, 0.75), swing: rand(0.3, 0.9),
+        swingSpeed: rand(0.008, 0.022), swingPhase: rand(0, Math.PI * 2),
+      };
+    }
+    for (let i = 0; i < PETAL_COUNT; i++) { const p = createPetal(); p.y = rand(0, H); petals.push(p); }
+    let t = 0;
+    function draw() {
+      ctx.clearRect(0, 0, W, H); t += 0.016;
+      petals.forEach(p => {
+        p.y += p.speedY;
+        p.x += p.speedX + Math.sin(t * p.swingSpeed * 60 + p.swingPhase) * p.swing * 0.4;
+        p.angle += p.spin;
+        if (p.y > H + 60 || p.x < -60 || p.x > W + 60) Object.assign(p, createPetal());
+        ctx.save(); ctx.globalAlpha = p.opacity;
+        ctx.translate(p.x, p.y); ctx.rotate(p.angle);
+        if (img.complete && img.naturalWidth > 0) {
+          ctx.drawImage(img, -p.size / 2, -p.size / 2, p.size, p.size);
+        } else {
+          ctx.beginPath(); ctx.ellipse(0, 0, p.size * 0.45, p.size * 0.28, 0, 0, Math.PI * 2);
+          ctx.fillStyle = '#f08080'; ctx.fill();
+        }
+        ctx.restore();
+      });
+      requestAnimationFrame(draw);
+    }
+    img.onload = draw; img.onerror = draw;
+  })();
+  </script>
+
+  <!-- ================================================================
+       レポート描画
+  ================================================================ -->
+  <script>
+  (function () {
+    const TODAY = new Date().toISOString().slice(0, 10);
+
+    /* タイプ別メタ情報 */
+    const TYPE_META = {
+      1: {
+        label: '① 主催', badge: '主催', petals: 3,
+        headerCls: 'bg-gradient-to-r from-brand to-brand-dark text-white',
+        borderCls: 'border-brand', barCls: 'bg-brand',
+        badgeCls: 'bg-white/25 text-white',
+        pillCls: 'bg-brand-light text-brand-dark border border-brand/30',
+        dotColor: '#1e3a6e',
+      },
+      2: {
+        label: '② 公認', badge: '公認', petals: 2,
+        headerCls: 'bg-gradient-to-r from-rose-300 to-rose-200 text-white',
+        borderCls: 'border-rose-300', barCls: 'bg-rose-300',
+        badgeCls: 'bg-white/25 text-white',
+        pillCls: 'bg-rose-50 text-rose-700 border border-rose-200',
+        dotColor: '#f08080',
+      },
+      3: {
+        label: '③ 後援', badge: '後援', petals: 1,
+        headerCls: 'bg-gradient-to-r from-brand-light to-sakura-bg text-ink-soft',
+        borderCls: 'border-sakura-border', barCls: 'bg-brand/40',
+        badgeCls: 'bg-brand-light text-brand-dark',
+        pillCls: 'bg-sakura-bg text-brand-dark border border-sakura-border',
+        dotColor: '#fda4af',
+      },
+      4: {
+        label: '④ 基金支援', badge: '基金', petals: 0,
+        headerCls: 'bg-gradient-to-r from-gold to-amber-300 text-white',
+        borderCls: 'border-gold-border', barCls: 'bg-gold',
+        badgeCls: 'bg-white/25 text-white',
+        pillCls: 'bg-gold-soft text-gold border border-gold-border',
+        dotColor: '#c9943a',
+      },
+    };
+
+    function parseData() {
+      const el = document.getElementById('report-data');
+      return JSON.parse(el.textContent);
+    }
+
+    function formatDateJa(iso) {
+      const d = new Date(iso + 'T12:00:00');
+      return new Intl.DateTimeFormat('ja-JP', { month: 'long', day: 'numeric', weekday: 'short' }).format(d);
+    }
+
+    function yen(n) { return new Intl.NumberFormat('ja-JP').format(n) + '円'; }
+
+    function esc(s) {
+      if (s == null) return '';
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    /* 桜インジケーター */
+    function petalIcon(filled) {
+      const fill = filled ? '#f08080' : '#f5d0d0';
+      const dot  = filled ? '#fff'    : '#fde8e8';
+      return `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g transform="translate(12,12)">
+          <ellipse rx="3.2" ry="5.5" fill="${fill}" transform="rotate(0) translate(0,-5.5)"/>
+          <ellipse rx="3.2" ry="5.5" fill="${fill}" transform="rotate(72) translate(0,-5.5)"/>
+          <ellipse rx="3.2" ry="5.5" fill="${fill}" transform="rotate(144) translate(0,-5.5)"/>
+          <ellipse rx="3.2" ry="5.5" fill="${fill}" transform="rotate(216) translate(0,-5.5)"/>
+          <ellipse rx="3.2" ry="5.5" fill="${fill}" transform="rotate(288) translate(0,-5.5)"/>
+          <circle r="2.2" fill="${dot}"/>
+        </g>
+      </svg>`;
+    }
+
+    function petalRow(count) {
+      if (count === 0) return '';
+      let out = '<span class="inline-flex gap-0.5 items-center" title="重要度 ' + count + '/3">';
+      for (let i = 0; i < 3; i++) out += petalIcon(i < count);
+      out += '</span>';
+      return out;
+    }
+
+    /* 重複バッジ */
+    function overlapBadge(note) {
+      if (!note) return '';
+      const MAP = { '①': { label: '主催', bg: '#1e3a6e' }, '②': { label: '公認', bg: '#f08080' }, '③': { label: '後援', bg: '#fda4af' } };
+      for (const [ch, m] of Object.entries(MAP)) {
+        if (note.includes(ch)) {
+          return `<span class="inline-flex items-center gap-0.5 text-[9px] font-black text-white px-2 py-0.5 rounded-full ml-auto" style="background:${m.bg}" title="${esc(note)}">${ch}${m.label}と重複</span>`;
+        }
+      }
+      return `<span class="text-[9px] font-bold bg-ink-soft/20 text-ink-soft px-2 py-0.5 rounded-full ml-auto">${esc(note)}</span>`;
+    }
+
+    /* ── カード：① 主催（特大） ── */
+    function cardType1(t) {
+      const m = TYPE_META[1];
+      const pastCls = t.date < TODAY ? ' event-past' : '';
+      return `
+      <article class="break-inside-avoid rounded-2xl sm:rounded-3xl overflow-hidden border-2 ${m.borderCls} type1-glow bg-white${pastCls}">
+        <div class="${m.headerCls} px-5 sm:px-8 py-5 sm:py-7">
+          <div class="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+            <span class="text-[10px] sm:text-[11px] font-black tracking-widest uppercase ${m.badgeCls} px-2 sm:px-3 py-1 rounded-full border border-white/30">${m.label}</span>
+            ${t.overlapNote ? '<span class="text-[10px] sm:text-xs font-bold bg-gold text-white px-2 py-0.5 rounded-full">基金支援あり</span>' : ''}
+          </div>
+          <h3 class="text-xl sm:text-2xl md:text-3xl font-black text-white leading-snug">${esc(t.name)}</h3>
+        </div>
+        <div class="px-5 sm:px-8 py-4 sm:py-6 grid sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-5 border-t-4 border-sage">
+          <div><p class="text-[10px] font-black text-ink-muted uppercase tracking-widest mb-1">開催日</p>
+            <p class="text-base sm:text-xl font-black text-navy">${esc(formatDateJa(t.date))}</p></div>
+          <div><p class="text-[10px] font-black text-ink-muted uppercase tracking-widest mb-1">会場</p>
+            <p class="font-bold text-sm sm:text-base text-ink">${esc(t.venue)}</p></div>
+          <div class="flex flex-col gap-2">
+            <div><p class="text-[10px] font-black text-ink-muted uppercase tracking-widest mb-1">級</p>
+              <span class="inline-block ${m.pillCls} text-xs sm:text-sm font-bold px-2 sm:px-3 py-1 rounded-full">${esc(t.grade)}</span></div>
+            ${t.organizer ? `<p class="text-xs text-ink-muted">${esc(t.organizer)}</p>` : ''}
+          </div>
+        </div>
+        ${t.overlapNote ? `<div class="mx-5 sm:mx-8 mb-5 sm:mb-6 text-xs text-amber-900 bg-gold-soft border border-gold-border rounded-xl px-3 sm:px-4 py-3">${esc(t.overlapNote)}</div>` : ''}
+        ${docsRow(t)}
+      </article>`;
+    }
+
+    /* ── カード：② 公認（中） ── */
+    function cardType2(t) {
+      const m = TYPE_META[2];
+      const pastCls = t.date < TODAY ? ' event-past' : '';
+      return `
+      <article class="break-inside-avoid rounded-2xl overflow-hidden border ${m.borderCls} type2-glow bg-white${pastCls}">
+        <div class="${m.headerCls} px-5 py-3 flex items-center gap-2">
+          <span class="text-[11px] font-black tracking-wider ${m.badgeCls} px-2 py-0.5 rounded-full border border-white/30">${m.badge}</span>
+          ${t.overlapNote ? '<span class="text-[10px] font-bold bg-gold text-white px-2 py-0.5 rounded-full ml-auto">基金支援あり</span>' : ''}
+        </div>
+        <div class="px-5 py-4">
+          <h3 class="font-bold text-ink leading-snug mb-3">${esc(t.name)}</h3>
+          <dl class="grid gap-1.5 text-sm">
+            <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0 w-8">日</dt><dd class="text-ink-soft">${esc(formatDateJa(t.date))}</dd></div>
+            <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0 w-8">場所</dt><dd class="text-ink-soft">${esc(t.venue)}</dd></div>
+            <div class="flex gap-2 items-center"><dt class="font-semibold text-ink shrink-0 w-8">級</dt><dd><span class="${m.pillCls} text-xs font-bold px-2 py-0.5 rounded-full">${esc(t.grade)}</span></dd></div>
+            ${t.organizer ? `<div class="flex gap-2"><dt class="font-semibold text-ink shrink-0 w-8 text-xs">主催</dt><dd class="text-ink-muted text-xs">${esc(t.organizer)}</dd></div>` : ''}
+          </dl>
+          ${t.overlapNote ? `<div class="mt-3 text-xs text-amber-900 bg-gold-soft border border-gold-border rounded-lg px-3 py-2">${esc(t.overlapNote)}</div>` : ''}
+        </div>
+        ${docsRow(t)}
+      </article>`;
+    }
+
+    /* ── カード：③ 後援（コンパクト） ── */
+    function cardType3(t) {
+      const m = TYPE_META[3];
+      const pastCls = t.date < TODAY ? ' event-past' : '';
+      return `
+      <article class="break-inside-avoid rounded-xl border ${m.borderCls} type3-glow bg-white flex gap-0 overflow-hidden${pastCls}">
+        <div class="w-1 shrink-0 ${m.barCls}"></div>
+        <div class="px-4 py-3 flex-1">
+          <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
+            <span class="text-[10px] font-bold ${m.badgeCls} px-2 py-0.5 rounded-full">${m.badge}</span>
+            ${t.overlapNote ? '<span class="text-[10px] font-bold bg-gold text-white px-2 py-0.5 rounded-full">基金支援あり</span>' : ''}
+          </div>
+          <p class="font-semibold text-sm text-ink leading-snug">${esc(t.name)}</p>
+          <p class="text-xs text-ink-muted mt-1">${esc(formatDateJa(t.date))}　${esc(t.venue)}</p>
+          ${t.grade && t.grade !== '—' ? `<span class="${m.pillCls} text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 inline-block">${esc(t.grade)}</span>` : ''}
+        </div>
+      </article>`;
+    }
+
+    /* ── カード：④ 基金支援 ── */
+    function cardType4(t) {
+      const m = TYPE_META[4];
+      const pastCls = t.date < TODAY ? ' event-past' : '';
+      return `
+      <article class="break-inside-avoid rounded-2xl border-2 ${m.borderCls} bg-gold-soft overflow-hidden${pastCls}">
+        <div class="${m.headerCls} px-5 py-3 flex items-center gap-2 flex-wrap">
+          <span class="text-[11px] font-black tracking-wider ${m.badgeCls} px-2 py-0.5 rounded-full">${m.label}</span>
+          ${t.supportNote ? `<span class="text-[10px] font-bold bg-white/60 text-amber-900 border border-gold-border px-2 py-0.5 rounded-full">${esc(t.supportNote)}</span>` : ''}
+          ${overlapBadge(t.overlapNote)}
+        </div>
+        <div class="px-5 py-4">
+          <h3 class="font-bold text-ink leading-snug mb-3">${esc(t.name)}</h3>
+          <dl class="grid gap-1.5 text-sm">
+            <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0 w-8">日</dt><dd class="text-ink-soft">${esc(formatDateJa(t.date))}</dd></div>
+            <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0 w-8">場所</dt><dd class="text-ink-soft">${esc(t.venue)}</dd></div>
+            ${t.organizer ? `<div class="flex gap-2"><dt class="font-semibold text-ink shrink-0 w-8">主催</dt><dd class="text-ink-soft">${esc(t.organizer)}</dd></div>` : ''}
+            ${t.grade ? `<div class="flex gap-2"><dt class="font-semibold text-ink shrink-0 w-8">対象</dt><dd class="text-ink-soft">${esc(t.grade)}</dd></div>` : ''}
+          </dl>
+          ${t.overlapNote ? `<div class="mt-3 text-xs text-amber-900 bg-white/70 border border-gold-border rounded-lg px-3 py-2">${esc(t.overlapNote)}</div>` : ''}
+        </div>
+        ${docsRow(t)}
+      </article>`;
+    }
+
+    /* 関連資料リンク行 */
+    function docsRow(t) {
+      if (!t.docs || !t.docs.length) return '';
+      const links = t.docs.map(d =>
+        `<a href="${esc(d.url)}" target="_blank" rel="noopener"
+          class="inline-flex items-center gap-1 text-[11px] font-bold text-brand hover:text-brand-dark border border-sakura-border rounded-lg px-2.5 py-1 bg-white hover:bg-brand-light transition-colors">
+          📎 ${esc(d.label)}
+        </a>`
+      ).join('');
+      return `<div class="px-5 pb-4 flex flex-wrap gap-2">${links}</div>`;
+    }
+
+    /* ================================================================
+       ポップアップ（カレンダードットタップ時）
+    ================================================================ */
+    window.showPopup = function (dateStr, type) {
+      const data = window._reportData;
+      if (!data) return;
+      const tourns = (data.tournaments || []).filter(t => t.date === dateStr && t.type === type);
+      if (!tourns.length) return;
+
+      const m = TYPE_META[type] || TYPE_META[4];
+      let html = '<div class="p-6">';
+
+      /* ヘッダー */
+      html += '<div class="flex justify-between items-start mb-5">';
+      html += `<div><p class="text-xs font-bold text-ink-muted mb-1">${esc(formatDateJa(dateStr))}</p>
+        <span class="inline-flex items-center gap-1.5 text-[11px] font-black px-3 py-1 rounded-full" style="background:${m.dotColor};color:#fff;">${m.label} ${petalRow(m.petals)}</span></div>`;
+      html += `<button onclick="closePopup()" class="text-ink-muted hover:text-ink transition-colors w-8 h-8 rounded-full hover:bg-sakura-border flex items-center justify-center text-xl leading-none flex-shrink-0 ml-3" aria-label="閉じる">×</button>`;
+      html += '</div>';
+
+      tourns.forEach((t, idx) => {
+        if (idx > 0) html += '<hr class="border-sakura-border my-5">';
+        html += `<h3 class="font-black text-lg text-ink leading-snug mb-4">${esc(t.name)}</h3>`;
+        html += '<dl class="grid gap-2.5 text-sm mb-4">';
+        html += `<div class="flex gap-3"><dt class="font-semibold text-ink-muted w-10 shrink-0">日時</dt><dd class="text-ink">${esc(formatDateJa(t.date))}</dd></div>`;
+        html += `<div class="flex gap-3"><dt class="font-semibold text-ink-muted w-10 shrink-0">場所</dt><dd class="text-ink">${esc(t.venue)}</dd></div>`;
+        if (t.grade) html += `<div class="flex gap-3"><dt class="font-semibold text-ink-muted w-10 shrink-0">級</dt><dd><span class="${m.pillCls} text-xs font-bold px-2 py-0.5 rounded-full">${esc(t.grade)}</span></dd></div>`;
+        if (t.organizer) html += `<div class="flex gap-3"><dt class="font-semibold text-ink-muted w-10 shrink-0">主催</dt><dd class="text-ink">${esc(t.organizer)}</dd></div>`;
+        if (t.supportNote) html += `<div class="flex gap-3"><dt class="font-semibold text-ink-muted w-10 shrink-0">支援</dt><dd class="text-gold font-bold">${esc(t.supportNote)}</dd></div>`;
+        html += '</dl>';
+        if (t.overlapNote) html += `<div class="text-xs text-amber-900 bg-gold-soft border border-gold-border rounded-lg px-3 py-2 mb-4">${esc(t.overlapNote)}</div>`;
+        if (t.docs && t.docs.length) {
+          html += '<div class="flex flex-wrap gap-2 pt-2">';
+          t.docs.forEach(doc => {
+            html += `<a href="${esc(doc.url)}" target="_blank" rel="noopener"
+              class="inline-flex items-center gap-1.5 text-xs font-bold text-brand hover:text-brand-dark border border-sakura-border rounded-lg px-3 py-1.5 bg-sakura-bg hover:bg-brand-light transition-colors">
+              📎 ${esc(doc.label)}
+            </a>`;
+          });
+          html += '</div>';
+        }
+      });
+
+      html += '<div class="mt-6 pt-5 border-t border-sakura-border flex justify-center">';
+      html += `<button onclick="closePopup()" class="rounded-xl bg-brand text-white font-bold text-sm px-6 py-2 hover:bg-brand-dark transition-colors">閉じる</button>`;
+      html += '</div>';
+      html += '</div>';
+
+      document.getElementById('popup-card').innerHTML = html;
+      document.getElementById('popup-overlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.closePopup = function () {
+      document.getElementById('popup-overlay').style.display = 'none';
+      document.body.style.overflow = '';
+    };
+
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closePopup(); });
+
+    /* ================================================================
+       カレンダー描画
+    ================================================================ */
+    function renderCalendar(year, month, tournaments) {
+      const daysInMonth = new Date(year, month, 0).getDate();
+      const firstDay    = new Date(year, month - 1, 1).getDay();
+
+      /* dayMap[day][type] = [tournament, ...] */
+      const dayMap = {};
+      tournaments.forEach(t => {
+        const d = parseInt(t.date.split('-')[2], 10);
+        if (!dayMap[d]) dayMap[d] = {};
+        if (!dayMap[d][t.type]) dayMap[d][t.type] = [];
+        dayMap[d][t.type].push(t);
+      });
+
+      const DN = ['日', '月', '火', '水', '木', '金', '土'];
+      let h = '<div class="bg-white rounded-2xl border border-sakura-border p-4 md:p-5 shadow-card">';
+
+      /* 凡例 */
+      h += '<div class="flex flex-wrap gap-x-5 gap-y-1 mb-4 text-xs text-ink-muted">';
+      [1, 2, 3, 4].forEach(k => {
+        const m = TYPE_META[k];
+        h += `<span class="inline-flex items-center gap-1.5"><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:${m.dotColor}"></span>${m.label}</span>`;
+      });
+      h += '<span class="ml-auto text-[10px] text-ink-muted/60">● をタップ → 詳細ポップアップ</span>';
+      h += '</div>';
+
+      h += '<div class="grid grid-cols-7 gap-0.5 sm:gap-1">';
+      DN.forEach((d, i) => {
+        const cls = i === 0 ? 'text-rose-400' : i === 6 ? 'text-blue-400' : 'text-ink-muted';
+        h += `<div class="text-center text-[10px] font-bold py-1.5 ${cls}">${d}</div>`;
+      });
+
+      for (let i = 0; i < firstDay; i++) h += '<div></div>';
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const typeMap = dayMap[d] || {};
+        const types   = Object.keys(typeMap).map(Number).sort();
+        const hasEvt  = types.length > 0;
+        const wday    = (firstDay + d - 1) % 7;
+        const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+        const isPast  = dateStr < TODAY;
+
+        const numCls = hasEvt
+          ? (isPast ? 'font-black text-ink-muted/60' : 'font-black text-ink')
+          : (wday === 0 ? 'text-rose-200' : wday === 6 ? 'text-blue-200' : 'text-ink-muted/30');
+        const cellBg = hasEvt ? (isPast ? 'bg-gray-50 border border-gray-200' : 'bg-brand-pale border border-sakura-border') : '';
+
+        h += `<div class="rounded-md sm:rounded-lg p-0.5 sm:p-1 min-h-[40px] sm:min-h-[50px] flex flex-col items-center gap-0.5 ${cellBg}">`;
+        h += `<span class="text-[11px] leading-snug ${numCls}">${d}</span>`;
+        if (types.length) {
+          h += '<div class="flex flex-wrap justify-center gap-0.5">';
+          types.forEach(tp => {
+            const m     = TYPE_META[tp] || TYPE_META[4];
+            const color = isPast ? '#bbb' : m.dotColor;
+            h += `<button onclick="showPopup('${dateStr}',${tp})"
+              class="w-3 h-3 rounded-full hover:scale-125 transition-transform focus:outline-none focus:ring-2 focus:ring-offset-1"
+              style="background:${color};focus-ring-color:${color}"
+              title="${esc(m.label)}" aria-label="${esc(m.label)} 詳細を見る"></button>`;
+          });
+          h += '</div>';
+        }
+        h += '</div>';
+      }
+
+      h += '</div></div>';
+      return h;
+    }
+
+    /* ================================================================
+       月別カード一覧（①〜③は「協会大会」として統合）
+    ================================================================ */
+    function buildMonthCards(data, monthStr, filterMode) {
+      const tourns = (data.tournaments || []).filter(t => t.date.startsWith(monthStr));
+
+      /* 協会大会（①②③）と基金支援（④）に大別 */
+      const assoc = [1, 2, 3]
+        .flatMap(k => tourns.filter(t => t.type === k))
+        .sort((a, b) => a.date.localeCompare(b.date) || a.type - b.type);
+      const fund = tourns.filter(t => t.type === 4)
+        .sort((a, b) => a.date.localeCompare(b.date));
+
+      const showAssoc = filterMode !== 'fund';
+
+      let h = '<div class="grid gap-10">';
+
+      /* ── 協会大会セクション ── */
+      if (showAssoc && assoc.length) {
+        h += '<section>';
+        h += sectionTitle('🎴', '協会大会', '全日本かるた協会 主催（①）・公認（②）・後援（③）');
+
+        /* 主催（①）は全幅で大きく */
+        const type1 = assoc.filter(t => t.type === 1);
+        type1.forEach(t => { h += cardType1(t); });
+
+        /* 公認（②）＋後援（③）は2列グリッド */
+        const rest = assoc.filter(t => t.type !== 1);
+        if (rest.length) {
+          if (type1.length) h += '<div class="mt-4"></div>';
+          h += '<div class="grid md:grid-cols-2 gap-4">';
+          rest.forEach(t => {
+            if (t.type === 2) h += cardType2(t);
+            else h += cardType3(t);
+          });
+          h += '</div>';
+        }
+        h += '</section>';
+      }
+
+      /* ── 基金支援セクション ── */
+      if (fund.length) {
+        h += '<section>';
+        h += sectionTitle('💛', 'ちはやふる基金 支援大会・イベント',
+          filterMode === 'fund'
+            ? '基金支援のみ表示中。①〜③との重複は各カードに表示します。'
+            : 'Slack共有ベース。①〜③と重複する場合は重複バッジを表示します。');
+        h += '<div class="grid md:grid-cols-2 gap-4">';
+        fund.forEach(t => { h += cardType4(t); });
+        h += '</div></section>';
+      }
+
+      if (!tourns.length || (filterMode === 'fund' && !fund.length)) {
+        h += '<p class="text-ink-muted text-sm">該当する大会データがありません。</p>';
+      }
+
+      h += '</div>';
+      return h;
+    }
+
+    /* ================================================================
+       月タブ切り替え（グローバル公開）
+    ================================================================ */
+    window.selectMonth = function (ym) {
+      window._currentMonth = ym;
+      const data       = window._reportData;
+      const filterMode = window._filterMode || 'all';
+      const allMonths  = data._allMonths || [];
+
+      /* タブのアクティブ切り替え */
+      allMonths.forEach(m => {
+        const el = document.getElementById('tab-' + m);
+        if (!el) return;
+        el.className = (m === ym)
+          ? 'shrink-0 px-4 py-2 rounded-xl font-black text-sm bg-brand text-white shadow-sm transition-all'
+          : 'shrink-0 px-4 py-2 rounded-xl font-bold text-sm bg-white text-ink-muted border border-sakura-border hover:border-brand/50 transition-all';
+        el.setAttribute('aria-selected', String(m === ym));
+      });
+      /* アクティブタブを中央にスクロール */
+      const activeTab = document.getElementById('tab-' + ym);
+      if (activeTab) {
+        activeTab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
+
+      const [yr, mo]   = ym.split('-').map(Number);
+      const monthTourns = (data.tournaments || []).filter(t => t.date.startsWith(ym));
+      const calTourns   = filterMode === 'fund' ? monthTourns.filter(t => t.type === 4) : monthTourns;
+
+      const calEl   = document.getElementById('cal-container');
+      if (calEl) calEl.innerHTML = renderCalendar(yr, mo, calTourns);
+      const cardsEl = document.getElementById('cards-container');
+      if (cardsEl) cardsEl.innerHTML = buildMonthCards(data, ym, filterMode);
+    };
+
+    /* フィルター切り替え（グローバル公開） */
+    window.setFilter = function (mode) {
+      window._filterMode = mode;
+      ['all', 'fund'].forEach(m => {
+        const el = document.getElementById('filter-' + m);
+        if (!el) return;
+        el.className = (m === mode)
+          ? 'px-4 py-2 rounded-xl font-black text-sm bg-gold text-white shadow-sm transition-all'
+          : 'px-4 py-2 rounded-xl font-bold text-sm bg-white text-gold border border-gold-border hover:border-gold transition-all';
+      });
+      window.selectMonth(window._currentMonth || (window._reportData._allMonths || [])[0]);
+    };
+
+    function sectionTitle(icon, title, sub) {
+      return `
+      <div class="flex items-end gap-3 mb-5">
+        <span class="text-3xl leading-none">${icon}</span>
+        <div>
+          <h2 class="text-xl font-black text-ink leading-tight">${esc(title)}</h2>
+          ${sub ? `<p class="text-xs text-ink-muted mt-0.5">${esc(sub)}</p>` : ''}
+        </div>
+      </div>`;
+    }
+
+    /* ================================================================
+       ページ全体を構築
+    ================================================================ */
+    function buildHtml(data) {
+      /* 全月を自動抽出 */
+      const allMonths = [...new Set((data.tournaments || []).map(t => t.date.slice(0, 7)))].sort();
+      data._allMonths  = allMonths;
+      window._reportData = data;
+      window._filterMode = 'all';
+      window._currentMonth = allMonths[0] || '';
+
+      const reportYear  = allMonths.length ? allMonths[0].split('-')[0] : '2026';
+      const heroTitle   = `${reportYear}年 大会・支援スケジュール`;
+
+      /* 4月分の内訳（ヒーロー内サマリー用） */
+      const firstMonth  = allMonths[0] || '';
+      const firstTourns = (data.tournaments || []).filter(t => t.date.startsWith(firstMonth));
+      const byType = { 1:[], 2:[], 3:[], 4:[] };
+      firstTourns.forEach(t => { const k = t.type >= 1 && t.type <= 4 ? t.type : 4; byType[k].push(t); });
+
+      let html = '';
+
+      /* ── ヒーローバナー ── */
+      html += `
+      <div class="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-hero mb-8 sm:mb-10 mt-1 sm:mt-2">
+        <div class="absolute inset-0" style="background:linear-gradient(135deg,#1e3a6e 0%,#2d5299 55%,#c85a5a 100%)"></div>
+        <div class="relative px-5 py-7 sm:px-8 sm:py-10 md:px-12 md:py-12">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+            <div class="max-w-lg">
+              <p class="text-white/60 text-[10px] font-black tracking-[.3em] uppercase mb-2 sm:mb-3">Monthly Report</p>
+              <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight">${esc(heroTitle)}</h1>
+              <p class="mt-2 sm:mt-3 text-white/80 text-xs sm:text-sm leading-relaxed">${esc(data.heroSubtitle || '')}</p>
+            </div>
+            <div class="hidden sm:flex flex-col items-center gap-3 shrink-0">
+              <img src="assets/logo_white.png" alt="ちはやふる基金" class="h-16 sm:h-20 md:h-24 w-auto opacity-95">
+            </div>
+          </div>
+          <div class="mt-4 sm:mt-7 flex flex-wrap gap-2 sm:gap-2.5 items-center border-t border-white/15 pt-4 sm:pt-5">
+            <span class="text-[10px] text-white/50 font-bold tracking-widest uppercase mr-1">${firstMonth.split('-')[1]}月の内訳</span>
+            ${byType[1].length ? `<span class="inline-flex items-center gap-1 text-xs bg-white/20 text-white rounded-full px-3 py-1.5 font-black">主催 ${byType[1].length}件</span>` : ''}
+            ${byType[2].length ? `<span class="inline-flex items-center gap-1 text-xs bg-white/13 text-white rounded-full px-3 py-1.5">公認 ${byType[2].length}件</span>` : ''}
+            ${byType[3].length ? `<span class="inline-flex items-center gap-1 text-xs bg-white/8 text-white/85 rounded-full px-3 py-1.5">後援 ${byType[3].length}件</span>` : ''}
+            ${byType[4].length ? `<span class="text-xs bg-gold/40 text-white rounded-full px-3 py-1.5">基金支援 ${byType[4].length}件</span>` : ''}
+          </div>
+        </div>
+      </div>`;
+
+      /* ── 凡例 ── */
+      html += `
+      <div class="mb-6 no-print">
+        <div class="flex flex-wrap gap-2 items-center text-xs">
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-brand text-white font-bold px-3 py-1.5">① 主催</span>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-rose-300 text-white font-bold px-3 py-1.5">② 公認</span>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-brand-light text-brand-dark font-bold px-3 py-1.5">③ 後援</span>
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-gold-soft text-gold border border-gold-border font-bold px-3 py-1.5">④ 基金支援</span>
+        </div>
+      </div>`;
+
+      /* ── 月タブ（全月・横スクロール） ── */
+      const todayYM = TODAY.slice(0, 7);
+      html += '<div class="tab-scroll -mx-3 sm:-mx-4 px-3 sm:px-4 mb-4 no-print" role="tablist" aria-label="月選択">';
+      html += '<div class="tab-scroll-inner">';
+      allMonths.forEach((ym, i) => {
+        const [yr, mo0] = ym.split('-');
+        const mo    = parseInt(mo0, 10);
+        const count = (data.tournaments || []).filter(t => t.date.startsWith(ym)).length;
+        const isNow = ym === todayYM;
+        const yearLabel = (i === 0 || mo === 1) ? `${yr.slice(2)}/` : '';
+        const label = isNow ? `${yearLabel}${mo}月 ✦` : `${yearLabel}${mo}月`;
+        const isFirst = i === 0;
+        html += `<button id="tab-${ym}" onclick="selectMonth('${ym}')"
+          class="shrink-0 ${isFirst ? 'px-4 py-2 rounded-xl font-black text-sm bg-brand text-white shadow-sm' : 'px-4 py-2 rounded-xl font-bold text-sm bg-white text-ink-muted border border-sakura-border hover:border-brand/50'} transition-all whitespace-nowrap"
+          role="tab" aria-selected="${String(isFirst)}">
+          ${esc(label)}<span class="ml-1 text-[10px] font-normal opacity-60">${count}</span>
+        </button>`;
+      });
+      html += '</div></div>';
+
+      /* ── フィルター ── */
+      html += `
+      <div class="flex items-center gap-2 mb-5 no-print" role="group" aria-label="絞り込み">
+        <span class="text-xs text-ink-muted shrink-0">絞込：</span>
+        <button id="filter-all" onclick="setFilter('all')"
+          class="shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-black text-sm bg-gold text-white shadow-sm transition-all">
+          すべて
+        </button>
+        <button id="filter-fund" onclick="setFilter('fund')"
+          class="shrink-0 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-bold text-sm bg-white text-gold border border-gold-border transition-all whitespace-nowrap">
+          💛 基金支援のみ
+        </button>
+      </div>`;
+
+      /* ── カレンダー＆カード（selectMonth() が差し込む） ── */
+      html += '<div id="cal-container" class="mb-8"></div>';
+      html += '<div id="cards-container" class="mt-4"></div>';
+
+      /* ── KPIセクション ── */
+      const k = data.kpi || {};
+      const hasKpi = (k.monthlySupporters > 0) || (k.monthlyDonationYen > 0);
+
+      html += `
+      <section class="mt-16 break-inside-avoid">
+        <div class="flex items-end gap-3 mb-6">
+          <span class="text-3xl leading-none">📊</span>
+          <div>
+            <h2 class="text-xl font-black text-ink">寄付・サポーター状況</h2>
+            <p class="text-xs text-ink-muted mt-0.5">毎月の運営報告と連動。前月末時点の確定値。</p>
+          </div>
+        </div>`;
+
+      if (!hasKpi) {
+        html += `
+        <div class="rounded-2xl border-2 border-dashed border-sakura-border bg-white p-10 text-center">
+          <p class="text-ink-muted text-sm">KPIはまだ入力されていません。<br>Slackの運営報告を受けて <code class="text-xs bg-brand-light px-1 rounded text-brand-dark">kpi</code> を更新してください。</p>
+        </div>`;
+      } else {
+        html += '<div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5">';
+
+        /* サポーター数 */
+        html += `
+        <div class="rounded-2xl bg-white border border-sakura-border shadow-card p-6 relative overflow-hidden">
+          <div class="absolute right-2 top-2 opacity-8 pointer-events-none select-none">
+            <img src="assets/flower2.webp" alt="" class="w-20 h-auto" loading="lazy">
+          </div>
+          <p class="text-xs font-bold text-ink-muted uppercase tracking-wider">マンスリーサポーター</p>
+          <p class="mt-3 text-5xl font-black text-brand leading-none">${new Intl.NumberFormat('ja-JP').format(k.monthlySupporters || 0)}<span class="text-lg font-bold text-ink-muted ml-1">名</span></p>
+        </div>`;
+
+        /* 寄付額 */
+        html += `
+        <div class="rounded-2xl bg-white border border-sakura-border shadow-card p-6">
+          <p class="text-xs font-bold text-ink-muted uppercase tracking-wider">月間寄付総額</p>
+          <p class="mt-3 text-3xl font-black text-ink leading-none">${yen(k.monthlyDonationYen || 0)}</p>
+          ${k.bankNote ? `<p class="mt-4 text-xs text-ink-muted border-t border-sakura-border pt-3">${esc(k.bankNote)}</p>` : ''}
+        </div>`;
+
+        /* 支援実績 */
+        html += `
+        <div class="rounded-2xl bg-gold-soft border border-gold-border shadow-card p-6">
+          <p class="text-xs font-bold text-gold uppercase tracking-wider">今月の大会支援</p>
+          ${k.supportSummary ? `<p class="mt-3 text-sm text-ink leading-relaxed">${esc(k.supportSummary)}</p>` : ''}
+        </div>`;
+
+        html += '</div>';
+      }
+
+      html += '</section>';
+      return html;
+    }
+
+    /* ── エントリーポイント ── */
+    try {
+      const data = parseData();
+      document.getElementById('app').innerHTML = buildHtml(data);
+      const allMonths = data._allMonths || [];
+      if (allMonths.length) window.selectMonth(allMonths[0]);
+    } catch (e) {
+      document.getElementById('app').innerHTML = `
+        <div class="rounded-2xl bg-red-50 border border-red-200 p-6">
+          <p class="text-red-600 font-bold text-sm">JSONの形式エラー</p>
+          <code class="text-xs text-red-500 mt-1 block">${e.message}</code>
+        </div>`;
+      console.error(e);
+    }
+  })();
+  </script>
+</body>
+</html>
