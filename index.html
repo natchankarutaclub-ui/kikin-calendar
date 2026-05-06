@@ -80,6 +80,18 @@
       padding-bottom: 4px;
     }
 
+    /* ── カレンダードット タップ領域拡大 ── */
+    .dot-btn {
+      position: relative;
+      width: 12px;
+      height: 12px;
+    }
+    .dot-btn::after {
+      content: '';
+      position: absolute;
+      inset: -14px;
+    }
+
     @media print {
       #sakura-canvas, .no-print, #popup-overlay { display:none !important; }
       body { background:#fff !important; }
@@ -98,6 +110,7 @@
       <div class="flex-1 min-w-0">
         <p class="text-sm font-bold text-ink truncate">ちはやふる基金 月次レポート</p>
         <p class="hidden sm:block text-xs text-ink-muted mt-0.5">「PDF保存」で出力 → Slackに添付　または画面スクショで画像投稿</p>
+        <p id="updated-at-label" class="text-xs text-ink-muted mt-0.5"></p>
       </div>
       <button type="button" onclick="window.print()"
         class="shrink-0 rounded-xl bg-brand text-white font-bold text-sm px-4 py-2 hover:bg-brand-dark transition-colors shadow-sm whitespace-nowrap">
@@ -131,2377 +144,2387 @@
   "reportTitle": "大会・支援スケジュール",
   "heroSubtitle": "公式大会（全日本かるた協会 主催・公認・後援）と基金支援情報の一覧です。KPIは前月末時点の確定値です。",
   "tournaments": [
-    {
-      "type": 4,
-      "name": "test",
-      "date": "2026-04-01",
-      "venue": "test",
-      "grade": "",
-      "organizer": "test",
-      "overlapNote": "test",
-      "docs": []
-    },
-    {
-      "type": 4,
-      "name": "test2",
-      "date": "2026-04-02",
-      "venue": "test2",
-      "grade": "",
-      "organizer": "test2",
-      "overlapNote": "test2",
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第１０５回全国競技かるた横浜大会（E）",
-      "date": "2026-04-03",
-      "venue": "神奈川県 横浜市 横浜武道館",
-      "grade": "E級",
-      "organizer": "横浜かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 4,
-      "name": "test3",
-      "date": "2026-04-03",
-      "venue": "test3",
-      "grade": "",
-      "organizer": "test3",
-      "overlapNote": "hogehoge",
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１６回北海道競技かるた選手権大会",
-      "date": "2026-04-12",
-      "venue": "北海道 札幌市 東区体育館",
-      "grade": "",
-      "organizer": "北海道かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第５回百人一首競技かるた 杉並若葉杯",
-      "date": "2026-04-12",
-      "venue": "東京都 台東区 台東リバーサイドスポーツセンター",
-      "grade": "",
-      "organizer": "杉並かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "春季奈良かるた大会（ＡＢＣ）",
-      "date": "2026-04-12",
-      "venue": "奈良県 生駒郡 信貴山 成福院",
-      "grade": "",
-      "organizer": "奈良県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第２７回こばえちゃ山形全国競技かるた酒田大会",
-      "date": "2026-04-19",
-      "venue": "",
-      "grade": "A級・B級・C級・D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "春季奈良かるた大会（ＤＥ）",
-      "date": "2026-04-19",
-      "venue": "奈良県 生駒郡 信貴山 成福院",
-      "grade": "",
-      "organizer": "奈良県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第２０回全国競技かるた兵庫大会(Ａ－Ｅ)",
-      "date": "2026-04-25",
-      "venue": "",
-      "grade": "A級・B級・C級・D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第４１回福井県高等学校かるた大会",
-      "date": "2026-04-25",
-      "venue": "福井県 あわら市 美松",
-      "grade": "",
-      "organizer": "福井県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 1,
-      "name": "小倉百人一首競技かるた 第６５回全日本選手権大会",
-      "date": "2026-04-26",
-      "venue": "愛知県 豊田市 名鉄トヨタホテル",
-      "grade": "",
-      "organizer": "全日本かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４２回全国競技かるた熊本大会(ＡＢ) ※",
-      "date": "2026-04-26",
-      "venue": "",
-      "grade": "A級・B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 4,
-      "name": "test6",
-      "date": "2026-04-27",
-      "venue": "test6",
-      "grade": "",
-      "organizer": "test6",
-      "overlapNote": "test6",
-      "docs": []
-    },
-    {
-      "type": 4,
-      "name": "test5",
-      "date": "2026-04-28",
-      "venue": "test5",
-      "grade": "",
-      "organizer": "test5",
-      "overlapNote": "test5",
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４０回全国競技かるたさがみ野大会(ＢＣ) ※",
-      "date": "2026-04-29",
-      "venue": "",
-      "grade": "B級・C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２５回競技かるた鳳玉大会 (ＤＥ) 令和８年４月東京",
-      "date": "2026-04-29",
-      "venue": "東京都 台東区 台東リバーサイドスポーツセンター 武道場",
-      "grade": "",
-      "organizer": "鳳玉大会運営委員会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 4,
-      "name": "test4",
-      "date": "2026-04-30",
-      "venue": "test4",
-      "grade": "",
-      "organizer": "test4",
-      "overlapNote": "test4",
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４４回全国競技かるた東京吉野会大会(Ｄ) ※",
-      "date": "2026-05-02",
-      "venue": "",
-      "grade": "D級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４４回全国競技かるた東京吉野会大会(ＣＥ) ※",
-      "date": "2026-05-03",
-      "venue": "",
-      "grade": "C級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第十四回奥の細道むすびの地 全国競技かるた大垣大会(ＢＣＥ)※",
-      "date": "2026-05-03",
-      "venue": "",
-      "grade": "B級・C級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "令和８年度熊本県競技かるた春季大会",
-      "date": "2026-05-03",
-      "venue": "熊本県 上益城郡 益城町総合体育館",
-      "grade": "",
-      "organizer": "熊本県かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第４４回鹿児島県かるた選手権大会",
-      "date": "2026-05-03",
-      "venue": "鹿児島県 鹿児島市 鹿児島県武道館",
-      "grade": "",
-      "organizer": "鹿児島県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第十四回奥の細道むすびの地 全国競技かるた大垣大会(ＡＤ)※",
-      "date": "2026-05-04",
-      "venue": "",
-      "grade": "A級・D級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２１回千葉県中学生かるた大会",
-      "date": "2026-05-04",
-      "venue": "千葉県 流山市 キッコーマンアリーナ(流山市民総合体育館)",
-      "grade": "",
-      "organizer": "千葉県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第５３回Friendshipジュニア杯交流大会",
-      "date": "2026-05-05",
-      "venue": "東京都 台東区 台東リバーサイドスポーツセンター",
-      "grade": "",
-      "organizer": "Friendship杯実行委員会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３回全国競技かるた世代別交流大会",
-      "date": "2026-05-06",
-      "venue": "千葉県 千葉市 Yohasアリーナ ～本能に、感動を。～ (千葉公園総合体育館）",
-      "grade": "",
-      "organizer": "関東支部",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１０６回全国競技かるた横浜大会（E ）",
-      "date": "2026-05-06",
-      "venue": "神奈川県 横浜市 横浜武道館",
-      "grade": "",
-      "organizer": "横浜隼会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１４回滋賀県中学生選手権大会",
-      "date": "2026-05-06",
-      "venue": "滋賀県 大津市 近江勧学館",
-      "grade": "",
-      "organizer": "滋賀県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２４回滋賀県高校生選手権",
-      "date": "2026-05-06",
-      "venue": "滋賀県 大津市 近江勧学館",
-      "grade": "",
-      "organizer": "滋賀県高等学校文化連盟 滋賀県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１８回千葉県初心者かるた大会",
-      "date": "2026-05-10",
-      "venue": "千葉県 千葉市 Yohasアリーナ ～本能に、感動を。～ (千葉公園総合体育館）",
-      "grade": "",
-      "organizer": "千葉県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２６回競技かるた鳳玉大会 (ＣＤＥ) 令和８年５月東京",
-      "date": "2026-05-10",
-      "venue": "東京都 台東区 台東リバーサイドスポーツセンター 武道場",
-      "grade": "",
-      "organizer": "鳳玉大会運営委員会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第４回全道高等学校小倉百人一首かるた選手権大会",
-      "date": "2026-05-16",
-      "venue": "北海道 札幌市 厚別区体育館",
-      "grade": "",
-      "organizer": "北海道高等学校文化連盟",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２回SHIKIBU（水無瀬神宮で魅せる、競技かるたの新章）",
-      "date": "2026-05-16",
-      "venue": "大阪府 三島郡 水無瀬神宮",
-      "grade": "",
-      "organizer": "SHIKIBU実行委員会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第７回小倉百人一首競技かるた北九州大会 (ＣＤＥ)",
-      "date": "2026-05-17",
-      "venue": "福岡県 北九州市 第一警備スポーツセンター一戸畑",
-      "grade": "",
-      "organizer": "福岡県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第２６回全国競技かるた富山大会(ＤＥ) ※",
-      "date": "2026-05-24",
-      "venue": "",
-      "grade": "D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２８回青森県高校かるた選手権大会",
-      "date": "2026-05-24",
-      "venue": "青森県 青森市 西部市民センター",
-      "grade": "",
-      "organizer": "青森県高文連小倉百人一首かるた部",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第４回たちばな杯 かるた大会",
-      "date": "2026-05-24",
-      "venue": "長野県 長野市 たちばな長野本店",
-      "grade": "",
-      "organizer": "株式会社たちばな、長野県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第９０回椿杯争奪全国競技かるた大会(ＤＥ他) ※",
-      "date": "2026-05-30",
-      "venue": "",
-      "grade": "D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３１回人麿の里・全国競技かるた益田大会(Ｅ) ※",
-      "date": "2026-05-30",
-      "venue": "",
-      "grade": "E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第９回全国競技かるた大阪なにはえ大会(Ｄ)※",
-      "date": "2026-05-30",
-      "venue": "",
-      "grade": "D級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第７回北海道競技かるた初心者大会",
-      "date": "2026-05-30",
-      "venue": "北海道 札幌市 厚別区民センター",
-      "grade": "",
-      "organizer": "北海道かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第９回全国競技かるた大阪なにはえ大会(Ｃ)※",
-      "date": "2026-05-31",
-      "venue": "",
-      "grade": "C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４回全国競技かるた千葉大会(Ａ)※",
-      "date": "2026-05-31",
-      "venue": "",
-      "grade": "A級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第５６回全国競技かるた松山大会(ＤＥ) ※",
-      "date": "2026-05-31",
-      "venue": "",
-      "grade": "D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３３回埼玉県百人一首大会（Ｄ）",
-      "date": "2026-05-31",
-      "venue": "埼玉県 戸田市 スポーツセンター",
-      "grade": "",
-      "organizer": "埼玉県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第４回競技かるた山梨大会 (ＣＤＥ)",
-      "date": "2026-05-31",
-      "venue": "山梨県 甲府市 小瀬スポーツ公園武道館",
-      "grade": "",
-      "organizer": "山梨県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第４７回大分県かるた（小倉百人一首）競技大会",
-      "date": "2026-05-31",
-      "venue": "大分県 大分市 コンパルホール",
-      "grade": "",
-      "organizer": "大分県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第４０回全国競技かるたさがみ野大会（DE）",
-      "date": "2026-06-07",
-      "venue": "神奈川県 大和市 大和スポーツセンター",
-      "grade": "",
-      "organizer": "さがみ野会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３回全国競技かるた青森大会（ＡＢ）※",
-      "date": "2026-06-13",
-      "venue": "",
-      "grade": "A級・B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第２６回全国競技かるた愛知大会(ＣＤＥ) ※",
-      "date": "2026-06-13",
-      "venue": "",
-      "grade": "C級・D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３回全国競技かるた青森大会（ＣＤＥ）※",
-      "date": "2026-06-14",
-      "venue": "",
-      "grade": "C級・D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４回全国競技かるた千葉大会(Ｃ) ※",
-      "date": "2026-06-14",
-      "venue": "",
-      "grade": "C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３９回水無月かるた大会",
-      "date": "2026-06-14",
-      "venue": "長野県 茅野市 マリオローヤル会館",
-      "grade": "",
-      "organizer": "茅野かるた会 (後援：長野県かるた協会)",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第８０回全国競技かるた東京東会大会(Ｄ) ※",
-      "date": "2026-06-27",
-      "venue": "",
-      "grade": "D級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第７９回全国競技かるた福井大会(C) ※",
-      "date": "2026-06-27",
-      "venue": "",
-      "grade": "C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "藤原定家卿小倉百人一首撰定記念 第７８回全国競技かるた京都大会(Ｂ) ※",
-      "date": "2026-06-27",
-      "venue": "",
-      "grade": "B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第７９回全国競技かるた福井大会(D)",
-      "date": "2026-06-27",
-      "venue": "福井県 あわら市 あわら温泉 美松",
-      "grade": "",
-      "organizer": "福井県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第1回福井渚会杯競技かるた世代別選手権大会（仮称）",
-      "date": "2026-06-27",
-      "venue": "福井県 あわら市 あわら温泉 美松",
-      "grade": "",
-      "organizer": "福井県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第７９回全国競技かるた福井大会(AB) ※",
-      "date": "2026-06-28",
-      "venue": "",
-      "grade": "A級・B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "藤原定家卿小倉百人一首撰定記念 第７８回全国競技かるた京都大会(Ａ) ※",
-      "date": "2026-06-28",
-      "venue": "",
-      "grade": "A級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第８０回全国競技かるた東京東会大会(Ｃ) ※",
-      "date": "2026-07-04",
-      "venue": "",
-      "grade": "C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第８０回全国競技かるた東京東会大会(Ｂ) ※",
-      "date": "2026-07-05",
-      "venue": "",
-      "grade": "B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第５４回全国競技かるた大分大会(ＡＢ) ※",
-      "date": "2026-07-05",
-      "venue": "",
-      "grade": "A級・B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２回競技かるたカイロ大会",
-      "date": "2026-07-09",
-      "venue": "カイロ The Japan Foundation，Cairo",
-      "grade": "",
-      "organizer": "カイロかるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第６１回宮城県競技かるた団体戦",
-      "date": "2026-07-11",
-      "venue": "宮城県 仙台市 仙台市武道館",
-      "grade": "",
-      "organizer": "宮城県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４２回全国競技かるた宮崎大会(ＡＢＣ) ※",
-      "date": "2026-07-12",
-      "venue": "",
-      "grade": "A級・B級・C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１２回白瀧杯女流かるた高校選手権大会",
-      "date": "2026-07-12",
-      "venue": "東京都 練馬区 白瀧呉服店",
-      "grade": "",
-      "organizer": "白瀧杯実行委員会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第７回信貴山杯争奪奈良県競技かるた学生選手権大会",
-      "date": "2026-07-12",
-      "venue": "奈良県 生駒郡 信貴山 成福院",
-      "grade": "",
-      "organizer": "奈良県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第40回全国競技かるたさがみ野大会(Ａ) ※",
-      "date": "2026-07-25",
-      "venue": "",
-      "grade": "A級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３３回全国競技かるた多摩大会(C) ※",
-      "date": "2026-08-01",
-      "venue": "",
-      "grade": "C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３１回人麿の里・全国競技かるた益田大会(ＢＤ) ※",
-      "date": "2026-08-01",
-      "venue": "",
-      "grade": "B級・D級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３１回人麿の里・全国競技かるた益田大会(ＡＣ) ※",
-      "date": "2026-08-02",
-      "venue": "",
-      "grade": "A級・C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３３回全国競技かるた多摩大会(D) ※",
-      "date": "2026-08-08",
-      "venue": "",
-      "grade": "D級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３３回全国競技かるた多摩大会(E) ※",
-      "date": "2026-08-09",
-      "venue": "",
-      "grade": "E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第６回小倉百人一首競技かるた 小学生団体戦",
-      "date": "2026-08-09",
-      "venue": "東京都 墨田区 ひがしんアリーナ武道場 （墨田区総合体育館）",
-      "grade": "",
-      "organizer": "小学生団体戦実行委員会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた 九段大会2026-1（Ｅ）",
-      "date": "2026-08-09",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 4,
-      "name": "第六回小倉百人一首競技かるた 小学生団体戦",
-      "date": "2026-08-09",
-      "venue": "ひがしんアリーナ（墨田区総合体育館）",
-      "grade": "",
-      "organizer": "・横断幕の継続使用 ・大会参加賞「クリアファイル」へのイラスト提供 ・販売用「記念 T シャツ」へのイラスト提供",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた 九段大会2026 -1（Ｄ）",
-      "date": "2026-08-10",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３３回全国競技かるた多摩大会(B) ※",
-      "date": "2026-08-11",
-      "venue": "",
-      "grade": "B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた 九段大会2026 -1（Ｃ）",
-      "date": "2026-08-11",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３回小倉百人一首競技かるた各会対抗中学生団体戦",
-      "date": "2026-08-11",
-      "venue": "東京都 江戸川区 関東第一高等学校 多目的ホール･柔道場",
-      "grade": "",
-      "organizer": "各会対抗中学生団体戦実行委員会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１２回ひさかた会競技かるた大会",
-      "date": "2026-08-11",
-      "venue": "神奈川県 横浜市 横浜武道館",
-      "grade": "",
-      "organizer": "ひさかた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 4,
-      "name": "第三回小倉百人一首競技かるた 各会対抗中学生団体戦",
-      "date": "2026-08-11",
-      "venue": "江戸川区 関東第一高等学校 多目的ホール ･ 武道場",
-      "grade": "",
-      "organizer": "・横断幕の継続使用・大会参加賞「クリアファイル」へのイラスト提供・販売用「記念 T シャツ」へのイラスト提供",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３３回全国競技かるた多摩大会(A) ※",
-      "date": "2026-08-15",
-      "venue": "",
-      "grade": "A級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第１０６回全国競技かるた横浜大会（級未定） ※",
-      "date": "2026-08-15",
-      "venue": "",
-      "grade": "",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第１０６回全国競技かるた横浜大会（級未定） ※",
-      "date": "2026-08-16",
-      "venue": "",
-      "grade": "",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第９回全国競技かるた大阪なにはえ大会(Ｂ) ※",
-      "date": "2026-08-16",
-      "venue": "",
-      "grade": "B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４６回全国競技かるた鹿児島大会(ＤＥ) ※",
-      "date": "2026-08-16",
-      "venue": "",
-      "grade": "D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた 九段大会2026-2（Ｅ）",
-      "date": "2026-08-21",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた 九段大会2026-2（Ｄ）",
-      "date": "2026-08-22",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第９回全国競技かるた秋田大会(ＤＥ) ※",
-      "date": "2026-08-23",
-      "venue": "",
-      "grade": "E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第５４回全国競技かるた大分大会(ＣＤＥ) ※",
-      "date": "2026-08-23",
-      "venue": "",
-      "grade": "C級・D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた 九段大会2026-2（Ｃ）",
-      "date": "2026-08-23",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第７回福井県職域・学生かるた選手権大会",
-      "date": "2026-08-23",
-      "venue": "福井県 吉田郡永平寺町 永平寺四季の森複合施設",
-      "grade": "",
-      "organizer": "福井県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４５回全国競技かるた東京吉野会大会(Ｃ) ※",
-      "date": "2026-08-29",
-      "venue": "",
-      "grade": "C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第19回静岡県競技かるたステップアップ大会（Ｃ・Ｄ）",
-      "date": "2026-08-29",
-      "venue": "静岡県 藤枝市 藤枝市武道館",
-      "grade": "",
-      "organizer": "静岡県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "静岡県競技かるたチャレンジ大会（Ｅ・Ｆ）",
-      "date": "2026-08-29",
-      "venue": "静岡県 藤枝市 藤枝市武道館",
-      "grade": "",
-      "organizer": "静岡県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１１回福井県初心者かるた大会",
-      "date": "2026-08-29",
-      "venue": "福井県 福井市 ショッピングシティ ベル",
-      "grade": "",
-      "organizer": "福井県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "蓮生記念第１３回全国競技かるた宇都宮大会(Ｅ) ※",
-      "date": "2026-09-06",
-      "venue": "",
-      "grade": "E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第７９回全国競技かるた福井大会D・(Ｅ・F)",
-      "date": "2026-09-06",
-      "venue": "福井県 福井市 ショッピングシティ ベル",
-      "grade": "",
-      "organizer": "福井県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１９回千葉県初心者かるた大会",
-      "date": "2026-09-13",
-      "venue": "千葉県 流山市 キッコーマンアリーナ(流山市民総合体育館)",
-      "grade": "",
-      "organizer": "千葉県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "秋季奈良かるた大会（ＡＢＣ）",
-      "date": "2026-09-13",
-      "venue": "奈良県 生駒郡 信貴山 成福院",
-      "grade": "",
-      "organizer": "奈良県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第９回全国競技かるた秋田大会(ＡＢＣＤ) ※",
-      "date": "2026-09-20",
-      "venue": "",
-      "grade": "A級・B級・C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第２６回全国競技かるた富山大会(ＡＢＣ) ※",
-      "date": "2026-09-20",
-      "venue": "",
-      "grade": "A級・B級・C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第２２回全国競技かるた香川大会(ＡＢ)※",
-      "date": "2026-09-20",
-      "venue": "",
-      "grade": "A級・B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３３回埼玉県百人一首大会（Ｅ）",
-      "date": "2026-09-20",
-      "venue": "埼玉県 戸田市 スポーツセンター",
-      "grade": "",
-      "organizer": "埼玉県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１５回千葉県かるた大会",
-      "date": "2026-09-20",
-      "venue": "千葉県 流山市 キッコーマンアリーナ(流山市民総合体育館)",
-      "grade": "",
-      "organizer": "千葉県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "小倉百人一首競技かるたおおつ光ルくん杯団体戦世界大会",
-      "date": "2026-09-20",
-      "venue": "滋賀県 大津市 近江勧学館他",
-      "grade": "",
-      "organizer": "おおつ光ルくん杯実行委員会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた 九段大会2026-3（Ｅ）",
-      "date": "2026-09-20",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた 九段大会2026-3（Ｄ）",
-      "date": "2026-09-21",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第９０回椿杯争奪全国競技かるた大会(ＡＢＣ) ※",
-      "date": "2026-09-22",
-      "venue": "",
-      "grade": "A級・B級・C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第８回北海道競技かるた初心者大会",
-      "date": "2026-09-22",
-      "venue": "北海道 札幌市 厚別区民センター",
-      "grade": "",
-      "organizer": "北海道かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２８回福井県高等学校かるた秋季大会",
-      "date": "2026-09-23",
-      "venue": "福井県 あわら市 美松",
-      "grade": "",
-      "organizer": "福井県かるた協会・福井県高文連",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２０回競技かるた兵庫県大会",
-      "date": "2026-09-23",
-      "venue": "兵庫県 加古川市 加古川市立武道館",
-      "grade": "",
-      "organizer": "兵庫県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "秋季奈良かるた大会（ＤＥ）",
-      "date": "2026-09-23",
-      "venue": "奈良県 生駒郡 信貴山 成福院",
-      "grade": "",
-      "organizer": "奈良県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 1,
-      "name": "小倉百人一首競技かるた ねんりんピック彩の国さいたま２０２６協賛イベント 交流大会",
-      "date": "2026-09-27",
-      "venue": "埼玉県 戸田市 スポーツセンター",
-      "grade": "",
-      "organizer": "全日本かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第６０回全国競技かるた静岡大会(ＤＥ他) ※",
-      "date": "2026-09-27",
-      "venue": "",
-      "grade": "D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第８回全国競技かるた新潟大会(ＡＢ) ※",
-      "date": "2026-10-03",
-      "venue": "",
-      "grade": "A級・B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３２回埼玉県高等学校新人かるた大会",
-      "date": "2026-10-08",
-      "venue": "埼玉県 上尾市 埼玉県立武道館",
-      "grade": "",
-      "organizer": "埼玉県高文連",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３３回全国競技かるた多摩大会(初心者他)",
-      "date": "2026-10-10",
-      "venue": "",
-      "grade": "",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４回全国競技かるた千葉大会(Ｂ)※",
-      "date": "2026-10-11",
-      "venue": "",
-      "grade": "B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１６回足利百人一首かるた競技大会",
-      "date": "2026-10-11",
-      "venue": "栃木県 足利市 足利市民武道館 第二武道場",
-      "grade": "",
-      "organizer": "足利市教育委員会・足利文化協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "ぎふ清流レクリエーションフェスティバル2026 第八回岐阜県かるた選手権大会",
-      "date": "2026-10-11",
-      "venue": "岐阜県 大垣市 中川ふれあいセンター",
-      "grade": "",
-      "organizer": "岐阜県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３７回東員百人一首かるた大会",
-      "date": "2026-10-11",
-      "venue": "三重県 員弁郡 東員町武道館",
-      "grade": "",
-      "organizer": "三重県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４５回全国競技かるた東京吉野会大会(Ａ) ※",
-      "date": "2026-10-12",
-      "venue": "",
-      "grade": "A級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第４回競技かるた千葉大会（Ｄ）",
-      "date": "2026-10-12",
-      "venue": "千葉県 成田市 重兵衛スポーツフィールド中台体育館",
-      "grade": "",
-      "organizer": "千葉県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３回東京吉野会シニアオープン大会",
-      "date": "2026-10-12",
-      "venue": "埼玉県 川口市 川口総合文化センター リリア 10階和室",
-      "grade": "",
-      "organizer": "東京吉野会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 1,
-      "name": "小倉百人一首競技かるた 第７３期名人位・第７１期クイーン位東日本予選",
-      "date": "2026-10-18",
-      "venue": "東京都 文京区 区立かるた記念大塚会館",
-      "grade": "",
-      "organizer": "全日本かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 1,
-      "name": "小倉百人一首競技かるた 第７３期名人位・第７１期クイーン位西日本予選",
-      "date": "2026-10-18",
-      "venue": "滋賀県 大津市 近江勧学館",
-      "grade": "",
-      "organizer": "全日本かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第８５回全国競技かるた北國大会（ＡＢ）※",
-      "date": "2026-10-24",
-      "venue": "",
-      "grade": "A級・B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３１回人麿の里・全国競技かるた益田大会(Ｅ) ※",
-      "date": "2026-10-25",
-      "venue": "",
-      "grade": "",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第５６回全国競技かるた松山大会(ＤＥ) ※",
-      "date": "2026-10-25",
-      "venue": "",
-      "grade": "",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第７４回福井県学校対抗かるた選手権大会",
-      "date": "2026-10-25",
-      "venue": "福井県 越前市 越前市武道館",
-      "grade": "",
-      "organizer": "福井県かるた協会・福井新聞社",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 1,
-      "name": "小倉百人一首競技かるた 第４１回国民文化祭よさこい高知２０２６全国大会",
-      "date": "2026-10-31",
-      "venue": "高知県 南国市 南国市立スポーツセンター",
-      "grade": "",
-      "organizer": "全日本かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４９回全国小･中学生競技かるた選手権福井大会",
-      "date": "2026-11-01",
-      "venue": "",
-      "grade": "",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２回秋田このはな杯",
-      "date": "2026-11-01",
-      "venue": "秋田県 大仙市 大曲武道館",
-      "grade": "",
-      "organizer": "秋田このはな会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１７回全日本グランドチャンピオン大会",
-      "date": "2026-11-01",
-      "venue": "東京都 府中市 片町文化センター",
-      "grade": "",
-      "organizer": "府中白妙会・府中市芸術文化協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３４回全日本新人選手権かるた府中大会",
-      "date": "2026-11-01",
-      "venue": "東京都 府中市 片町文化センター",
-      "grade": "",
-      "organizer": "府中白妙会・府中市芸術文化協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第７回全国競技かるた札幌大会(ＢＤＥ)※",
-      "date": "2026-11-03",
-      "venue": "",
-      "grade": "B級・D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第８回全国競技かるた新潟大会(ＣＤＥ) ※",
-      "date": "2026-11-07",
-      "venue": "",
-      "grade": "C級・D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第４回全道高等学校小倉百人一首かるた新人大会",
-      "date": "2026-11-07",
-      "venue": "北海道 札幌市 厚別区体育館",
-      "grade": "",
-      "organizer": "北海道高等学校文化連盟",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４２回全国競技かるた宮崎大会(Ｄ) ※",
-      "date": "2026-11-08",
-      "venue": "",
-      "grade": "D級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２３回小倉百人一首交流フェスティバル",
-      "date": "2026-11-08",
-      "venue": "三重県 多気郡 Dreamオーシャン総合体育館 明和町中央公民館",
-      "grade": "",
-      "organizer": "三重県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３４回三池かるた記念館杯 九州新人かるた競技大会",
-      "date": "2026-11-08",
-      "venue": "福岡県 未定",
-      "grade": "",
-      "organizer": "福岡県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２回みやざき無段者大会",
-      "date": "2026-11-08",
-      "venue": "宮崎県 宮崎市 宮崎県武道館",
-      "grade": "",
-      "organizer": "宮崎県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "蓮生記念第１３回全国競技かるた宇都宮大会(Ａ-Ｄ) ※",
-      "date": "2026-11-14",
-      "venue": "",
-      "grade": "A級・B級・C級・D級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第６５回全国競技かるた和歌山大会(Ａ-E)",
-      "date": "2026-11-15",
-      "venue": "",
-      "grade": "A級・B級・C級・D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第２２回全国競技かるた香川大会(ＣＤＥ)※",
-      "date": "2026-11-15",
-      "venue": "",
-      "grade": "C級・D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "令和８年度熊本県競技かるた秋季大会",
-      "date": "2026-11-15",
-      "venue": "熊本県 熊本市 川尻公民館",
-      "grade": "",
-      "organizer": "熊本県かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 1,
-      "name": "小倉百人一首競技かるた 第７３期名人位・第７１期クイーン位挑戦者決定戦",
-      "date": "2026-11-22",
-      "venue": "東京都 文京区 区立かるた記念大塚会館",
-      "grade": "",
-      "organizer": "全日本かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３５回全国競技かるた奈良大会(ＤＥ) ※",
-      "date": "2026-11-22",
-      "venue": "",
-      "grade": "D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた 九段大会2026-4（Ｄ）",
-      "date": "2026-11-22",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３５回全国競技かるた奈良大会(ＢＣ) ※",
-      "date": "2026-11-23",
-      "venue": "",
-      "grade": "B級・C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた 九段大会2026-4（Ｅ）",
-      "date": "2026-11-23",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第１６回全国競技かるた岡山大会(ＢＣ) ※",
-      "date": "2026-11-28",
-      "venue": "",
-      "grade": "B級・C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第１６回全国競技かるた岡山大会(ＡＣ) ※",
-      "date": "2026-11-29",
-      "venue": "",
-      "grade": "A級・C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第７回全国競技かるた札幌大会(ＡＣ)※",
-      "date": "2026-11-29",
-      "venue": "",
-      "grade": "A級・C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ｅ) ※",
-      "date": "2026-11-29",
-      "venue": "",
-      "grade": "E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２０回千葉県初心者かるた大会",
-      "date": "2026-11-29",
-      "venue": "千葉県 千葉市 Yohasアリーナ ～本能に、感動を。～ (千葉公園総合体育館）",
-      "grade": "",
-      "organizer": "千葉県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１０回信州大会 ＤＥ級",
-      "date": "2026-11-29",
-      "venue": "長野県 佐久市 長野県立武道館",
-      "grade": "",
-      "organizer": "長野県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第２６回全国競技かるた愛知大会(Ｂ) ※",
-      "date": "2026-12-05",
-      "venue": "",
-      "grade": "B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第２６回全国競技かるた愛知大会(Ａ) ※",
-      "date": "2026-12-06",
-      "venue": "",
-      "grade": "A級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ｄ) ※",
-      "date": "2026-12-06",
-      "venue": "",
-      "grade": "D級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３５回全国競技かるた奈良大会(Ａ) ※",
-      "date": "2026-12-06",
-      "venue": "",
-      "grade": "A級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ｃ) ※",
-      "date": "2026-12-13",
-      "venue": "",
-      "grade": "C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２０回静岡県競技かるたステップアップ大会（Ｃ・Ｄ）",
-      "date": "2026-12-13",
-      "venue": "静岡県 藤枝市 藤枝市武道館",
-      "grade": "",
-      "organizer": "静岡県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "静岡県競技かるたチャレンジ大会（Ｅ・F）",
-      "date": "2026-12-13",
-      "venue": "静岡県 藤枝市 藤枝市武道館",
-      "grade": "",
-      "organizer": "静岡県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第８５回全国競技かるた北國大会（ＣＤＥ）※",
-      "date": "2026-12-19",
-      "venue": "",
-      "grade": "C級・D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第１４回全国競技かるた山口大会(ＣＤＥ) ※",
-      "date": "2026-12-19",
-      "venue": "",
-      "grade": "C級・D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１６回つがる市かるた選手権大会",
-      "date": "2026-12-19",
-      "venue": "青森県 つがる市 県立木造高校",
-      "grade": "",
-      "organizer": "つがる市かるた愛好会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた九段大会 2026-5（Ｅ）",
-      "date": "2026-12-19",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第１４回全国競技かるた山口大会(ＡＢ) ※",
-      "date": "2026-12-20",
-      "venue": "",
-      "grade": "A級・B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第１６回全国競技かるた岡山大会(ＤＥ) ※",
-      "date": "2026-12-20",
-      "venue": "",
-      "grade": "D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４２回全国競技かるた熊本大会(ＣＤ) ※",
-      "date": "2026-12-20",
-      "venue": "",
-      "grade": "C級・D級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた九段大会 2026-5（Ｄ）",
-      "date": "2026-12-20",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４５回全国競技かるた東京吉野会大会(Ｂ) ※",
-      "date": "2026-12-27",
-      "venue": "",
-      "grade": "B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 1,
-      "name": "小倉百人一首競技かるた 第７３期名人位・第７１期クイーン位決定戦",
-      "date": "2027-01-10",
-      "venue": "滋賀県 大津市 近江勧学館",
-      "grade": "",
-      "organizer": "全日本かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第９回東北・北海道高校かるたウインタートーナメント",
-      "date": "2027-01-10",
-      "venue": "青森県 八戸市 文化教養センター南部会館",
-      "grade": "",
-      "organizer": "青森県高文連小倉百人一首かるた部門",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた九段大会 2026-6（Ｅ）",
-      "date": "2027-01-10",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "小倉百人一首競技かるた初心者かるた府中教室",
-      "date": "2027-01-10",
-      "venue": "東京都 府中市 府中市分梅町一丁目公会堂",
-      "grade": "",
-      "organizer": "府中白妙会･府中多摩かるた会連盟",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ａ) ※",
-      "date": "2027-01-11",
-      "venue": "",
-      "grade": "A級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第５６回太宰府小倉百人一首競技かるた大会(Ｃ) ※",
-      "date": "2027-01-11",
-      "venue": "",
-      "grade": "C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた九段大会 2026-6（Ｄ）",
-      "date": "2027-01-11",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第１０６回全国競技かるた横浜大会(級未定) ※",
-      "date": "2027-01-16",
-      "venue": "",
-      "grade": "",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第８４回全国競技かるた桑名大会(ＤＥ) ※",
-      "date": "2027-01-16",
-      "venue": "",
-      "grade": "D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "藤原定家卿小倉百人一首撰定記念 第７８回全国競技かるた京都大会(ＤＥ) ※",
-      "date": "2027-01-16",
-      "venue": "",
-      "grade": "D級・E級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第５６回太宰府小倉百人一首競技かるた大会(Ａ) ※",
-      "date": "2027-01-16",
-      "venue": "",
-      "grade": "A級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 1,
-      "name": "小倉百人一首競技かるた 第４０回全国小学生選手権大会",
-      "date": "2027-01-17",
-      "venue": "東京都 文京区 湯島天満宮",
-      "grade": "",
-      "organizer": "全日本かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第１０６回全国競技かるた横浜大会(級未定) ※",
-      "date": "2027-01-17",
-      "venue": "",
-      "grade": "",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第８４回全国競技かるた桑名大会(Ｃ) ※",
-      "date": "2027-01-17",
-      "venue": "",
-      "grade": "C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "藤原定家卿小倉百人一首撰定記念 第７８回全国競技かるた京都大会(ＣＤ) ※",
-      "date": "2027-01-17",
-      "venue": "",
-      "grade": "C級・D級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第５６回太宰府小倉百人一首競技かるた大会(Ｂ) ※",
-      "date": "2027-01-17",
-      "venue": "",
-      "grade": "B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第８０回全国競技かるた東京東会大会(Ａ) ※",
-      "date": "2027-01-17",
-      "venue": "",
-      "grade": "A級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第６０回全国競技かるた静岡大会(DE他) ※",
-      "date": "2027-01-17",
-      "venue": "",
-      "grade": "",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ｂ) ※",
-      "date": "2027-01-17",
-      "venue": "",
-      "grade": "B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第７８回愛媛かるた選手権大会",
-      "date": "2027-01-17",
-      "venue": "愛媛県 松山市 愛媛県生活文化センター",
-      "grade": "",
-      "organizer": "愛媛かるた会･愛媛新聞社",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３７回埼玉県高等学校かるた大会（個人戦）",
-      "date": "2027-01-18",
-      "venue": "埼玉県 上尾市 埼玉県立武道館",
-      "grade": "",
-      "organizer": "埼玉県高文連",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３５回全国競技かるた広島大会(AB)※",
-      "date": "2027-01-24",
-      "venue": "",
-      "grade": "A級・B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第８回北日本選手権競技かるた大会",
-      "date": "2027-01-24",
-      "venue": "宮城県 仙台市 宮城県武道館",
-      "grade": "",
-      "organizer": "宮城県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第５３回鹿児島県新春かるた大会",
-      "date": "2027-01-24",
-      "venue": "鹿児島県 鹿児島市 西原商会アリーナ（鹿児島アリーナ）",
-      "grade": "",
-      "organizer": "鹿児島県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第１０回全国競技かるた信州大会(BC)※",
-      "date": "2027-01-30",
-      "venue": "",
-      "grade": "B級・C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第９回北海道競技かるた初心者大会",
-      "date": "2027-01-30",
-      "venue": "北海道 札幌市 厚別区民センター",
-      "grade": "",
-      "organizer": "北海道かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第１０回全国競技かるた信州大会(A) ※",
-      "date": "2027-01-31",
-      "venue": "",
-      "grade": "A級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第４６回全国競技かるた鹿児島大会(ＤＥ)※",
-      "date": "2027-01-31",
-      "venue": "",
-      "grade": "",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第４３回柿本人麿万葉かるた大会",
-      "date": "2027-01-31",
-      "venue": "島根県 益田市 市民学習センター",
-      "grade": "",
-      "organizer": "島根県かるた協会・益田ライオンズクラブ",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２２回八戸市百人一首小中学生大会",
-      "date": "2027-02-07",
-      "venue": "青森県 八戸市 文化教養センター南部会館",
-      "grade": "",
-      "organizer": "八戸市百人一首小中学生大会実行委員会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第６９回関東北かるた大会",
-      "date": "2027-02-07",
-      "venue": "栃木県 那須塩原市 いきいきふれあいセンター",
-      "grade": "",
-      "organizer": "黒磯いぶき会･黒磯公民館",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２８回稲城市民かるた大会",
-      "date": "2027-02-07",
-      "venue": "東京都 稲城市 総合体育館",
-      "grade": "",
-      "organizer": "稲城市かるた協会 (南多摩かるた会)",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３２回短歌の里百人一首大会",
-      "date": "2027-02-07",
-      "venue": "長野県 塩尻市 原新田公民館",
-      "grade": "",
-      "organizer": "塩尻市･塩尻市教育委員会･塩尻かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第６回近江勧学館フロンティア大会",
-      "date": "2027-02-07",
-      "venue": "滋賀県 大津市 近江勧学館",
-      "grade": "",
-      "organizer": "滋賀県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１４回小倉百人一首競技かるた朝倉大会",
-      "date": "2027-02-07",
-      "venue": "福岡県 朝倉市 サンライズ杷木",
-      "grade": "",
-      "organizer": "福岡県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第６０回全国競技かるた静岡大会(Ｃ) ※",
-      "date": "2027-02-11",
-      "venue": "",
-      "grade": "C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第２２回全国競技かるた香川大会(ＤＥ)※",
-      "date": "2027-02-11",
-      "venue": "",
-      "grade": "",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３５回三重県百人一首かるた競技大会",
-      "date": "2027-02-11",
-      "venue": "三重県 鈴鹿市 鈴鹿市武道館",
-      "grade": "",
-      "organizer": "三重県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第５０回福井県団体対抗かるた大会",
-      "date": "2027-02-13",
-      "venue": "福井県 三方上中郡若狭町 県立三方青年の家",
-      "grade": "",
-      "organizer": "福井県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２４回福井県ジュニアかるた選手権",
-      "date": "2027-02-14",
-      "venue": "福井県 未定",
-      "grade": "",
-      "organizer": "福井県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２１回東海地区競技かるた団体戦",
-      "date": "2027-02-14",
-      "venue": "静岡県 藤枝市 藤枝市武道館",
-      "grade": "",
-      "organizer": "東海支部・静岡県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第６０回全国競技かるた静岡大会(Ｂ) ※",
-      "date": "2027-02-20",
-      "venue": "",
-      "grade": "B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 1,
-      "name": "小倉百人一首競技かるた 第８回ちはやふる小倉山杯",
-      "date": "2027-02-21",
-      "venue": "京都府 京都市 嵯峨嵐山文華館",
-      "grade": "",
-      "organizer": "全日本かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第６０回全国競技かるた静岡大会(Ａ) ※",
-      "date": "2027-02-21",
-      "venue": "",
-      "grade": "A級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３７回小倉百人一首初心者かるた府中大会",
-      "date": "2027-02-28",
-      "venue": "東京都 府中市 片町文化センター",
-      "grade": "",
-      "organizer": "府中白妙会･府中多摩かるた会連盟 ･片町文化センター圏域コミュニティ協議会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第７４回福井県かるた選手権大会",
-      "date": "2027-02-28",
-      "venue": "福井県 福井市 福井県立武道館",
-      "grade": "",
-      "organizer": "福井県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第３２回小倉百人一首かるた新人宇都宮大会",
-      "date": "2027-03-06",
-      "venue": "栃木県 宇都宮市 栃木県総合運動公園武道館 （ユウケイ武道館）",
-      "grade": "",
-      "organizer": "宇都宮かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第１１回千葉県小学生大会",
-      "date": "2027-03-14",
-      "venue": "千葉県 千葉市 Yohasアリーナ ～本能に、感動を。～ (千葉公園総合体育館）",
-      "grade": "",
-      "organizer": "千葉県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第２１回静岡県競技かるたステップアップ大会（Ｃ・Ｄ）",
-      "date": "2027-03-14",
-      "venue": "静岡県 藤枝市 藤枝市武道館",
-      "grade": "",
-      "organizer": "静岡県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "静岡県競技かるたチャレンジ大会（Ｅ・Ｆ）",
-      "date": "2027-03-14",
-      "venue": "静岡県 藤枝市 藤枝市武道館",
-      "grade": "",
-      "organizer": "静岡県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第５６回全国競技かるた松山大会(ＡＢＣ) ※",
-      "date": "2027-03-20",
-      "venue": "",
-      "grade": "A級・B級・C級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第８４回全国競技かるた桑名大会(Ｂ) ※",
-      "date": "2027-03-20",
-      "venue": "",
-      "grade": "B級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第４３回長野県かるた大会",
-      "date": "2027-03-20",
-      "venue": "長野県 佐久市 長野県立武道館",
-      "grade": "",
-      "organizer": "長野県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた九段大会 2026-７（Ｅ）",
-      "date": "2027-03-20",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第８４回全国競技かるた桑名大会(Ａ) ※",
-      "date": "2027-03-21",
-      "venue": "",
-      "grade": "A級",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第３１回人麿の里・全国競技かるた益田大会(Ｄ) ※",
-      "date": "2027-03-21",
-      "venue": "",
-      "grade": "",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "競技かるた九段大会 2026-７（Ｄ）",
-      "date": "2027-03-21",
-      "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
-      "grade": "",
-      "organizer": "暁星かるた会・九段かるた会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 3,
-      "name": "第五回高校生卒業記念大会",
-      "date": "2027-03-21",
-      "venue": "岐阜県 大垣市 大垣市青年の家",
-      "grade": "",
-      "organizer": "岐阜県かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 1,
-      "name": "小倉百人一首競技かるた 第５７回全国小・中学生選手権大会",
-      "date": "2027-03-28",
-      "venue": "滋賀県 大津市 滋賀県立武道館 他",
-      "grade": "",
-      "organizer": "全日本かるた協会",
-      "overlapNote": null,
-      "docs": []
-    },
-    {
-      "type": 2,
-      "name": "第１６回全国競技かるた岡山大会(ＤＥ) ※",
-      "date": "2027-03-28",
-      "venue": "",
-      "grade": "",
-      "organizer": "",
-      "overlapNote": null,
-      "docs": []
-    }
-  ],
+  {
+    "type": 2,
+    "name": "第１０５回全国競技かるた横浜大会（E）",
+    "date": "2026-04-03",
+    "venue": "神奈川県 横浜市 横浜武道館",
+    "grade": "E級",
+    "organizer": "横浜かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 4,
+    "name": "第五回かるフェス！",
+    "date": "2026-04-05",
+    "venue": "東京都 文京区 文京総合体育館",
+    "grade": "初心者〜一般",
+    "organizer": "Karuta Club",
+    "supportNote": "後援・副賞提供",
+    "overlapNote": null,
+    "docs": [
+      {
+        "label": "支援申請 Slack",
+        "url": "https://app.slack.com/"
+      },
+      {
+        "label": "副賞内容メモ",
+        "url": "https://app.slack.com/"
+      }
+    ]
+  },
+  {
+    "type": 3,
+    "name": "第１６回北海道競技かるた選手権大会",
+    "date": "2026-04-12",
+    "venue": "北海道 札幌市 東区体育館",
+    "grade": "",
+    "organizer": "北海道かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第５回百人一首競技かるた 杉並若葉杯",
+    "date": "2026-04-12",
+    "venue": "東京都 台東区 台東リバーサイドスポーツセンター",
+    "grade": "",
+    "organizer": "杉並かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "春季奈良かるた大会（ＡＢＣ）",
+    "date": "2026-04-12",
+    "venue": "奈良県 生駒郡 信貴山 成福院",
+    "grade": "",
+    "organizer": "奈良県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２７回こばえちゃ山形全国競技かるた酒田大会",
+    "date": "2026-04-19",
+    "venue": "",
+    "grade": "A級・B級・C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "春季奈良かるた大会（ＤＥ）",
+    "date": "2026-04-19",
+    "venue": "奈良県 生駒郡 信貴山 成福院",
+    "grade": "",
+    "organizer": "奈良県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２０回全国競技かるた兵庫大会(Ａ－Ｅ)",
+    "date": "2026-04-25",
+    "venue": "",
+    "grade": "A級・B級・C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４１回福井県高等学校かるた大会",
+    "date": "2026-04-25",
+    "venue": "福井県 あわら市 美松",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第６５回全日本選手権大会",
+    "date": "2026-04-26",
+    "venue": "愛知県 豊田市 名鉄トヨタホテル",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４２回全国競技かるた熊本大会(ＡＢ) ※",
+    "date": "2026-04-26",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 4,
+    "name": "とよたかるフェス2026",
+    "date": "2026-04-26",
+    "venue": "愛知県 豊田市 GAZA 2階セントラルコート",
+    "grade": "入場無料",
+    "organizer": "豊田市・（公財）豊田市文化振興財団",
+    "supportNote": "チャリティグッズ販売ブース出展",
+    "overlapNote": "① 主催大会と同日（全日本選手権パブリックビューイング）",
+    "docs": [
+      {
+        "label": "ブース詳細 Slack",
+        "url": "https://app.slack.com/"
+      }
+    ]
+  },
+  {
+    "type": 2,
+    "name": "第４０回全国競技かるたさがみ野大会(ＢＣ) ※",
+    "date": "2026-04-29",
+    "venue": "",
+    "grade": "B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２５回競技かるた鳳玉大会 (ＤＥ) 令和８年４月東京",
+    "date": "2026-04-29",
+    "venue": "東京都 台東区 台東リバーサイドスポーツセンター 武道場",
+    "grade": "",
+    "organizer": "鳳玉大会運営委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４４回全国競技かるた東京吉野会大会(Ｄ) ※",
+    "date": "2026-05-02",
+    "venue": "",
+    "grade": "D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４４回全国競技かるた東京吉野会大会(ＣＥ) ※",
+    "date": "2026-05-03",
+    "venue": "",
+    "grade": "C級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第十四回奥の細道むすびの地 全国競技かるた大垣大会(ＢＣＥ)※",
+    "date": "2026-05-03",
+    "venue": "",
+    "grade": "B級・C級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "令和８年度熊本県競技かるた春季大会",
+    "date": "2026-05-03",
+    "venue": "熊本県 上益城郡 益城町総合体育館",
+    "grade": "",
+    "organizer": "熊本県かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４４回鹿児島県かるた選手権大会",
+    "date": "2026-05-03",
+    "venue": "鹿児島県 鹿児島市 鹿児島県武道館",
+    "grade": "",
+    "organizer": "鹿児島県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 4,
+    "name": "第十四回奥の細道むすびの地 全国競技かるた大垣大会",
+    "date": "2026-05-03",
+    "venue": "岐阜県 大垣市 大垣市武道館",
+    "grade": "全級",
+    "organizer": "岐阜県かるた協会",
+    "supportNote": "協賛（確定）",
+    "overlapNote": "② 公認大会と重複",
+    "docs": [
+      {
+        "label": "協賛決定 Slack",
+        "url": "https://app.slack.com/"
+      }
+    ]
+  },
+  {
+    "type": 2,
+    "name": "第十四回奥の細道むすびの地 全国競技かるた大垣大会(ＡＤ)※",
+    "date": "2026-05-04",
+    "venue": "",
+    "grade": "A級・D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２１回千葉県中学生かるた大会",
+    "date": "2026-05-04",
+    "venue": "千葉県 流山市 キッコーマンアリーナ(流山市民総合体育館)",
+    "grade": "",
+    "organizer": "千葉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第５３回Friendshipジュニア杯交流大会",
+    "date": "2026-05-05",
+    "venue": "東京都 台東区 台東リバーサイドスポーツセンター",
+    "grade": "",
+    "organizer": "Friendship杯実行委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 4,
+    "name": "第1回 Friendshipジュニア杯",
+    "date": "2026-05-05",
+    "venue": "東京都 台東区 台東リバーサイドスポーツセンター",
+    "grade": "",
+    "organizer": "Friendship杯実行委員会",
+    "supportNote": "協賛",
+    "overlapNote": "③ 後援事業と重複",
+    "docs": [
+      {
+        "label": "協賛依頼 Slack",
+        "url": "https://app.slack.com/"
+      }
+    ]
+  },
+  {
+    "type": 3,
+    "name": "第３回全国競技かるた世代別交流大会",
+    "date": "2026-05-06",
+    "venue": "千葉県 千葉市 Yohasアリーナ ～本能に、感動を。～ (千葉公園総合体育館）",
+    "grade": "",
+    "organizer": "関東支部",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１０６回全国競技かるた横浜大会（E ）",
+    "date": "2026-05-06",
+    "venue": "神奈川県 横浜市 横浜武道館",
+    "grade": "",
+    "organizer": "横浜隼会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１４回滋賀県中学生選手権大会",
+    "date": "2026-05-06",
+    "venue": "滋賀県 大津市 近江勧学館",
+    "grade": "",
+    "organizer": "滋賀県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２４回滋賀県高校生選手権",
+    "date": "2026-05-06",
+    "venue": "滋賀県 大津市 近江勧学館",
+    "grade": "",
+    "organizer": "滋賀県高等学校文化連盟 滋賀県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１８回千葉県初心者かるた大会",
+    "date": "2026-05-10",
+    "venue": "千葉県 千葉市 Yohasアリーナ ～本能に、感動を。～ (千葉公園総合体育館）",
+    "grade": "",
+    "organizer": "千葉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２６回競技かるた鳳玉大会 (ＣＤＥ) 令和８年５月東京",
+    "date": "2026-05-10",
+    "venue": "東京都 台東区 台東リバーサイドスポーツセンター 武道場",
+    "grade": "",
+    "organizer": "鳳玉大会運営委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４回全道高等学校小倉百人一首かるた選手権大会",
+    "date": "2026-05-16",
+    "venue": "北海道 札幌市 厚別区体育館",
+    "grade": "",
+    "organizer": "北海道高等学校文化連盟",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２回SHIKIBU（水無瀬神宮で魅せる、競技かるたの新章）",
+    "date": "2026-05-16",
+    "venue": "大阪府 三島郡 水無瀬神宮",
+    "grade": "",
+    "organizer": "SHIKIBU実行委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７回小倉百人一首競技かるた北九州大会 (ＣＤＥ)",
+    "date": "2026-05-17",
+    "venue": "福岡県 北九州市 第一警備スポーツセンター一戸畑",
+    "grade": "",
+    "organizer": "福岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２６回全国競技かるた富山大会(ＤＥ) ※",
+    "date": "2026-05-24",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２８回青森県高校かるた選手権大会",
+    "date": "2026-05-24",
+    "venue": "青森県 青森市 西部市民センター",
+    "grade": "",
+    "organizer": "青森県高文連小倉百人一首かるた部",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４回たちばな杯 かるた大会",
+    "date": "2026-05-24",
+    "venue": "長野県 長野市 たちばな長野本店",
+    "grade": "",
+    "organizer": "株式会社たちばな、長野県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第９０回椿杯争奪全国競技かるた大会(ＤＥ他) ※",
+    "date": "2026-05-30",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３１回人麿の里・全国競技かるた益田大会(Ｅ) ※",
+    "date": "2026-05-30",
+    "venue": "",
+    "grade": "E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第９回全国競技かるた大阪なにはえ大会(Ｄ)※",
+    "date": "2026-05-30",
+    "venue": "",
+    "grade": "D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７回北海道競技かるた初心者大会",
+    "date": "2026-05-30",
+    "venue": "北海道 札幌市 厚別区民センター",
+    "grade": "",
+    "organizer": "北海道かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第９回全国競技かるた大阪なにはえ大会(Ｃ)※",
+    "date": "2026-05-31",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４回全国競技かるた千葉大会(Ａ)※",
+    "date": "2026-05-31",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５６回全国競技かるた松山大会(ＤＥ) ※",
+    "date": "2026-05-31",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３３回埼玉県百人一首大会（Ｄ）",
+    "date": "2026-05-31",
+    "venue": "埼玉県 戸田市 スポーツセンター",
+    "grade": "",
+    "organizer": "埼玉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４回競技かるた山梨大会 (ＣＤＥ)",
+    "date": "2026-05-31",
+    "venue": "山梨県 甲府市 小瀬スポーツ公園武道館",
+    "grade": "",
+    "organizer": "山梨県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４７回大分県かるた（小倉百人一首）競技大会",
+    "date": "2026-05-31",
+    "venue": "大分県 大分市 コンパルホール",
+    "grade": "",
+    "organizer": "大分県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４０回全国競技かるたさがみ野大会（DE）",
+    "date": "2026-06-07",
+    "venue": "神奈川県 大和市 大和スポーツセンター",
+    "grade": "",
+    "organizer": "さがみ野会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３回全国競技かるた青森大会（ＡＢ）※",
+    "date": "2026-06-13",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２６回全国競技かるた愛知大会(ＣＤＥ) ※",
+    "date": "2026-06-13",
+    "venue": "",
+    "grade": "C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３回全国競技かるた青森大会（ＣＤＥ）※",
+    "date": "2026-06-14",
+    "venue": "",
+    "grade": "C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４回全国競技かるた千葉大会(Ｃ) ※",
+    "date": "2026-06-14",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３９回水無月かるた大会",
+    "date": "2026-06-14",
+    "venue": "長野県 茅野市 マリオローヤル会館",
+    "grade": "",
+    "organizer": "茅野かるた会 (後援：長野県かるた協会)",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８０回全国競技かるた東京東会大会(Ｄ) ※",
+    "date": "2026-06-27",
+    "venue": "",
+    "grade": "D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第７９回全国競技かるた福井大会(C) ※",
+    "date": "2026-06-27",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "藤原定家卿小倉百人一首撰定記念 第７８回全国競技かるた京都大会(Ｂ) ※",
+    "date": "2026-06-27",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７９回全国競技かるた福井大会(D)",
+    "date": "2026-06-27",
+    "venue": "福井県 あわら市 あわら温泉 美松",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第1回福井渚会杯競技かるた世代別選手権大会（仮称）",
+    "date": "2026-06-27",
+    "venue": "福井県 あわら市 あわら温泉 美松",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第７９回全国競技かるた福井大会(AB) ※",
+    "date": "2026-06-28",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "藤原定家卿小倉百人一首撰定記念 第７８回全国競技かるた京都大会(Ａ) ※",
+    "date": "2026-06-28",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８０回全国競技かるた東京東会大会(Ｃ) ※",
+    "date": "2026-07-04",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８０回全国競技かるた東京東会大会(Ｂ) ※",
+    "date": "2026-07-05",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５４回全国競技かるた大分大会(ＡＢ) ※",
+    "date": "2026-07-05",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２回競技かるたカイロ大会",
+    "date": "2026-07-09",
+    "venue": "カイロ The Japan Foundation，Cairo",
+    "grade": "",
+    "organizer": "カイロかるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第６１回宮城県競技かるた団体戦",
+    "date": "2026-07-11",
+    "venue": "宮城県 仙台市 仙台市武道館",
+    "grade": "",
+    "organizer": "宮城県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４２回全国競技かるた宮崎大会(ＡＢＣ) ※",
+    "date": "2026-07-12",
+    "venue": "",
+    "grade": "A級・B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１２回白瀧杯女流かるた高校選手権大会",
+    "date": "2026-07-12",
+    "venue": "東京都 練馬区 白瀧呉服店",
+    "grade": "",
+    "organizer": "白瀧杯実行委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７回信貴山杯争奪奈良県競技かるた学生選手権大会",
+    "date": "2026-07-12",
+    "venue": "奈良県 生駒郡 信貴山 成福院",
+    "grade": "",
+    "organizer": "奈良県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第40回全国競技かるたさがみ野大会(Ａ) ※",
+    "date": "2026-07-25",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３３回全国競技かるた多摩大会(C) ※",
+    "date": "2026-08-01",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３１回人麿の里・全国競技かるた益田大会(ＢＤ) ※",
+    "date": "2026-08-01",
+    "venue": "",
+    "grade": "B級・D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３１回人麿の里・全国競技かるた益田大会(ＡＣ) ※",
+    "date": "2026-08-02",
+    "venue": "",
+    "grade": "A級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３３回全国競技かるた多摩大会(D) ※",
+    "date": "2026-08-08",
+    "venue": "",
+    "grade": "D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３３回全国競技かるた多摩大会(E) ※",
+    "date": "2026-08-09",
+    "venue": "",
+    "grade": "E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第６回小倉百人一首競技かるた 小学生団体戦",
+    "date": "2026-08-09",
+    "venue": "東京都 墨田区 ひがしんアリーナ武道場 （墨田区総合体育館）",
+    "grade": "",
+    "organizer": "小学生団体戦実行委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 4,
+    "name": "第６回小倉百人一首競技かるた 小学生団体戦",
+    "date": "2026-08-09",
+    "venue": "東京都 墨田区 ひがしんアリーナ武道場 （墨田区総合体育館）",
+    "grade": "",
+    "organizer": "小学生団体戦実行委員会",
+    "supportNote": "横断幕継続使用・参加賞クリアファイルへのイラスト提供・記念Tシャツへのイラスト提供",
+    "overlapNote": "③ 後援事業と重複",
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-1（Ｅ）",
+    "date": "2026-08-09",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026 -1（Ｄ）",
+    "date": "2026-08-10",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３３回全国競技かるた多摩大会(B) ※",
+    "date": "2026-08-11",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026 -1（Ｃ）",
+    "date": "2026-08-11",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３回小倉百人一首競技かるた各会対抗中学生団体戦",
+    "date": "2026-08-11",
+    "venue": "東京都 江戸川区 関東第一高等学校 多目的ホール･柔道場",
+    "grade": "",
+    "organizer": "各会対抗中学生団体戦実行委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 4,
+    "name": "第３回小倉百人一首競技かるた各会対抗中学生団体戦",
+    "date": "2026-08-11",
+    "venue": "東京都 江戸川区 関東第一高等学校 多目的ホール･柔道場",
+    "grade": "",
+    "organizer": "各会対抗中学生団体戦実行委員会",
+    "supportNote": "横断幕継続使用・参加賞クリアファイルへのイラスト提供・記念Tシャツへのイラスト提供",
+    "overlapNote": "③ 後援事業と重複",
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１２回ひさかた会競技かるた大会",
+    "date": "2026-08-11",
+    "venue": "神奈川県 横浜市 横浜武道館",
+    "grade": "",
+    "organizer": "ひさかた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３３回全国競技かるた多摩大会(A) ※",
+    "date": "2026-08-15",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１０６回全国競技かるた横浜大会（級未定） ※",
+    "date": "2026-08-15",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１０６回全国競技かるた横浜大会（級未定） ※",
+    "date": "2026-08-16",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第９回全国競技かるた大阪なにはえ大会(Ｂ) ※",
+    "date": "2026-08-16",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４６回全国競技かるた鹿児島大会(ＤＥ) ※",
+    "date": "2026-08-16",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-2（Ｅ）",
+    "date": "2026-08-21",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-2（Ｄ）",
+    "date": "2026-08-22",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第９回全国競技かるた秋田大会(ＤＥ) ※",
+    "date": "2026-08-23",
+    "venue": "",
+    "grade": "E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５４回全国競技かるた大分大会(ＣＤＥ) ※",
+    "date": "2026-08-23",
+    "venue": "",
+    "grade": "C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-2（Ｃ）",
+    "date": "2026-08-23",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７回福井県職域・学生かるた選手権大会",
+    "date": "2026-08-23",
+    "venue": "福井県 吉田郡永平寺町 永平寺四季の森複合施設",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４５回全国競技かるた東京吉野会大会(Ｃ) ※",
+    "date": "2026-08-29",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第19回静岡県競技かるたステップアップ大会（Ｃ・Ｄ）",
+    "date": "2026-08-29",
+    "venue": "静岡県 藤枝市 藤枝市武道館",
+    "grade": "",
+    "organizer": "静岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "静岡県競技かるたチャレンジ大会（Ｅ・Ｆ）",
+    "date": "2026-08-29",
+    "venue": "静岡県 藤枝市 藤枝市武道館",
+    "grade": "",
+    "organizer": "静岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１１回福井県初心者かるた大会",
+    "date": "2026-08-29",
+    "venue": "福井県 福井市 ショッピングシティ ベル",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "蓮生記念第１３回全国競技かるた宇都宮大会(Ｅ) ※",
+    "date": "2026-09-06",
+    "venue": "",
+    "grade": "E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７９回全国競技かるた福井大会D・(Ｅ・F)",
+    "date": "2026-09-06",
+    "venue": "福井県 福井市 ショッピングシティ ベル",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１９回千葉県初心者かるた大会",
+    "date": "2026-09-13",
+    "venue": "千葉県 流山市 キッコーマンアリーナ(流山市民総合体育館)",
+    "grade": "",
+    "organizer": "千葉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "秋季奈良かるた大会（ＡＢＣ）",
+    "date": "2026-09-13",
+    "venue": "奈良県 生駒郡 信貴山 成福院",
+    "grade": "",
+    "organizer": "奈良県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第９回全国競技かるた秋田大会(ＡＢＣＤ) ※",
+    "date": "2026-09-20",
+    "venue": "",
+    "grade": "A級・B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２６回全国競技かるた富山大会(ＡＢＣ) ※",
+    "date": "2026-09-20",
+    "venue": "",
+    "grade": "A級・B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２２回全国競技かるた香川大会(ＡＢ)※",
+    "date": "2026-09-20",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３３回埼玉県百人一首大会（Ｅ）",
+    "date": "2026-09-20",
+    "venue": "埼玉県 戸田市 スポーツセンター",
+    "grade": "",
+    "organizer": "埼玉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１５回千葉県かるた大会",
+    "date": "2026-09-20",
+    "venue": "千葉県 流山市 キッコーマンアリーナ(流山市民総合体育館)",
+    "grade": "",
+    "organizer": "千葉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "小倉百人一首競技かるたおおつ光ルくん杯団体戦世界大会",
+    "date": "2026-09-20",
+    "venue": "滋賀県 大津市 近江勧学館他",
+    "grade": "",
+    "organizer": "おおつ光ルくん杯実行委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-3（Ｅ）",
+    "date": "2026-09-20",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-3（Ｄ）",
+    "date": "2026-09-21",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第９０回椿杯争奪全国競技かるた大会(ＡＢＣ) ※",
+    "date": "2026-09-22",
+    "venue": "",
+    "grade": "A級・B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第８回北海道競技かるた初心者大会",
+    "date": "2026-09-22",
+    "venue": "北海道 札幌市 厚別区民センター",
+    "grade": "",
+    "organizer": "北海道かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２８回福井県高等学校かるた秋季大会",
+    "date": "2026-09-23",
+    "venue": "福井県 あわら市 美松",
+    "grade": "",
+    "organizer": "福井県かるた協会・福井県高文連",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２０回競技かるた兵庫県大会",
+    "date": "2026-09-23",
+    "venue": "兵庫県 加古川市 加古川市立武道館",
+    "grade": "",
+    "organizer": "兵庫県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "秋季奈良かるた大会（ＤＥ）",
+    "date": "2026-09-23",
+    "venue": "奈良県 生駒郡 信貴山 成福院",
+    "grade": "",
+    "organizer": "奈良県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた ねんりんピック彩の国さいたま２０２６協賛イベント 交流大会",
+    "date": "2026-09-27",
+    "venue": "埼玉県 戸田市 スポーツセンター",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第６０回全国競技かるた静岡大会(ＤＥ他) ※",
+    "date": "2026-09-27",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８回全国競技かるた新潟大会(ＡＢ) ※",
+    "date": "2026-10-03",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３２回埼玉県高等学校新人かるた大会",
+    "date": "2026-10-08",
+    "venue": "埼玉県 上尾市 埼玉県立武道館",
+    "grade": "",
+    "organizer": "埼玉県高文連",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３３回全国競技かるた多摩大会(初心者他)",
+    "date": "2026-10-10",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４回全国競技かるた千葉大会(Ｂ)※",
+    "date": "2026-10-11",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１６回足利百人一首かるた競技大会",
+    "date": "2026-10-11",
+    "venue": "栃木県 足利市 足利市民武道館 第二武道場",
+    "grade": "",
+    "organizer": "足利市教育委員会・足利文化協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "ぎふ清流レクリエーションフェスティバル2026 第八回岐阜県かるた選手権大会",
+    "date": "2026-10-11",
+    "venue": "岐阜県 大垣市 中川ふれあいセンター",
+    "grade": "",
+    "organizer": "岐阜県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３７回東員百人一首かるた大会",
+    "date": "2026-10-11",
+    "venue": "三重県 員弁郡 東員町武道館",
+    "grade": "",
+    "organizer": "三重県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４５回全国競技かるた東京吉野会大会(Ａ) ※",
+    "date": "2026-10-12",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４回競技かるた千葉大会（Ｄ）",
+    "date": "2026-10-12",
+    "venue": "千葉県 成田市 重兵衛スポーツフィールド中台体育館",
+    "grade": "",
+    "organizer": "千葉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３回東京吉野会シニアオープン大会",
+    "date": "2026-10-12",
+    "venue": "埼玉県 川口市 川口総合文化センター リリア 10階和室",
+    "grade": "",
+    "organizer": "東京吉野会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第７３期名人位・第７１期クイーン位東日本予選",
+    "date": "2026-10-18",
+    "venue": "東京都 文京区 区立かるた記念大塚会館",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第７３期名人位・第７１期クイーン位西日本予選",
+    "date": "2026-10-18",
+    "venue": "滋賀県 大津市 近江勧学館",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８５回全国競技かるた北國大会（ＡＢ）※",
+    "date": "2026-10-24",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３１回人麿の里・全国競技かるた益田大会(Ｅ) ※",
+    "date": "2026-10-25",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５６回全国競技かるた松山大会(ＤＥ) ※",
+    "date": "2026-10-25",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７４回福井県学校対抗かるた選手権大会",
+    "date": "2026-10-25",
+    "venue": "福井県 越前市 越前市武道館",
+    "grade": "",
+    "organizer": "福井県かるた協会・福井新聞社",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第４１回国民文化祭よさこい高知２０２６全国大会",
+    "date": "2026-10-31",
+    "venue": "高知県 南国市 南国市立スポーツセンター",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４９回全国小･中学生競技かるた選手権福井大会",
+    "date": "2026-11-01",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２回秋田このはな杯",
+    "date": "2026-11-01",
+    "venue": "秋田県 大仙市 大曲武道館",
+    "grade": "",
+    "organizer": "秋田このはな会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１７回全日本グランドチャンピオン大会",
+    "date": "2026-11-01",
+    "venue": "東京都 府中市 片町文化センター",
+    "grade": "",
+    "organizer": "府中白妙会・府中市芸術文化協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３４回全日本新人選手権かるた府中大会",
+    "date": "2026-11-01",
+    "venue": "東京都 府中市 片町文化センター",
+    "grade": "",
+    "organizer": "府中白妙会・府中市芸術文化協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第７回全国競技かるた札幌大会(ＢＤＥ)※",
+    "date": "2026-11-03",
+    "venue": "",
+    "grade": "B級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８回全国競技かるた新潟大会(ＣＤＥ) ※",
+    "date": "2026-11-07",
+    "venue": "",
+    "grade": "C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４回全道高等学校小倉百人一首かるた新人大会",
+    "date": "2026-11-07",
+    "venue": "北海道 札幌市 厚別区体育館",
+    "grade": "",
+    "organizer": "北海道高等学校文化連盟",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４２回全国競技かるた宮崎大会(Ｄ) ※",
+    "date": "2026-11-08",
+    "venue": "",
+    "grade": "D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２３回小倉百人一首交流フェスティバル",
+    "date": "2026-11-08",
+    "venue": "三重県 多気郡 Dreamオーシャン総合体育館 明和町中央公民館",
+    "grade": "",
+    "organizer": "三重県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３４回三池かるた記念館杯 九州新人かるた競技大会",
+    "date": "2026-11-08",
+    "venue": "福岡県 未定",
+    "grade": "",
+    "organizer": "福岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２回みやざき無段者大会",
+    "date": "2026-11-08",
+    "venue": "宮崎県 宮崎市 宮崎県武道館",
+    "grade": "",
+    "organizer": "宮崎県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "蓮生記念第１３回全国競技かるた宇都宮大会(Ａ-Ｄ) ※",
+    "date": "2026-11-14",
+    "venue": "",
+    "grade": "A級・B級・C級・D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第６５回全国競技かるた和歌山大会(Ａ-E)",
+    "date": "2026-11-15",
+    "venue": "",
+    "grade": "A級・B級・C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２２回全国競技かるた香川大会(ＣＤＥ)※",
+    "date": "2026-11-15",
+    "venue": "",
+    "grade": "C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "令和８年度熊本県競技かるた秋季大会",
+    "date": "2026-11-15",
+    "venue": "熊本県 熊本市 川尻公民館",
+    "grade": "",
+    "organizer": "熊本県かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第７３期名人位・第７１期クイーン位挑戦者決定戦",
+    "date": "2026-11-22",
+    "venue": "東京都 文京区 区立かるた記念大塚会館",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３５回全国競技かるた奈良大会(ＤＥ) ※",
+    "date": "2026-11-22",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-4（Ｄ）",
+    "date": "2026-11-22",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３５回全国競技かるた奈良大会(ＢＣ) ※",
+    "date": "2026-11-23",
+    "venue": "",
+    "grade": "B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた 九段大会2026-4（Ｅ）",
+    "date": "2026-11-23",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１６回全国競技かるた岡山大会(ＢＣ) ※",
+    "date": "2026-11-28",
+    "venue": "",
+    "grade": "B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１６回全国競技かるた岡山大会(ＡＣ) ※",
+    "date": "2026-11-29",
+    "venue": "",
+    "grade": "A級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第７回全国競技かるた札幌大会(ＡＣ)※",
+    "date": "2026-11-29",
+    "venue": "",
+    "grade": "A級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ｅ) ※",
+    "date": "2026-11-29",
+    "venue": "",
+    "grade": "E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２０回千葉県初心者かるた大会",
+    "date": "2026-11-29",
+    "venue": "千葉県 千葉市 Yohasアリーナ ～本能に、感動を。～ (千葉公園総合体育館）",
+    "grade": "",
+    "organizer": "千葉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１０回信州大会 ＤＥ級",
+    "date": "2026-11-29",
+    "venue": "長野県 佐久市 長野県立武道館",
+    "grade": "",
+    "organizer": "長野県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２６回全国競技かるた愛知大会(Ｂ) ※",
+    "date": "2026-12-05",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２６回全国競技かるた愛知大会(Ａ) ※",
+    "date": "2026-12-06",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ｄ) ※",
+    "date": "2026-12-06",
+    "venue": "",
+    "grade": "D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３５回全国競技かるた奈良大会(Ａ) ※",
+    "date": "2026-12-06",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ｃ) ※",
+    "date": "2026-12-13",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２０回静岡県競技かるたステップアップ大会（Ｃ・Ｄ）",
+    "date": "2026-12-13",
+    "venue": "静岡県 藤枝市 藤枝市武道館",
+    "grade": "",
+    "organizer": "静岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "静岡県競技かるたチャレンジ大会（Ｅ・F）",
+    "date": "2026-12-13",
+    "venue": "静岡県 藤枝市 藤枝市武道館",
+    "grade": "",
+    "organizer": "静岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８５回全国競技かるた北國大会（ＣＤＥ）※",
+    "date": "2026-12-19",
+    "venue": "",
+    "grade": "C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１４回全国競技かるた山口大会(ＣＤＥ) ※",
+    "date": "2026-12-19",
+    "venue": "",
+    "grade": "C級・D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１６回つがる市かるた選手権大会",
+    "date": "2026-12-19",
+    "venue": "青森県 つがる市 県立木造高校",
+    "grade": "",
+    "organizer": "つがる市かるた愛好会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた九段大会 2026-5（Ｅ）",
+    "date": "2026-12-19",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１４回全国競技かるた山口大会(ＡＢ) ※",
+    "date": "2026-12-20",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１６回全国競技かるた岡山大会(ＤＥ) ※",
+    "date": "2026-12-20",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４２回全国競技かるた熊本大会(ＣＤ) ※",
+    "date": "2026-12-20",
+    "venue": "",
+    "grade": "C級・D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた九段大会 2026-5（Ｄ）",
+    "date": "2026-12-20",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４５回全国競技かるた東京吉野会大会(Ｂ) ※",
+    "date": "2026-12-27",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第７３期名人位・第７１期クイーン位決定戦",
+    "date": "2027-01-10",
+    "venue": "滋賀県 大津市 近江勧学館",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第９回東北・北海道高校かるたウインタートーナメント",
+    "date": "2027-01-10",
+    "venue": "青森県 八戸市 文化教養センター南部会館",
+    "grade": "",
+    "organizer": "青森県高文連小倉百人一首かるた部門",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた九段大会 2026-6（Ｅ）",
+    "date": "2027-01-10",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "小倉百人一首競技かるた初心者かるた府中教室",
+    "date": "2027-01-10",
+    "venue": "東京都 府中市 府中市分梅町一丁目公会堂",
+    "grade": "",
+    "organizer": "府中白妙会･府中多摩かるた会連盟",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ａ) ※",
+    "date": "2027-01-11",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５６回太宰府小倉百人一首競技かるた大会(Ｃ) ※",
+    "date": "2027-01-11",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた九段大会 2026-6（Ｄ）",
+    "date": "2027-01-11",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１０６回全国競技かるた横浜大会(級未定) ※",
+    "date": "2027-01-16",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８４回全国競技かるた桑名大会(ＤＥ) ※",
+    "date": "2027-01-16",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "藤原定家卿小倉百人一首撰定記念 第７８回全国競技かるた京都大会(ＤＥ) ※",
+    "date": "2027-01-16",
+    "venue": "",
+    "grade": "D級・E級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５６回太宰府小倉百人一首競技かるた大会(Ａ) ※",
+    "date": "2027-01-16",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第４０回全国小学生選手権大会",
+    "date": "2027-01-17",
+    "venue": "東京都 文京区 湯島天満宮",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１０６回全国競技かるた横浜大会(級未定) ※",
+    "date": "2027-01-17",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８４回全国競技かるた桑名大会(Ｃ) ※",
+    "date": "2027-01-17",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "藤原定家卿小倉百人一首撰定記念 第７８回全国競技かるた京都大会(ＣＤ) ※",
+    "date": "2027-01-17",
+    "venue": "",
+    "grade": "C級・D級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５６回太宰府小倉百人一首競技かるた大会(Ｂ) ※",
+    "date": "2027-01-17",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８０回全国競技かるた東京東会大会(Ａ) ※",
+    "date": "2027-01-17",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第６０回全国競技かるた静岡大会(DE他) ※",
+    "date": "2027-01-17",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "小倉百人一首競技かるた 第７６回高松宮記念杯近江神宮全国大会(Ｂ) ※",
+    "date": "2027-01-17",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７８回愛媛かるた選手権大会",
+    "date": "2027-01-17",
+    "venue": "愛媛県 松山市 愛媛県生活文化センター",
+    "grade": "",
+    "organizer": "愛媛かるた会･愛媛新聞社",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３７回埼玉県高等学校かるた大会（個人戦）",
+    "date": "2027-01-18",
+    "venue": "埼玉県 上尾市 埼玉県立武道館",
+    "grade": "",
+    "organizer": "埼玉県高文連",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３５回全国競技かるた広島大会(AB)※",
+    "date": "2027-01-24",
+    "venue": "",
+    "grade": "A級・B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第８回北日本選手権競技かるた大会",
+    "date": "2027-01-24",
+    "venue": "宮城県 仙台市 宮城県武道館",
+    "grade": "",
+    "organizer": "宮城県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第５３回鹿児島県新春かるた大会",
+    "date": "2027-01-24",
+    "venue": "鹿児島県 鹿児島市 西原商会アリーナ（鹿児島アリーナ）",
+    "grade": "",
+    "organizer": "鹿児島県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１０回全国競技かるた信州大会(BC)※",
+    "date": "2027-01-30",
+    "venue": "",
+    "grade": "B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第９回北海道競技かるた初心者大会",
+    "date": "2027-01-30",
+    "venue": "北海道 札幌市 厚別区民センター",
+    "grade": "",
+    "organizer": "北海道かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１０回全国競技かるた信州大会(A) ※",
+    "date": "2027-01-31",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第４６回全国競技かるた鹿児島大会(ＤＥ)※",
+    "date": "2027-01-31",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４３回柿本人麿万葉かるた大会",
+    "date": "2027-01-31",
+    "venue": "島根県 益田市 市民学習センター",
+    "grade": "",
+    "organizer": "島根県かるた協会・益田ライオンズクラブ",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２２回八戸市百人一首小中学生大会",
+    "date": "2027-02-07",
+    "venue": "青森県 八戸市 文化教養センター南部会館",
+    "grade": "",
+    "organizer": "八戸市百人一首小中学生大会実行委員会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第６９回関東北かるた大会",
+    "date": "2027-02-07",
+    "venue": "栃木県 那須塩原市 いきいきふれあいセンター",
+    "grade": "",
+    "organizer": "黒磯いぶき会･黒磯公民館",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２８回稲城市民かるた大会",
+    "date": "2027-02-07",
+    "venue": "東京都 稲城市 総合体育館",
+    "grade": "",
+    "organizer": "稲城市かるた協会 (南多摩かるた会)",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３２回短歌の里百人一首大会",
+    "date": "2027-02-07",
+    "venue": "長野県 塩尻市 原新田公民館",
+    "grade": "",
+    "organizer": "塩尻市･塩尻市教育委員会･塩尻かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第６回近江勧学館フロンティア大会",
+    "date": "2027-02-07",
+    "venue": "滋賀県 大津市 近江勧学館",
+    "grade": "",
+    "organizer": "滋賀県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１４回小倉百人一首競技かるた朝倉大会",
+    "date": "2027-02-07",
+    "venue": "福岡県 朝倉市 サンライズ杷木",
+    "grade": "",
+    "organizer": "福岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第６０回全国競技かるた静岡大会(Ｃ) ※",
+    "date": "2027-02-11",
+    "venue": "",
+    "grade": "C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第２２回全国競技かるた香川大会(ＤＥ)※",
+    "date": "2027-02-11",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３５回三重県百人一首かるた競技大会",
+    "date": "2027-02-11",
+    "venue": "三重県 鈴鹿市 鈴鹿市武道館",
+    "grade": "",
+    "organizer": "三重県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第５０回福井県団体対抗かるた大会",
+    "date": "2027-02-13",
+    "venue": "福井県 三方上中郡若狭町 県立三方青年の家",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２４回福井県ジュニアかるた選手権",
+    "date": "2027-02-14",
+    "venue": "福井県 未定",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２１回東海地区競技かるた団体戦",
+    "date": "2027-02-14",
+    "venue": "静岡県 藤枝市 藤枝市武道館",
+    "grade": "",
+    "organizer": "東海支部・静岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第６０回全国競技かるた静岡大会(Ｂ) ※",
+    "date": "2027-02-20",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第８回ちはやふる小倉山杯",
+    "date": "2027-02-21",
+    "venue": "京都府 京都市 嵯峨嵐山文華館",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第６０回全国競技かるた静岡大会(Ａ) ※",
+    "date": "2027-02-21",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３７回小倉百人一首初心者かるた府中大会",
+    "date": "2027-02-28",
+    "venue": "東京都 府中市 片町文化センター",
+    "grade": "",
+    "organizer": "府中白妙会･府中多摩かるた会連盟 ･片町文化センター圏域コミュニティ協議会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第７４回福井県かるた選手権大会",
+    "date": "2027-02-28",
+    "venue": "福井県 福井市 福井県立武道館",
+    "grade": "",
+    "organizer": "福井県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第３２回小倉百人一首かるた新人宇都宮大会",
+    "date": "2027-03-06",
+    "venue": "栃木県 宇都宮市 栃木県総合運動公園武道館 （ユウケイ武道館）",
+    "grade": "",
+    "organizer": "宇都宮かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第１１回千葉県小学生大会",
+    "date": "2027-03-14",
+    "venue": "千葉県 千葉市 Yohasアリーナ ～本能に、感動を。～ (千葉公園総合体育館）",
+    "grade": "",
+    "organizer": "千葉県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第２１回静岡県競技かるたステップアップ大会（Ｃ・Ｄ）",
+    "date": "2027-03-14",
+    "venue": "静岡県 藤枝市 藤枝市武道館",
+    "grade": "",
+    "organizer": "静岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "静岡県競技かるたチャレンジ大会（Ｅ・Ｆ）",
+    "date": "2027-03-14",
+    "venue": "静岡県 藤枝市 藤枝市武道館",
+    "grade": "",
+    "organizer": "静岡県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第５６回全国競技かるた松山大会(ＡＢＣ) ※",
+    "date": "2027-03-20",
+    "venue": "",
+    "grade": "A級・B級・C級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８４回全国競技かるた桑名大会(Ｂ) ※",
+    "date": "2027-03-20",
+    "venue": "",
+    "grade": "B級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第４３回長野県かるた大会",
+    "date": "2027-03-20",
+    "venue": "長野県 佐久市 長野県立武道館",
+    "grade": "",
+    "organizer": "長野県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた九段大会 2026-７（Ｅ）",
+    "date": "2027-03-20",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第８４回全国競技かるた桑名大会(Ａ) ※",
+    "date": "2027-03-21",
+    "venue": "",
+    "grade": "A級",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第３１回人麿の里・全国競技かるた益田大会(Ｄ) ※",
+    "date": "2027-03-21",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "競技かるた九段大会 2026-７（Ｄ）",
+    "date": "2027-03-21",
+    "venue": "東京都 千代田区 暁星中学・高等学校 柔剣道場",
+    "grade": "",
+    "organizer": "暁星かるた会・九段かるた会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 3,
+    "name": "第五回高校生卒業記念大会",
+    "date": "2027-03-21",
+    "venue": "岐阜県 大垣市 大垣市青年の家",
+    "grade": "",
+    "organizer": "岐阜県かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 1,
+    "name": "小倉百人一首競技かるた 第５７回全国小・中学生選手権大会",
+    "date": "2027-03-28",
+    "venue": "滋賀県 大津市 滋賀県立武道館 他",
+    "grade": "",
+    "organizer": "全日本かるた協会",
+    "overlapNote": null,
+    "docs": []
+  },
+  {
+    "type": 2,
+    "name": "第１６回全国競技かるた岡山大会(ＤＥ) ※",
+    "date": "2027-03-28",
+    "venue": "",
+    "grade": "",
+    "organizer": "",
+    "overlapNote": null,
+    "docs": []
+  }
+],
   "kpi": {
     "monthlySupporters": 119,
     "monthlyDonationYen": 117391,
@@ -2702,7 +2725,7 @@
           <h3 class="font-bold text-ink leading-snug mb-3">${esc(t.name)}</h3>
           <dl class="grid gap-1.5 text-sm">
             <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0 w-8">日</dt><dd class="text-ink-soft">${esc(formatDateJa(t.date))}</dd></div>
-            <div class="flex gap-2"><dt class="font-semibold text-ink shrink-0 w-8">場所</dt><dd class="text-ink-soft">${esc(t.venue)}</dd></div>
+            ${t.venue ? `<div class="flex gap-2"><dt class="font-semibold text-ink shrink-0 w-8">場所</dt><dd class="text-ink-soft">${esc(t.venue)}</dd></div>` : ''}
             <div class="flex gap-2 items-center"><dt class="font-semibold text-ink shrink-0 w-8">級</dt><dd><span class="${m.pillCls} text-xs font-bold px-2 py-0.5 rounded-full">${esc(t.grade)}</span></dd></div>
             ${t.organizer ? `<div class="flex gap-2"><dt class="font-semibold text-ink shrink-0 w-8 text-xs">主催</dt><dd class="text-ink-muted text-xs">${esc(t.organizer)}</dd></div>` : ''}
           </dl>
@@ -2884,7 +2907,7 @@
             const m     = TYPE_META[tp] || TYPE_META[4];
             const color = isPast ? '#bbb' : m.dotColor;
             h += `<button onclick="showPopup('${dateStr}',${tp})"
-              class="w-3 h-3 rounded-full hover:scale-125 transition-transform focus:outline-none focus:ring-2 focus:ring-offset-1"
+              class="dot-btn rounded-full hover:scale-125 transition-transform focus:outline-none focus:ring-2 focus:ring-offset-1"
               style="background:${color};focus-ring-color:${color}"
               title="${esc(m.label)}" aria-label="${esc(m.label)} 詳細を見る"></button>`;
           });
@@ -3171,6 +3194,16 @@
       document.getElementById('app').innerHTML = buildHtml(data);
       const allMonths = data._allMonths || [];
       if (allMonths.length) window.selectMonth(allMonths[0]);
+
+      // 最終更新日時を表示
+      if (data.updatedAt) {
+        const d = new Date(data.updatedAt);
+        const label = new Intl.DateTimeFormat('ja-JP', {
+          month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+        }).format(d);
+        const el = document.getElementById('updated-at-label');
+        if (el) el.textContent = '最終更新：' + label;
+      }
     } catch (e) {
       document.getElementById('app').innerHTML = `
         <div class="rounded-2xl bg-red-50 border border-red-200 p-6">
