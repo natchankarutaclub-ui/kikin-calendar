@@ -82,16 +82,93 @@
       padding-bottom: 4px;
     }
 
-    /* ── カレンダードット タップ領域拡大 ── */
+    /* ── カレンダードット ── */
     .dot-btn {
       position: relative;
-      width: 12px;
-      height: 12px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.22), inset 0 1px 0 rgba(255,255,255,0.35);
+      border: 1.5px solid rgba(255,255,255,0.6);
+      transition: transform 0.12s, box-shadow 0.12s;
+    }
+    .dot-btn:hover {
+      transform: scale(1.35);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.4);
     }
     .dot-btn::after {
       content: '';
       position: absolute;
-      inset: -14px;
+      inset: -12px;
+    }
+
+    /* ── ページナビ（スマホ：画面下固定 / PC：タブ） ── */
+    #page-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid #f5d0d0;
+      display: flex;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    .page-nav-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 10px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      color: #9a7070;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      transition: color 0.15s;
+      line-height: 1.2;
+    }
+    .page-nav-btn .nav-icon { font-size: 22px; line-height: 1; }
+    .page-nav-btn.active { color: #f08080; }
+    .page-nav-btn.active .nav-icon { filter: drop-shadow(0 0 4px rgba(240,128,128,0.4)); }
+
+    @media (min-width: 640px) {
+      body { padding-bottom: 0 !important; }
+      #page-nav {
+        position: static;
+        border-top: none;
+        background: transparent;
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+        max-width: 64rem;
+        margin: 0 auto;
+        padding: 0 1rem;
+        gap: 4px;
+      }
+      .page-nav-btn {
+        flex: none;
+        flex-direction: row;
+        gap: 8px;
+        padding: 12px 20px;
+        font-size: 14px;
+        border-bottom: 3px solid transparent;
+        border-radius: 0;
+        margin-bottom: -1px;
+      }
+      .page-nav-btn.active {
+        color: #f08080;
+        border-bottom-color: #f08080;
+        background: rgba(240,128,128,0.06);
+        border-radius: 12px 12px 0 0;
+      }
+      .page-nav-btn .nav-icon { font-size: 18px; }
+    }
+
+    @media (max-width: 639px) {
+      body { padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
     }
 
     @media print {
@@ -110,28 +187,34 @@
 
   <!-- ツールバー -->
   <div class="no-print relative z-10 max-w-5xl mx-auto px-3 sm:px-4 pt-3 sm:pt-4 pb-2">
-    <div class="flex items-center justify-between gap-3 rounded-2xl bg-white/80 backdrop-blur border border-sakura-border px-4 sm:px-5 py-3 shadow-sm">
+    <div class="flex items-center gap-3 rounded-2xl bg-white/80 backdrop-blur border border-sakura-border px-4 sm:px-5 py-3 shadow-sm">
+      <img src="assets/logo_color.png" alt="ちはやふる基金" class="h-6 w-auto opacity-80 shrink-0">
       <div class="flex-1 min-w-0">
-        <p class="text-sm font-bold text-ink truncate">ちはやふる基金 月次レポート</p>
-        <p class="hidden sm:block text-xs text-ink-muted mt-0.5">「PDF保存」で出力 → Slackに添付　または画面スクショで画像投稿</p>
+        <p class="text-sm font-bold text-ink truncate">ちはやふる基金 大会カレンダー</p>
         <p id="updated-at-label" class="text-xs text-ink-muted mt-0.5"></p>
       </div>
-      <button type="button" onclick="window.print()"
-        class="shrink-0 rounded-xl bg-brand text-white font-bold text-sm px-4 py-2 hover:bg-brand-dark transition-colors shadow-sm whitespace-nowrap">
-        PDF保存
-      </button>
     </div>
   </div>
+
+  <!-- ページナビ（スマホ：画面下固定 / PC：タブ） -->
+  <nav id="page-nav" class="no-print" aria-label="セクション切替">
+    <button class="page-nav-btn active" id="nav-btn-1" onclick="switchSection(1)" aria-pressed="true">
+      <span class="nav-icon">🎴</span>
+      <span>大会スケジュール</span>
+    </button>
+    <button class="page-nav-btn" id="nav-btn-2" onclick="switchSection(2)" aria-pressed="false">
+      <span class="nav-icon">📊</span>
+      <span>寄付・サポーター状況</span>
+    </button>
+  </nav>
+  <div class="hidden sm:block border-b border-sakura-border max-w-5xl mx-auto no-print"></div>
 
   <main id="app" class="relative z-10 max-w-5xl mx-auto px-3 sm:px-4 pb-20 pt-3 sm:pt-4">
     <p class="text-ink-muted text-sm">読み込み中…</p>
   </main>
 
   <footer class="relative z-10 max-w-5xl mx-auto px-3 sm:px-4 pb-12 pt-4 border-t border-sakura-border">
-    <div class="flex flex-wrap items-center justify-between gap-3">
-      <img src="assets/logo_color.png" alt="ちはやふる基金" class="h-6 sm:h-7 w-auto opacity-80">
-      <p class="text-xs text-ink-muted">ちはやふる基金 月次レポート ／ 内部資料</p>
-    </div>
+    <p class="text-xs text-ink-muted text-center">ちはやふる基金 大会カレンダー ／ 内部資料</p>
   </footer>
 
   <!-- ポップアップモーダル（JS で内容を差し込む） -->
@@ -3095,28 +3178,8 @@
         </div>
       </div>`;
 
-      /* ── ページ構成ナビ ── */
-      html += `
-      <div class="mb-6 no-print">
-        <div class="flex gap-3 flex-wrap">
-          <a href="#section-schedule"
-            class="flex items-center gap-2 rounded-xl border border-sakura-border bg-white px-4 py-2.5 shadow-sm hover:border-brand/50 hover:shadow-card transition-all group">
-            <span class="text-lg leading-none">🎴</span>
-            <div>
-              <p class="text-xs font-black text-ink group-hover:text-brand transition-colors">1. 大会スケジュール</p>
-              <p class="text-[10px] text-ink-muted">月別カレンダー・大会一覧</p>
-            </div>
-          </a>
-          <a href="#section-kpi"
-            class="flex items-center gap-2 rounded-xl border border-sakura-border bg-white px-4 py-2.5 shadow-sm hover:border-brand/50 hover:shadow-card transition-all group">
-            <span class="text-lg leading-none">📊</span>
-            <div>
-              <p class="text-xs font-black text-ink group-hover:text-brand transition-colors">2. 寄付・サポーター状況</p>
-              <p class="text-[10px] text-ink-muted">月次KPI・推移グラフ</p>
-            </div>
-          </a>
-        </div>
-      </div>`;
+      /* ── セクション1：大会スケジュール ── */
+      html += '<div id="view-schedule">';
 
       /* ── 凡例 ── */
       html += `
@@ -3167,6 +3230,11 @@
       /* ── カレンダー＆カード（selectMonth() が差し込む） ── */
       html += '<div class="month-section"><div id="cal-container" class="mb-8"></div>';
       html += '<div id="cards-container" class="mt-4"></div></div>';
+
+      html += '</div>'; /* end #view-schedule */
+
+      /* ── セクション2：寄付・サポーター状況 ── */
+      html += '<div id="view-kpi" style="display:none">';
 
       /* ── KPIセクション ── */
       const k = data.kpi || {};
@@ -3220,8 +3288,34 @@
       }
 
       html += '</section>';
+      html += '</div>'; /* end #view-kpi */
       return html;
     }
+
+    /* ── セクション切替 ── */
+    window.switchSection = function(n) {
+      const schedule = document.getElementById('view-schedule');
+      const kpi      = document.getElementById('view-kpi');
+      const btn1     = document.getElementById('nav-btn-1');
+      const btn2     = document.getElementById('nav-btn-2');
+      if (!schedule || !kpi) return;
+      if (n === 1) {
+        schedule.style.display = '';
+        kpi.style.display = 'none';
+        btn1 && btn1.classList.add('active');
+        btn2 && btn2.classList.remove('active');
+        btn1 && btn1.setAttribute('aria-pressed', 'true');
+        btn2 && btn2.setAttribute('aria-pressed', 'false');
+      } else {
+        schedule.style.display = 'none';
+        kpi.style.display = '';
+        btn2 && btn2.classList.add('active');
+        btn1 && btn1.classList.remove('active');
+        btn2 && btn2.setAttribute('aria-pressed', 'true');
+        btn1 && btn1.setAttribute('aria-pressed', 'false');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    };
 
     /* ── エントリーポイント ── */
     try {
