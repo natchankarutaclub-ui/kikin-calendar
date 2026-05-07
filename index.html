@@ -70,6 +70,8 @@
       -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
       -ms-overflow-style: none;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 20px), transparent 100%);
     }
     .tab-scroll::-webkit-scrollbar { display: none; }
     .tab-scroll-inner {
@@ -96,6 +98,8 @@
       #sakura-canvas, .no-print, #popup-overlay { display:none !important; }
       body { background:#fff !important; }
       article, section { break-inside:avoid; }
+      .month-section { break-before: page; }
+      .month-section:first-of-type { break-before: auto; }
       @page { margin:14mm 12mm; size:A4; }
     }
   </style>
@@ -2539,10 +2543,15 @@
   ================================================================ -->
   <script>
   (function () {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      document.getElementById('sakura-canvas').style.display = 'none';
+    }
+
     const canvas = document.getElementById('sakura-canvas');
     const ctx = canvas.getContext('2d');
     let W, H;
-    const PETAL_COUNT = 28;
+    const PETAL_COUNT = reduceMotion ? 0 : 28;
     const petals = [];
     const img = new Image();
     img.src = 'assets/petal.webp';
@@ -2740,15 +2749,14 @@
       const m = TYPE_META[3];
       const pastCls = t.date < TODAY ? ' event-past' : '';
       return `
-      <article class="break-inside-avoid rounded-xl border ${m.borderCls} type3-glow bg-white flex gap-0 overflow-hidden${pastCls}">
-        <div class="w-1 shrink-0 ${m.barCls}"></div>
-        <div class="px-4 py-3 flex-1">
-          <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
-            <span class="text-[10px] font-bold ${m.badgeCls} px-2 py-0.5 rounded-full">${m.badge}</span>
-            ${t.overlapNote ? '<span class="text-[10px] font-bold bg-gold text-white px-2 py-0.5 rounded-full">基金支援あり</span>' : ''}
-          </div>
+      <article class="break-inside-avoid rounded-xl border ${m.borderCls} type3-glow bg-white overflow-hidden${pastCls}">
+        <div class="${m.headerCls} px-4 py-1.5 flex items-center gap-1.5">
+          <span class="text-[10px] font-bold ${m.badgeCls} px-2 py-0.5 rounded-full">${m.badge}</span>
+          ${t.overlapNote ? '<span class="text-[10px] font-bold bg-gold text-white px-2 py-0.5 rounded-full">基金支援あり</span>' : ''}
+        </div>
+        <div class="px-4 py-2.5">
           <p class="font-semibold text-sm text-ink leading-snug">${esc(t.name)}</p>
-          <p class="text-xs text-ink-muted mt-1">${esc(formatDateJa(t.date))}　${esc(t.venue)}</p>
+          <p class="text-xs text-ink-muted mt-1">${esc(formatDateJa(t.date))}${t.venue ? '　' + esc(t.venue) : ''}</p>
           ${t.grade && t.grade !== '—' ? `<span class="${m.pillCls} text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 inline-block">${esc(t.grade)}</span>` : ''}
         </div>
       </article>`;
@@ -2893,14 +2901,16 @@
         const wday    = (firstDay + d - 1) % 7;
         const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
         const isPast  = dateStr < TODAY;
+        const isToday = dateStr === TODAY;
 
         const numCls = hasEvt
           ? (isPast ? 'font-black text-ink-muted/60' : 'font-black text-ink')
           : (wday === 0 ? 'text-rose-200' : wday === 6 ? 'text-blue-200' : 'text-ink-muted/30');
         const cellBg = hasEvt ? (isPast ? 'bg-gray-50 border border-gray-200' : 'bg-brand-pale border border-sakura-border') : '';
+        const todayCls = isToday ? ' ring-2 ring-brand ring-offset-1' : '';
 
-        h += `<div class="rounded-md sm:rounded-lg p-0.5 sm:p-1 min-h-[40px] sm:min-h-[50px] flex flex-col items-center gap-0.5 ${cellBg}">`;
-        h += `<span class="text-[11px] leading-snug ${numCls}">${d}</span>`;
+        h += `<div class="rounded-md sm:rounded-lg p-0.5 sm:p-1 min-h-[40px] sm:min-h-[50px] flex flex-col items-center gap-0.5 ${cellBg}${todayCls}">`;
+        h += `<span class="text-[11px] leading-snug ${numCls}${isToday ? ' underline decoration-brand' : ''}">${d}</span>`;
         if (types.length) {
           h += '<div class="flex flex-wrap justify-center gap-0.5">';
           types.forEach(tp => {
@@ -3085,9 +3095,32 @@
         </div>
       </div>`;
 
-      /* ── 凡例 ── */
+      /* ── ページ構成ナビ ── */
       html += `
       <div class="mb-6 no-print">
+        <div class="flex gap-3 flex-wrap">
+          <a href="#section-schedule"
+            class="flex items-center gap-2 rounded-xl border border-sakura-border bg-white px-4 py-2.5 shadow-sm hover:border-brand/50 hover:shadow-card transition-all group">
+            <span class="text-lg leading-none">🎴</span>
+            <div>
+              <p class="text-xs font-black text-ink group-hover:text-brand transition-colors">1. 大会スケジュール</p>
+              <p class="text-[10px] text-ink-muted">月別カレンダー・大会一覧</p>
+            </div>
+          </a>
+          <a href="#section-kpi"
+            class="flex items-center gap-2 rounded-xl border border-sakura-border bg-white px-4 py-2.5 shadow-sm hover:border-brand/50 hover:shadow-card transition-all group">
+            <span class="text-lg leading-none">📊</span>
+            <div>
+              <p class="text-xs font-black text-ink group-hover:text-brand transition-colors">2. 寄付・サポーター状況</p>
+              <p class="text-[10px] text-ink-muted">月次KPI・推移グラフ</p>
+            </div>
+          </a>
+        </div>
+      </div>`;
+
+      /* ── 凡例 ── */
+      html += `
+      <div class="mb-6 no-print" id="section-schedule">
         <div class="flex flex-wrap gap-2 items-center text-xs">
           <span class="inline-flex items-center gap-1.5 rounded-full bg-brand text-white font-bold px-3 py-1.5">① 主催</span>
           <span class="inline-flex items-center gap-1.5 rounded-full bg-rose-300 text-white font-bold px-3 py-1.5">② 公認</span>
@@ -3104,9 +3137,10 @@
         const [yr, mo0] = ym.split('-');
         const mo    = parseInt(mo0, 10);
         const count = (data.tournaments || []).filter(t => t.date.startsWith(ym)).length;
+        const hasFund = (data.tournaments || []).some(t => t.date.startsWith(ym) && t.type === 4);
         const isNow = ym === todayYM;
         const yearLabel = (i === 0 || mo === 1) ? `${yr.slice(2)}/` : '';
-        const label = isNow ? `${yearLabel}${mo}月 ✦` : `${yearLabel}${mo}月`;
+        const label = (isNow ? `${yearLabel}${mo}月 ✦` : `${yearLabel}${mo}月`) + (hasFund ? ' 💛' : '');
         const isFirst = i === 0;
         html += `<button id="tab-${ym}" onclick="selectMonth('${ym}')"
           class="shrink-0 ${isFirst ? 'px-4 py-2 rounded-xl font-black text-sm bg-brand text-white shadow-sm' : 'px-4 py-2 rounded-xl font-bold text-sm bg-white text-ink-muted border border-sakura-border hover:border-brand/50'} transition-all whitespace-nowrap"
@@ -3131,18 +3165,19 @@
       </div>`;
 
       /* ── カレンダー＆カード（selectMonth() が差し込む） ── */
-      html += '<div id="cal-container" class="mb-8"></div>';
-      html += '<div id="cards-container" class="mt-4"></div>';
+      html += '<div class="month-section"><div id="cal-container" class="mb-8"></div>';
+      html += '<div id="cards-container" class="mt-4"></div></div>';
 
       /* ── KPIセクション ── */
       const k = data.kpi || {};
       const hasKpi = (k.monthlySupporters > 0) || (k.monthlyDonationYen > 0);
 
       html += `
-      <section class="mt-16 break-inside-avoid">
+      <section class="mt-16 break-inside-avoid" id="section-kpi">
         <div class="flex items-end gap-3 mb-6">
           <span class="text-3xl leading-none">📊</span>
           <div>
+            <p class="text-[10px] font-black text-ink-muted tracking-widest uppercase mb-0.5">Section 2</p>
             <h2 class="text-xl font-black text-ink">寄付・サポーター状況</h2>
             <p class="text-xs text-ink-muted mt-0.5">毎月の運営報告と連動。前月末時点の確定値。</p>
           </div>
