@@ -132,39 +132,57 @@
       line-height: 1.2;
     }
     .page-nav-btn .nav-icon { font-size: 22px; line-height: 1; }
-    .page-nav-btn.active { color: #f08080; }
-    .page-nav-btn.active .nav-icon { filter: drop-shadow(0 0 4px rgba(240,128,128,0.4)); }
+    .page-nav-btn.active {
+      color: #c85a5a;
+      background: rgba(240,128,128,0.08);
+    }
+    .page-nav-btn.active .nav-icon {
+      filter: drop-shadow(0 0 5px rgba(240,128,128,0.5));
+      transform: scale(1.1);
+    }
+    .page-nav-btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 3px;
+      border-radius: 0 0 3px 3px;
+      background: transparent;
+      transition: background 0.15s;
+    }
+    .page-nav-btn { position: relative; }
+    .page-nav-btn.active::before { background: #f08080; }
 
     @media (min-width: 640px) {
       body { padding-bottom: 0 !important; }
       #page-nav {
         position: static;
+        width: 100%;
         border-top: none;
-        background: transparent;
-        backdrop-filter: none;
-        -webkit-backdrop-filter: none;
-        max-width: 64rem;
-        margin: 0 auto;
-        padding: 0 1rem;
-        gap: 4px;
+        border-bottom: 2px solid #f5d0d0;
+        background: rgba(255,255,255,0.92);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        justify-content: center;
+        gap: 0;
+        padding: 0;
       }
       .page-nav-btn {
         flex: none;
         flex-direction: row;
         gap: 8px;
-        padding: 12px 20px;
-        font-size: 14px;
+        padding: 14px 36px;
+        font-size: 15px;
         border-bottom: 3px solid transparent;
         border-radius: 0;
-        margin-bottom: -1px;
+        margin-bottom: -2px;
       }
       .page-nav-btn.active {
-        color: #f08080;
+        color: #c85a5a;
         border-bottom-color: #f08080;
-        background: rgba(240,128,128,0.06);
-        border-radius: 12px 12px 0 0;
+        background: rgba(240,128,128,0.08);
+        font-weight: 900;
       }
-      .page-nav-btn .nav-icon { font-size: 18px; }
+      .page-nav-btn .nav-icon { font-size: 20px; }
     }
 
     @media (max-width: 639px) {
@@ -184,17 +202,6 @@
 <body class="bg-sakura-bg text-ink antialiased leading-relaxed min-h-screen relative">
 
   <canvas id="sakura-canvas"></canvas>
-
-  <!-- ツールバー -->
-  <div class="no-print relative z-10 max-w-5xl mx-auto px-3 sm:px-4 pt-3 sm:pt-4 pb-2">
-    <div class="flex items-center gap-3 rounded-2xl bg-white/80 backdrop-blur border border-sakura-border px-4 sm:px-5 py-3 shadow-sm">
-      <img src="assets/logo_color.png" alt="ちはやふる基金" class="h-6 w-auto opacity-80 shrink-0">
-      <div class="flex-1 min-w-0">
-        <p class="text-sm font-bold text-ink truncate">ちはやふる基金 大会カレンダー</p>
-        <p id="updated-at-label" class="text-xs text-ink-muted mt-0.5"></p>
-      </div>
-    </div>
-  </div>
 
   <!-- ページナビ（スマホ：画面下固定 / PC：タブ） -->
   <nav id="page-nav" class="no-print" aria-label="セクション切替">
@@ -229,7 +236,7 @@
   <script type="application/json" id="report-data">
 {
   "reportTitle": "大会・支援スケジュール",
-  "heroSubtitle": "公式大会（全日本かるた協会 主催・公認・後援）と基金支援情報の一覧です。KPIは前月末時点の確定値です。",
+  "heroSubtitle": "公式大会と基金支援情報の一覧です。寄付・サポーター状況は前月末時点の確定値です。",
   "tournaments": [
   {
     "type": 2,
@@ -3163,6 +3170,7 @@
               <p class="text-white/60 text-[10px] font-black tracking-[.3em] uppercase mb-2 sm:mb-3">Monthly Report</p>
               <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-white leading-tight">${esc(heroTitle)}</h1>
               <p class="mt-2 sm:mt-3 text-white/80 text-xs sm:text-sm leading-relaxed">${esc(data.heroSubtitle || '')}</p>
+              <p id="updated-at-label" class="mt-1 text-white/50 text-[10px]"></p>
             </div>
             <div class="hidden sm:flex flex-col items-center gap-3 shrink-0">
               <img src="assets/logo_white.png" alt="ちはやふる基金" class="h-16 sm:h-20 md:h-24 w-auto opacity-95">
@@ -3322,7 +3330,13 @@
       const data = parseData();
       document.getElementById('app').innerHTML = buildHtml(data);
       const allMonths = data._allMonths || [];
-      if (allMonths.length) window.selectMonth(allMonths[0]);
+      if (allMonths.length) {
+        const todayYM = TODAY.slice(0, 7);
+        const defaultMonth = allMonths.includes(todayYM)
+          ? todayYM
+          : (allMonths.find(m => m >= todayYM) || allMonths[0]);
+        window.selectMonth(defaultMonth);
+      }
 
       // 最終更新日時を表示
       if (data.updatedAt) {
