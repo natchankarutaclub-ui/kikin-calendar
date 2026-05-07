@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>大会カレンダー自動化 | AI Driven School 成果発表</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --brand:#f08080; --brand-dark:#c85a5a;
+      --navy:#1e3a6e; --navy-mid:#2d5299;
+      --gold:#c9943a; --gold-soft:#fdf3e3; --gold-border:#e8cc9a;
+      --sage:#3d7a55;
+      --sakura-bg:#fff8f8; --sakura-border:#f5d0d0;
+      --ink:#2d1a1a; --ink-muted:#9a7070;
+    }
+    html, body { width:100%; height:100%; font-family:'Noto Sans JP',sans-serif; background:#111; overflow:hidden; }
+
+    /* ── Agenda bar ── */
+    #agenda-bar {
+      position:fixed; top:0; left:0; right:0; height:42px; z-index:900;
+      background:rgba(15,15,25,0.72); backdrop-filter:blur(14px);
+      border-bottom:1px solid rgba(255,255,255,0.1);
+      display:flex; align-items:center; padding:0 140px 0 16px; gap:2px;
+    }
+    .ag-item {
+      flex:1; text-align:center; padding:5px 6px; border-radius:6px;
+      font-size:10px; font-weight:700; color:rgba(255,255,255,0.38);
+      cursor:pointer; transition:all .2s; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      border:none; background:transparent;
+    }
+    .ag-item.active { color:#fff; background:rgba(240,128,128,0.35); }
+    .ag-item:hover:not(.active) { color:rgba(255,255,255,0.7); }
+
+    /* ── Timer ── */
+    #timer {
+      position:fixed; top:0; right:16px; height:42px; z-index:950;
+      display:flex; align-items:center; gap:7px;
+      font-size:14px; font-weight:900; color:rgba(255,255,255,0.7);
+    }
+    #timer.warn { color:#f08080; }
+    #timer-btn {
+      font-size:10px; font-weight:700; background:rgba(255,255,255,0.1);
+      border:1px solid rgba(255,255,255,0.2); color:rgba(255,255,255,0.7);
+      border-radius:6px; padding:3px 8px; cursor:pointer;
+    }
+    #timer-btn:hover { background:rgba(255,255,255,0.2); }
+
+    /* ── Deck & Slides ── */
+    #deck { position:fixed; inset:42px 0 52px 0; }
+    .slide { position:absolute; inset:0; display:none; overflow:hidden; animation:fadeIn .28s ease; }
+    .slide.active { display:flex; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+
+    /* Click zones (visual cursor only, click is handled on #deck) */
+    #deck { cursor:e-resize; }
+    #deck:hover { cursor:pointer; }
+
+    /* ── Nav dots ── */
+    #nav {
+      position:fixed; bottom:0; left:0; right:0; height:52px; z-index:800;
+      background:rgba(15,15,25,0.72); backdrop-filter:blur(14px);
+      border-top:1px solid rgba(255,255,255,0.1);
+      display:flex; align-items:center; justify-content:center; gap:8px;
+    }
+    .nav-dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.3); cursor:pointer; transition:all .2s; border:none; }
+    .nav-dot.active { background:var(--brand); width:22px; border-radius:4px; }
+    #slide-counter { color:rgba(255,255,255,0.5); font-size:11px; font-weight:700; min-width:36px; text-align:center; }
+    #hint { position:fixed; bottom:16px; right:20px; color:rgba(255,255,255,0.28); font-size:10px; pointer-events:none; }
+
+    /* ── Shared slide styles ── */
+    .slide-light { background:var(--sakura-bg); flex-direction:column; padding:32px 64px; }
+    .slide-dark  { background:var(--navy);       flex-direction:column; padding:32px 64px; }
+    .s-header { display:flex; align-items:flex-start; gap:12px; margin-bottom:22px; flex-shrink:0; }
+    .s-icon { font-size:30px; line-height:1; }
+    .s-title { font-size:24px; font-weight:900; color:var(--navy); line-height:1.2; }
+    .s-title small { display:block; font-size:10px; font-weight:600; color:var(--ink-muted); letter-spacing:.12em; text-transform:uppercase; margin-bottom:2px; }
+    .s-title-w { color:#fff; }
+    .s-title-w small { color:rgba(255,255,255,.5); }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       S1: タイトル
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #s1 {
+      background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 55%,#c85a5a 100%);
+      flex-direction:row; align-items:center; padding:48px 72px; gap:40px;
+    }
+    #s1 .left { flex:1; }
+    .event-tag {
+      display:inline-block; background:rgba(255,255,255,.12); color:rgba(255,255,255,.88);
+      font-size:10px; font-weight:700; letter-spacing:.22em; text-transform:uppercase;
+      padding:5px 13px; border-radius:100px; margin-bottom:18px; border:1px solid rgba(255,255,255,.18);
+    }
+    #s1 h1 { font-size:clamp(28px,3.6vw,48px); font-weight:900; color:#fff; line-height:1.22; margin-bottom:12px; }
+    #s1 h1 span { color:var(--brand); }
+    #s1 .sub { font-size:14px; color:rgba(255,255,255,.72); line-height:1.75; margin-bottom:24px; }
+    .tags { display:flex; flex-wrap:wrap; gap:7px; }
+    .tag-pill { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); color:rgba(255,255,255,.85); font-size:11px; font-weight:700; padding:5px 12px; border-radius:100px; }
+    #s1 .right { flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:12px; }
+    #s1 .avatar { width:clamp(140px,17vw,230px); border-radius:18px; box-shadow:0 20px 56px rgba(0,0,0,.45); }
+    .presenter { color:rgba(255,255,255,.62); font-size:12px; font-weight:700; text-align:center; line-height:1.6; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       S2: ストーリー
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #s2 { background:var(--sakura-bg); flex-direction:column; padding:32px 64px; }
+    .story-grid {
+      display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;
+      flex:1; min-height:0; align-content:start;
+    }
+    .story-card {
+      background:#fff; border-radius:14px; padding:16px 20px;
+      display:flex; align-items:flex-start; gap:12px;
+      border-left:4px solid var(--brand); box-shadow:0 2px 12px rgba(240,128,128,.08);
+    }
+    .story-card.insight { border-left-color:var(--navy); }
+    .story-card.goal    { border-left-color:var(--gold); background:var(--gold-soft); grid-column:1/-1; }
+    .story-ico { font-size:24px; flex-shrink:0; line-height:1; margin-top:2px; }
+    .story-body strong { display:block; font-size:13px; font-weight:900; color:var(--navy); margin-bottom:4px; }
+    .story-body p { font-size:12px; color:var(--ink-muted); line-height:1.65; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       S3: 4つのパーツ
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #s3 { background:var(--navy); flex-direction:column; padding:32px 64px; }
+    .parts-wrap { display:flex; align-items:stretch; gap:14px; flex:1; min-height:0; }
+    .part-card {
+      flex:1; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.11);
+      border-radius:18px; padding:18px 16px; display:flex; flex-direction:column; gap:9px;
+      position:relative; transition:background .2s;
+    }
+    .part-card:hover { background:rgba(255,255,255,.11); }
+    .part-card::after {
+      content:'→'; position:absolute; right:-12px; top:50%; transform:translateY(-50%);
+      color:rgba(255,255,255,.35); font-size:16px; font-weight:900; z-index:1;
+    }
+    .part-card:last-child::after { display:none; }
+    .part-num { font-size:9px; font-weight:900; letter-spacing:.2em; color:var(--brand); text-transform:uppercase; }
+    .part-ico-row { display:flex; align-items:center; gap:10px; }
+    .part-ico { font-size:28px; line-height:1; flex-shrink:0; }
+    .part-label { font-size:12px; font-weight:900; color:#fff; line-height:1.3; }
+    .part-val { font-size:11px; color:rgba(255,255,255,.66); line-height:1.55; flex:1; }
+    .part-tool { display:inline-flex; align-items:center; gap:4px; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.13); border-radius:100px; padding:5px 11px; font-size:10px; font-weight:700; color:rgba(255,255,255,.78); }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       S4: 自動化フロー
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #s4 { background:var(--sakura-bg); flex-direction:column; padding:32px 64px; }
+    .flow-wrap { display:flex; align-items:flex-start; gap:8px; flex:1; min-height:0; }
+    .flow-step { flex:1; display:flex; flex-direction:column; align-items:center; gap:8px; }
+    .flow-arrow { display:flex; align-items:center; padding-top:32px; color:var(--brand); font-size:20px; font-weight:900; flex-shrink:0; }
+    .flow-card { width:100%; background:#fff; border-radius:14px; padding:14px; border:2px solid var(--sakura-border); display:flex; flex-direction:column; gap:6px; box-shadow:0 2px 10px rgba(240,128,128,.07); }
+    .flow-ico { font-size:24px; }
+    .flow-title { font-size:12px; font-weight:900; color:var(--navy); }
+    .flow-desc  { font-size:10px; color:var(--ink-muted); line-height:1.55; }
+    .flow-label { font-size:9px; font-weight:700; color:var(--brand); letter-spacing:.14em; text-transform:uppercase; }
+    .flow-caption { font-size:10px; color:var(--ink-muted); text-align:center; line-height:1.5; }
+
+    /* Slack mock */
+    .slack-mock { background:#1a1d21; border-radius:9px; padding:9px; margin-top:auto; }
+    .slack-header { font-size:8px; font-weight:700; color:rgba(255,255,255,.45); margin-bottom:6px; }
+    .slack-msg { display:flex; gap:6px; margin-bottom:6px; }
+    .slack-av { width:22px; height:22px; border-radius:4px; background:var(--brand); display:flex; align-items:center; justify-content:center; font-size:11px; flex-shrink:0; }
+    .slack-bub .slack-name { font-size:8px; font-weight:900; color:rgba(255,255,255,.88); }
+    .slack-bub .slack-text { font-size:8px; color:rgba(255,255,255,.68); line-height:1.4; margin-top:1px; }
+    .slack-form-card { background:#222529; border:1px solid #404040; border-radius:6px; padding:7px 9px; margin-top:4px; }
+    .slack-form-title { font-size:8px; font-weight:900; color:#fff; margin-bottom:4px; }
+    .slack-form-fields { font-size:7px; color:#888; margin-bottom:5px; }
+    .slack-form-btn { background:var(--brand); color:#fff; font-size:7px; font-weight:700; padding:3px 9px; border-radius:3px; display:inline-block; }
+    .slack-notif { background:#222529; border:1px solid #404040; border-radius:6px; padding:7px 9px; margin-top:5px; }
+    .slack-notif-text { font-size:8px; color:#f5c518; line-height:1.45; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       S5: ページ全体像
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #s5 { background:var(--sakura-bg); flex-direction:column; padding:28px 52px; }
+    .s5-wrap { flex:1; display:flex; gap:20px; min-height:0; align-items:flex-start; }
+    .s5-phones { display:flex; gap:14px; align-items:flex-start; flex-shrink:0; }
+    .s5-phone-col { display:flex; flex-direction:column; align-items:center; gap:7px; }
+    .s5-phone-label {
+      font-size:9px; font-weight:900; padding:3px 10px; border-radius:100px;
+      background:var(--sakura-border); color:var(--navy); white-space:nowrap;
+    }
+    .s5-phone-frame {
+      width:155px; height:310px; overflow:hidden;
+      border-radius:18px; position:relative;
+      box-shadow:0 16px 56px rgba(0,0,0,.22);
+      border:3px solid #e0d0d0; background:#fff;
+    }
+    .s5-phone-frame img { width:100%; display:block; position:absolute; left:0; }
+    @keyframes pgScroll {
+      0%, 12% { top: -140px; }
+      60%, 78% { top: -1050px; }
+      95%, 100% { top: -140px; }
+    }
+    .pg-scroll-anim { animation: pgScroll 15s ease-in-out infinite; }
+    .s5-phone-fade {
+      position:absolute; bottom:0; left:0; right:0; height:60px;
+      background:linear-gradient(transparent, rgba(255,248,248,.97));
+      display:flex; align-items:flex-end; justify-content:center; padding-bottom:6px;
+      pointer-events:none;
+    }
+    .s5-scroll-div {
+      display:flex; flex-direction:column; align-items:center; gap:3px;
+      padding-top:150px; flex-shrink:0; color:var(--ink-muted);
+    }
+    .s5-scroll-line { width:1px; height:28px; border-left:2px dashed var(--sakura-border); }
+    .s5-ann { flex:1; display:flex; flex-direction:column; gap:9px; justify-content:center; min-width:0; }
+    .s5-ann-item {
+      background:#fff; border-radius:11px; padding:10px 14px;
+      border-left:3px solid var(--brand); box-shadow:0 2px 10px rgba(240,128,128,.08);
+    }
+    .s5-ann-item.navy { border-left-color:var(--navy); }
+    .s5-ann-item.gold { border-left-color:var(--gold); background:var(--gold-soft); }
+    .s5-ann-item strong { display:block; font-size:11px; font-weight:900; color:var(--navy); margin-bottom:2px; }
+    .s5-ann-item p { font-size:10px; color:var(--ink-muted); line-height:1.55; }
+    /* URL bar strip */
+    .s5-url-bar {
+      background:#f5f5f5; border:1px solid #ddd; border-radius:8px;
+      font-size:8px; color:#666; font-weight:500;
+      padding:3px 8px; width:155px; text-align:center;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    }
+
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       S6: デザインの工夫
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #s6 { background:var(--navy); flex-direction:column; padding:32px 64px; }
+    .demo-wrap { flex:1; display:flex; gap:24px; align-items:stretch; min-height:0; }
+    .demo-phone-col { flex:0 0 auto; width:200px; display:flex; flex-direction:column; }
+    .phone-frame { background:#fff; border-radius:24px; overflow:hidden; box-shadow:0 24px 70px rgba(0,0,0,.55); border:3px solid rgba(255,255,255,.18); flex:1; display:flex; flex-direction:column; }
+    .p-hero { background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 60%,var(--brand-dark) 100%); padding:12px 12px 8px; flex-shrink:0; }
+    .p-hero-title { font-size:9px; font-weight:900; color:#fff; }
+    .p-hero-sub   { font-size:6px; color:rgba(255,255,255,.7); margin-top:1px; }
+    .p-tabs { display:flex; border-bottom:2px solid var(--sakura-border); background:#fff; flex-shrink:0; }
+    .p-tab { flex:1; text-align:center; padding:6px 3px; font-size:6px; font-weight:700; color:var(--ink-muted); border-bottom:2px solid transparent; margin-bottom:-2px; }
+    .p-tab.active { color:var(--brand-dark); border-bottom-color:var(--brand); }
+    .p-cal { padding:6px; flex-shrink:0; }
+    .p-cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:1px; }
+    .p-day { text-align:center; font-size:5px; color:var(--ink-muted); padding:2px 1px; }
+    .p-cell { display:flex; flex-direction:column; align-items:center; gap:1px; padding:2px 1px; min-height:18px; }
+    .p-num { font-size:6px; color:var(--ink); }
+    .p-num.today { font-weight:900; text-decoration:underline; color:var(--brand-dark); }
+    .p-dot { width:5px; height:5px; border-radius:50%; border:1px solid rgba(255,255,255,.55); box-shadow:0 1px 3px rgba(0,0,0,.2); }
+    .d-navy{background:var(--navy);} .d-pink{background:var(--brand);} .d-light{background:#fca5a5;} .d-gold{background:var(--gold);}
+    .p-legend { padding:4px 7px; display:flex; gap:3px; flex-wrap:wrap; border-top:1px solid var(--sakura-border); flex-shrink:0; }
+    .p-legend-item { font-size:5px; font-weight:700; padding:1px 4px; border-radius:100px; }
+    .p-btm-nav { display:flex; border-top:1px solid var(--sakura-border); background:rgba(255,255,255,.96); flex-shrink:0; margin-top:auto; }
+    .p-btm-btn { flex:1; text-align:center; padding:6px 3px; font-size:5px; font-weight:700; color:var(--ink-muted); line-height:1.4; }
+    .p-btm-btn.active { color:var(--brand-dark); }
+    .p-month-tabs { display:flex; gap:3px; padding:4px 6px; flex-shrink:0; border-bottom:1px solid var(--sakura-border); overflow:hidden; }
+    .p-m-tab { font-size:5px; font-weight:700; padding:2px 5px; border-radius:6px; background:#fff; color:var(--ink-muted); border:1px solid var(--sakura-border); white-space:nowrap; }
+    .p-m-tab.active { background:var(--brand); color:#fff; border-color:var(--brand); }
+    .p-cards { padding:4px 6px; display:flex; flex-direction:column; gap:3px; flex:1; overflow:hidden; }
+    .p-mini-card { background:#fff; border-radius:5px; padding:4px 6px; border-left:2px solid var(--brand); }
+    .p-mini-card.navy { border-left-color:var(--navy); }
+    .p-mini-card.gold { border-left-color:var(--gold); background:var(--gold-soft); }
+    .p-mc-tag { font-size:4px; font-weight:700; padding:1px 3px; border-radius:100px; display:inline-block; margin-bottom:1px; }
+    .p-mc-title { font-size:5px; font-weight:900; color:var(--navy); }
+    .p-mc-sub { font-size:4px; color:var(--ink-muted); }
+
+    /* Annotation system */
+    .ann-row {
+      display:flex; align-items:center; gap:10px;
+      padding:10px 14px; border-radius:11px;
+      background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.1);
+      cursor:pointer; transition:background .15s;
+    }
+    .ann-row:hover, .ann-row.active-ann { background:rgba(255,255,255,.14); }
+    .ann-num { width:22px; height:22px; border-radius:50%; background:#f59e0b; color:#fff; font-size:10px; font-weight:900; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .ann-text strong { display:block; font-size:12px; font-weight:900; color:#fff; margin-bottom:2px; }
+    .ann-text p { font-size:10px; color:rgba(255,255,255,.62); line-height:1.5; }
+
+    /* Phone markers */
+    .phone-marker {
+      position:absolute; width:20px; height:20px; border-radius:50%;
+      background:#f59e0b; color:#fff; font-size:9px; font-weight:900;
+      display:flex; align-items:center; justify-content:center;
+      border:2px solid #fff; box-shadow:0 2px 6px rgba(0,0,0,.3);
+      pointer-events:none;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       S7: 課題
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #s7 { background:var(--sakura-bg); flex-direction:column; padding:32px 64px; }
+    .ch-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; flex:1; min-height:0; }
+    .ch-card { background:#fff; border-radius:14px; padding:16px 20px; display:flex; flex-direction:column; gap:8px; border-left:4px solid var(--brand); box-shadow:0 2px 10px rgba(240,128,128,.07); }
+    .ch-prob { display:flex; gap:10px; align-items:flex-start; }
+    .ch-ico { font-size:20px; flex-shrink:0; margin-top:2px; }
+    .ch-prob-text strong { display:block; font-size:12px; font-weight:900; color:var(--ink); margin-bottom:3px; }
+    .ch-prob-text p { font-size:11px; color:var(--ink-muted); line-height:1.6; }
+    .ch-sol { background:var(--sakura-bg); border-radius:8px; padding:8px 11px; font-size:10px; color:var(--navy); font-weight:600; border-left:3px solid var(--sage); line-height:1.55; }
+    .ch-sol::before { content:'✅ 解決 → '; color:var(--sage); font-weight:900; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       S8: まとめ
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #s8 {
+      background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 55%,#c85a5a 100%);
+      flex-direction:row; align-items:center; padding:48px 72px; gap:48px;
+    }
+    #s8 .left { flex:1; }
+    .wtag { display:inline-block; background:rgba(255,255,255,.12); color:rgba(255,255,255,.88); font-size:10px; font-weight:700; padding:5px 13px; border-radius:100px; margin-bottom:16px; letter-spacing:.12em; border:1px solid rgba(255,255,255,.18); }
+    #s8 h2 { font-size:clamp(20px,2.6vw,36px); font-weight:900; color:#fff; line-height:1.3; margin-bottom:20px; }
+    #s8 h2 span { color:var(--brand); }
+    .wrap-pts { display:flex; flex-direction:column; gap:10px; }
+    .wrap-pt { display:flex; gap:10px; align-items:flex-start; }
+    .wrap-pt-ico { font-size:16px; flex-shrink:0; margin-top:2px; }
+    .wrap-pt-text { font-size:13px; color:rgba(255,255,255,.82); line-height:1.65; }
+    .wrap-pt-text strong { color:#fff; font-weight:900; }
+    #s8 .right { flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:12px; }
+    #s8 .avatar { width:clamp(130px,15vw,210px); border-radius:18px; box-shadow:0 20px 56px rgba(0,0,0,.45); }
+    .thank-you { font-size:18px; font-weight:900; color:rgba(255,255,255,.88); }
+  </style>
+</head>
+<body>
+
+<!-- ── Agenda bar ── -->
+<div id="agenda-bar">
+  <button class="ag-item active" onclick="goTo(0)">タイトル</button>
+  <button class="ag-item" onclick="goTo(1)">きっかけ</button>
+  <button class="ag-item" onclick="goTo(2)">4つのパーツ</button>
+  <button class="ag-item" onclick="goTo(3)">自動化フロー</button>
+  <button class="ag-item" onclick="goTo(4)">ページ全体像</button>
+  <button class="ag-item" onclick="goTo(5)">デザインの工夫</button>
+  <button class="ag-item" onclick="goTo(6)">課題と解決</button>
+  <button class="ag-item" onclick="goTo(7)">まとめ</button>
+</div>
+
+<!-- ── Timer ── -->
+<div id="timer">
+  <span id="timer-display">3:00</span>
+  <button id="timer-btn" onclick="toggleTimer()">スタート</button>
+</div>
+
+<!-- ── Deck ── -->
+<div id="deck">
+
+  <!-- ══ S1: タイトル ══ -->
+  <div class="slide active" id="s1">
+    <div class="left">
+      <span class="event-tag">AI Driven School 成果発表 2026</span>
+      <h1>大会カレンダー<br><span>自動化</span>プロジェクト</h1>
+      <p class="sub">
+        支援大会の把握を、もっとラクに。<br>
+        Slack × GAS × GitHub Pages で実現した<br>リアルタイム自動更新カレンダー
+      </p>
+      <div class="tags">
+        <span class="tag-pill">🔔 Slack</span>
+        <span class="tag-pill">⚙️ Google Apps Script</span>
+        <span class="tag-pill">📊 Google Sheets</span>
+        <span class="tag-pill">🌸 GitHub Pages</span>
+      </div>
+    </div>
+    <div class="right">
+      <img src="avatar.png" alt="発表者" class="avatar">
+      <p class="presenter">基金スタッフ<br>なっちゃん</p>
+    </div>
+  </div>
+
+  <!-- ══ S2: ストーリー ══ -->
+  <div class="slide slide-light" id="s2">
+    <div class="s-header">
+      <span class="s-icon">💡</span>
+      <div><p class="s-title"><small>なぜ作ったか</small>きっかけとゴール</p></div>
+    </div>
+    <div class="story-grid">
+      <div class="story-card">
+        <span class="story-ico">🗓️</span>
+        <div class="story-body">
+          <strong>月一の定期報告が「慣習」だった</strong>
+          <p>毎月月初に支援大会・イベント一覧をSlackで報告。（リスト形式・Googleスライド）だが、実は月一報告である必要はなかった！</p>
+        </div>
+      </div>
+      <div class="story-card insight">
+        <span class="story-ico">🔍</span>
+        <div class="story-body">
+          <strong>ニーズを深掘りしたら本質が見えた</strong>
+          <p>コアニーズは「支援大会をスケジュール感を持ってわかりやすく把握したい」。月一報告もリスト形式も最適ではなかった。</p>
+        </div>
+      </div>
+      <div class="story-card insight">
+        <span class="story-ico">📅</span>
+        <div class="story-body">
+          <strong>リスト → カレンダーへ発想転換</strong>
+          <p>「支援依頼が発生したタイミングで即反映」する仕組みへ変更。カレンダー形式でスケジュール感を視覚的に伝える。</p>
+        </div>
+      </div>
+      <div class="story-card goal">
+        <span class="story-ico">🎯</span>
+        <div class="story-body">
+          <strong>ゴール設定</strong>
+          <p>支援大会・一般大会を、スケジュール感を持って、<strong>一瞥で楽に把握できること</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S3: 4つのパーツ ══ -->
+  <div class="slide slide-dark" id="s3">
+    <div class="s-header">
+      <span class="s-icon" style="filter:brightness(10)">🧩</span>
+      <div><p class="s-title s-title-w"><small>仕組みの設計</small>4つのパーツで考える</p></div>
+    </div>
+    <div class="parts-wrap" style="flex:0 0 auto">
+      <div class="part-card">
+        <span class="part-num">Part 01 · トリガー</span>
+        <div class="part-ico-row">
+          <span class="part-ico">🔔</span>
+          <p class="part-label">いつ・何をきっかけに動くか</p>
+        </div>
+        <span class="part-tool">📱 Slack Workflow Builder</span>
+        <p class="part-val">Slackの投稿に「💛」リアクション → フォームが起動 → 大会情報を入力・送信したとき</p>
+      </div>
+      <div class="part-card">
+        <span class="part-num">Part 02 · ソース元</span>
+        <div class="part-ico-row">
+          <span class="part-ico">📊</span>
+          <p class="part-label">データがある場所</p>
+        </div>
+        <span class="part-tool">📋 Google Sheets</span>
+        <p class="part-val">フォームの回答が自動で蓄積されるスプレッドシート</p>
+      </div>
+      <div class="part-card">
+        <span class="part-num">Part 03 · 処理する場所</span>
+        <div class="part-ico-row">
+          <span class="part-ico">⚙️</span>
+          <p class="part-label">データを加工してページにする</p>
+        </div>
+        <span class="part-tool">🤖 Google Apps Script</span>
+        <p class="part-val">スプレッドシートの変更を検知し、Webページを自動更新</p>
+      </div>
+      <div class="part-card">
+        <span class="part-num">Part 04 · 届ける先</span>
+        <div class="part-ico-row">
+          <span class="part-ico">🌐</span>
+          <p class="part-label">完成したページを届ける先</p>
+        </div>
+        <span class="part-tool">🌸 GitHub Pages + Slack</span>
+        <p class="part-val">カレンダーページに反映 ＋ Slackに更新通知を自動送信</p>
+      </div>
+    </div>
+    <!-- なぜあえてこのツールを選んだのか -->
+    <div style="margin-top:14px;padding:11px 20px;background:rgba(255,255,255,.08);border-radius:12px;border:1px solid rgba(255,255,255,.14);flex-shrink:0">
+      <p style="font-size:11px;color:rgba(255,255,255,.88);line-height:1.85">
+        💡 <strong style="color:var(--brand)">なぜこのツールを選んだのか？</strong>　
+        <strong style="color:#fff">①Slack WF</strong>＝チームがすでにSlackを使っているため追加負担ゼロ（Google Forms等は別アプリが必要）。
+        <strong style="color:#fff">②Google Sheets</strong>＝GASと直結でき、チームが使い慣れているため（Notionや専用DBは学習コストが高い）。
+        <strong style="color:#fff">③GAS</strong>＝サーバー不要・無料でGoogleサービス全体の「接着剤」になれる（Zapierは有料）。
+        <strong style="color:#fff">④GitHub Pages</strong>＝コードを送るだけで自動で公開・無料（Surge等は手動デプロイが必要）。
+      </p>
+    </div>
+  </div>
+
+  <!-- ══ S4: 自動化フロー ══ -->
+  <div class="slide slide-light" id="s4">
+    <div class="s-header">
+      <span class="s-icon">🔄</span>
+      <div><p class="s-title"><small>自動化の仕組み</small>フォーム送信からカレンダー反映まで</p></div>
+    </div>
+    <div class="flow-wrap">
+      <div class="flow-step">
+        <span class="flow-label">① トリガー</span>
+        <div class="flow-card">
+          <div class="slack-mock">
+            <div class="slack-header"># 00_基金の運営</div>
+            <div class="slack-msg">
+              <div class="slack-av">🎴</div>
+              <div class="slack-bub">
+                <div class="slack-name">ワークフロー</div>
+                <div class="slack-text">支援大会を登録できます</div>
+                <div class="slack-form-card">
+                  <div class="slack-form-title">📝 大会情報を入力する</div>
+                  <div class="slack-form-fields">大会名 ／ 開催日 ／ 会場 ／ 支援内容</div>
+                  <div class="slack-form-btn">フォームを送信</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="flow-caption">Slackのフォームから<br>情報を入力・送信</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <span class="flow-label">② ソース元</span>
+        <div class="flow-card">
+          <div class="flow-ico">📊</div>
+          <div class="flow-title">Google Sheets</div>
+          <div class="flow-desc">フォームの回答が自動でスプレッドシートに記録・蓄積される</div>
+          <div style="background:#f0fdf4;border-radius:7px;padding:7px;font-size:9px;color:#166534;line-height:1.6">
+            大会名 / 開催日 / 会場<br>支援内容 / 備考
+          </div>
+        </div>
+        <p class="flow-caption">自動でデータが蓄積</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <span class="flow-label">③ 処理する場所</span>
+        <div class="flow-card">
+          <div class="flow-ico">⚙️</div>
+          <div class="flow-title">Google Apps Script</div>
+          <div class="flow-desc">スプレッドシートの変更を検知して自動起動。JSONを生成してGitHubのHTMLを書き換える</div>
+          <div style="background:#eff6ff;border-radius:7px;padding:7px;font-size:9px;color:#1e40af;line-height:1.5">
+            🔐 セキュリティ対策済み<br>トークンはPropertiesServiceに格納
+          </div>
+        </div>
+        <p class="flow-caption">データ加工＆<br>GitHub自動更新</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <span class="flow-label">④ 届ける先</span>
+        <div class="flow-card">
+          <div class="flow-ico">🌸</div>
+          <div class="flow-title">カレンダー反映</div>
+          <div class="flow-desc">GitHub Pagesが1〜2分で自動公開。同時にSlackへ更新通知も送信</div>
+          <div class="slack-mock">
+            <div class="slack-notif">
+              <div class="slack-notif-text">💛 大会カレンダーが更新されました！（反映まで1〜2分かかります）</div>
+            </div>
+          </div>
+        </div>
+        <p class="flow-caption">カレンダーに反映＋<br>Slack通知が届く</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S5: ページ全体像 ══ -->
+  <div class="slide slide-light" id="s5">
+    <div class="s-header">
+      <span class="s-icon">📱</span>
+      <div><p class="s-title"><small>完成したページ</small>大会カレンダーの全体像</p></div>
+    </div>
+    <div class="s5-wrap">
+
+      <!-- ── 2つのフォンフレーム ── -->
+      <div class="s5-phones">
+
+        <!-- Phone 1: ヘッダー〜カレンダーエリア（上部固定） -->
+        <div class="s5-phone-col">
+          <div class="s5-phone-label">① ヘッダー〜カレンダー</div>
+          <div class="s5-phone-frame">
+            <!-- 上部を表示（top:0 → ページ最上部から） -->
+            <img src="page-screenshot.png" style="top:0">
+            <!-- 固定ボトムナビ（実際のページに存在するため常時表示） -->
+            <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,.97);border-top:1px solid #f5d0d0;display:flex;border-radius:0 0 15px 15px;padding:4px 0 5px;">
+              <div style="flex:1;text-align:center;font-size:5px;font-weight:700;color:var(--brand-dark);line-height:1.5">🎴<br>大会スケジュール</div>
+              <div style="flex:1;text-align:center;font-size:5px;font-weight:700;color:#9a7070;line-height:1.5">📊<br>寄付状況</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 区切り記号 -->
+        <div class="s5-scroll-div">
+          <div class="s5-scroll-line"></div>
+          <span style="font-size:10px; font-weight:700; writing-mode:vertical-rl; color:var(--ink-muted)">スクロール</span>
+          <div class="s5-scroll-line"></div>
+        </div>
+
+        <!-- Phone 2: 大会リストエリア（自動スクロールで全体を見せる） -->
+        <div class="s5-phone-col">
+          <div class="s5-phone-label">② 大会リスト（カレンダー以降）</div>
+          <div class="s5-phone-frame">
+            <!-- 自動スクロールアニメーションで下部を表示 -->
+            <img src="page-screenshot.png" class="pg-scroll-anim">
+            <!-- フェードアウトで省略を表現 -->
+            <div class="s5-phone-fade">
+              <span style="font-size:8px; color:var(--ink-muted); font-weight:700">…全大会を一覧</span>
+            </div>
+            <!-- 固定ボトムナビ（実際のページに存在するため常時表示） -->
+            <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(255,255,255,.97);border-top:1px solid #f5d0d0;display:flex;border-radius:0 0 15px 15px;padding:4px 0 5px;">
+              <div style="flex:1;text-align:center;font-size:5px;font-weight:700;color:var(--brand-dark);line-height:1.5">🎴<br>大会スケジュール</div>
+              <div style="flex:1;text-align:center;font-size:5px;font-weight:700;color:#9a7070;line-height:1.5">📊<br>寄付状況</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ページ構成の説明 ── -->
+      <div class="s5-ann">
+        <div style="font-size:11px; font-weight:900; color:var(--navy); margin-bottom:2px">ページの構成</div>
+        <div class="s5-ann-item">
+          <strong>① ヒーロー ＋ セクション切り替えタブ</strong>
+          <p>年間の大会数バッジを表示。タブで「大会スケジュール」↔「寄付・サポーター状況」を切り替え</p>
+        </div>
+        <div class="s5-ann-item navy">
+          <strong>② 凡例 ＋ 月タブ ＋ カレンダーグリッド</strong>
+          <p>月を選んでカレンダーで日程を一覧把握。大会種別は色ドットで識別。今日の日付をハイライト</p>
+        </div>
+        <div class="s5-ann-item gold">
+          <strong>③ 大会カードリスト（カレンダーの下）</strong>
+          <p>カレンダーの下にカードが縦並び。種別・日付・会場・主催者を色分けで表示。基金支援はゴールド枠</p>
+        </div>
+        <div class="s5-ann-item">
+          <strong>④ ボトムナビ（スマホ固定）</strong>
+          <p>スクロール位置によらず常にセクション切り替えが可能な固定ナビ</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ S6: デザインの工夫 ══ -->
+  <div class="slide slide-dark" id="s6">
+    <div class="s-header">
+      <span class="s-icon" style="filter:brightness(10)">🎨</span>
+      <div><p class="s-title s-title-w"><small>画面紹介</small>デザインの工夫ポイント</p></div>
+    </div>
+    <div class="demo-wrap">
+      <!-- Phone -->
+      <div class="demo-phone-col">
+        <div style="position:relative;flex:1;display:flex;flex-direction:column">
+          <div class="phone-frame">
+            <div class="p-hero">
+              <div class="p-hero-title">2026年 大会・支援スケジュール</div>
+              <div class="p-hero-sub">公式大会と基金支援情報の一覧</div>
+            </div>
+            <div class="p-cal">
+              <div class="p-cal-grid">
+                <div class="p-day">日</div><div class="p-day">月</div><div class="p-day">火</div><div class="p-day">水</div><div class="p-day">木</div><div class="p-day">金</div><div class="p-day">土</div>
+                <div class="p-cell"></div><div class="p-cell"><span class="p-num">1</span></div><div class="p-cell"><span class="p-num">2</span></div><div class="p-cell"><span class="p-num">3</span></div><div class="p-cell"><span class="p-num">4</span></div><div class="p-cell"><span class="p-num">5</span></div><div class="p-cell"><span class="p-num">6</span></div>
+                <div class="p-cell"><span class="p-num">7</span><div class="p-dot d-navy"></div></div><div class="p-cell"><span class="p-num">8</span></div><div class="p-cell"><span class="p-num today">9</span><div class="p-dot d-gold"></div></div><div class="p-cell"><span class="p-num">10</span></div><div class="p-cell"><span class="p-num">11</span><div class="p-dot d-gold"></div></div><div class="p-cell"><span class="p-num">12</span></div><div class="p-cell"><span class="p-num">13</span></div>
+                <div class="p-cell"><span class="p-num">14</span></div><div class="p-cell"><span class="p-num">15</span><div class="p-dot d-pink"></div></div><div class="p-cell"><span class="p-num">16</span></div><div class="p-cell"><span class="p-num">17</span></div><div class="p-cell"><span class="p-num">18</span><div class="p-dot d-light"></div></div><div class="p-cell"><span class="p-num">19</span></div><div class="p-cell"><span class="p-num">20</span></div>
+              </div>
+            </div>
+            <div class="p-legend">
+              <span class="p-legend-item" style="background:var(--navy);color:#fff">①主催</span>
+              <span class="p-legend-item" style="background:#fca5a5;color:#fff">②公認</span>
+              <span class="p-legend-item" style="background:#fde8e8;color:var(--brand-dark)">③後援</span>
+              <span class="p-legend-item" style="background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold-border)">④支援</span>
+            </div>
+            <!-- Month tabs -->
+            <div class="p-month-tabs">
+              <div class="p-m-tab">4月</div>
+              <div class="p-m-tab active">5月 💛</div>
+              <div class="p-m-tab">6月</div>
+              <div class="p-m-tab">7月</div>
+              <div class="p-m-tab">8月 💛</div>
+            </div>
+            <!-- Cards -->
+            <div class="p-cards">
+              <div class="p-mini-card gold">
+                <span class="p-mc-tag" style="background:var(--gold-soft);color:var(--gold);border:1px solid var(--gold-border)">④基金支援</span>
+                <div class="p-mc-title">小学生団体戦</div>
+                <div class="p-mc-sub">5/7（水）江東区</div>
+              </div>
+              <div class="p-mini-card navy">
+                <span class="p-mc-tag" style="background:var(--navy);color:#fff">①主催</span>
+                <div class="p-mc-title">第66回全国競技かるた選手権大会</div>
+                <div class="p-mc-sub">5/10（土）近江神宮</div>
+              </div>
+              <div class="p-mini-card">
+                <span class="p-mc-tag" style="background:#fca5a5;color:#fff">②公認</span>
+                <div class="p-mc-title">第27回こばえちゃ山形大会</div>
+                <div class="p-mc-sub">5/15（木）酒田市体育館</div>
+              </div>
+            </div>
+            <div class="p-btm-nav">
+              <div class="p-btm-btn active">🎴<br>大会スケジュール</div>
+              <div class="p-btm-btn">📊<br>寄付状況</div>
+            </div>
+          </div>
+          <!-- Markers (visual only) -->
+          <div class="phone-marker" style="bottom:40px;right:-10px" id="pm-a">A</div>
+          <div class="phone-marker" style="top:60px;right:-10px" id="pm-b">B</div>
+          <div class="phone-marker" style="top:140px;right:-10px" id="pm-c">C</div>
+          <div class="phone-marker" style="bottom:14px;right:-10px" id="pm-d">D</div>
+        </div>
+      </div>
+
+      <!-- Annotation list -->
+      <div style="flex:1;display:flex;flex-direction:column;gap:10px;justify-content:center">
+        <div class="ann-row" onclick="highlightAnn('a', this)">
+          <div class="ann-num">A</div>
+          <div class="ann-text">
+            <strong>タブ切り替えで2画面構成に</strong>
+            <p>「大会スケジュール」と「寄付・サポーター状況」を分離。余計な認知コストなく目的の画面へ</p>
+          </div>
+        </div>
+        <div class="ann-row" onclick="highlightAnn('b', this)">
+          <div class="ann-num">B</div>
+          <div class="ann-text">
+            <strong>ファーストビューにカレンダーを配置</strong>
+            <p>スクロール不要で当月の大会全体を把握。月タブで他月への切り替えもスムーズ</p>
+          </div>
+        </div>
+        <div class="ann-row" onclick="highlightAnn('c', this)">
+          <div class="ann-num">C</div>
+          <div class="ann-text">
+            <strong>カレンダードットをクリッカブルに改善</strong>
+            <p>白縁取り＋立体的な影で「押せる」感を演出</p>
+          </div>
+        </div>
+        <div class="ann-row" onclick="highlightAnn('d', this)">
+          <div class="ann-num">D</div>
+          <div class="ann-text">
+            <strong>スマホ対応の固定ボトムナビ</strong>
+            <p>画面下に常時表示。スクロール位置に関わらずいつでもセクション切り替えが可能</p>
+          </div>
+        </div>
+        <div style="padding:8px 12px;background:rgba(255,255,255,.05);border-radius:8px;border:1px solid rgba(255,255,255,.08)">
+          <p style="font-size:9px;color:rgba(255,255,255,.38)">🔒 寄付・サポーター状況の画面は個人情報保護のためモザイク処理しています</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S7: 課題 ══ -->
+  <div class="slide slide-light" id="s7">
+    <div class="s-header">
+      <span class="s-icon">⚡</span>
+      <div><p class="s-title"><small>ぶつかったこと</small>課題と解決方法</p></div>
+    </div>
+    <div class="ch-grid">
+      <div class="ch-card">
+        <div class="ch-prob">
+          <span class="ch-ico">🔐</span>
+          <div class="ch-prob-text">
+            <strong>セキュリティ：トークンが丸見えだった</strong>
+            <p>GitHubアクセストークンをコードに直書き。プロエンジニアのAIレビューで発覚。流出すればリポジトリ全体が操作されるリスク。</p>
+          </div>
+        </div>
+        <div class="ch-sol">PropertiesService（金庫）に移管。Fine-grained PATで権限も最小化</div>
+      </div>
+      <div class="ch-card">
+        <div class="ch-prob">
+          <span class="ch-ico">🔔</span>
+          <div class="ch-prob-text">
+            <strong>テスト通知が全スタッフに届いてしまった</strong>
+            <p>開発・テスト中のフォーム送信のたびにSlack通知が全スタッフに届き、迷惑をかけた</p>
+          </div>
+        </div>
+        <div class="ch-sol">テスト環境の分離が必要と認識。「テストモード」フラグの実装を今後の課題に</div>
+      </div>
+      <div class="ch-card">
+        <div class="ch-prob">
+          <span class="ch-ico">🤖</span>
+          <div class="ch-prob-text">
+            <strong>AIがSlackを読んで自動起動させたかった</strong>
+            <p>支援依頼チャットをAIが文脈を読み取って自動トリガー発動させることが理想だったが精度担保が難しかった</p>
+          </div>
+        </div>
+        <div class="ch-sol">誤作動リスクを考慮してフォーム入力方式に妥協。将来的にAI化を目指す</div>
+      </div>
+      <div class="ch-card">
+        <div class="ch-prob">
+          <span class="ch-ico">💔</span>
+          <div class="ch-prob-text">
+            <strong>本番ページが突然、真っ赤なエラー画面になった</strong>
+            <p>GASがカレンダーのデータ（JSON形式）をHTMLに書き込む際、テキスト置換（正規表現）を使っていた。大会名に特殊文字が含まれると置換が誤作動し、データの構造が壊れた。スタッフがアクセスする本番ページが赤いエラー表示になり、カレンダーが一切表示できない状態に</p>
+          </div>
+        </div>
+        <div class="ch-sol">テキスト置換をやめ、データを一度プログラムが正しく読み込んでから書き直す方法に変更。加えてエラー発生時はSlackへ即通知が届く安全網も設置</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S8: まとめ ══ -->
+  <div class="slide" id="s8">
+    <div class="left">
+      <span class="wtag">まとめ</span>
+      <h2>月一慣習から<br><span>リアルタイム</span>自動化へ</h2>
+      <div class="wrap-pts">
+        <div class="wrap-pt">
+          <span class="wrap-pt-ico">✅</span>
+          <p class="wrap-pt-text"><strong>支援依頼の発生ベース</strong>でカレンダーが自動更新される仕組みを構築できた</p>
+        </div>
+        <div class="wrap-pt">
+          <span class="wrap-pt-ico">✅</span>
+          <p class="wrap-pt-text">カレンダー更新だけでなく、<strong>スタッフへのSlack通知まで全自動</strong>。報告の手間がゼロに</p>
+        </div>
+        <div class="wrap-pt">
+          <span class="wrap-pt-ico">✅</span>
+          <p class="wrap-pt-text"><strong>Slack → Sheets → GAS → GitHub Pages</strong>　ゼロコストの自動化パイプライン</p>
+        </div>
+        <div class="wrap-pt">
+          <span class="wrap-pt-ico">✅</span>
+          <p class="wrap-pt-text">AIサブエージェント（<strong>UI/UXデザイナー・プロエンジニア</strong>）のレビューで品質向上</p>
+        </div>
+        <div class="wrap-pt">
+          <span class="wrap-pt-ico">🔮</span>
+          <p class="wrap-pt-text">今後：<strong>KPI自動更新</strong>・<strong>AIによる文脈トリガー</strong>の実装</p>
+        </div>
+        <div class="wrap-pt">
+          <span class="wrap-pt-ico">😅</span>
+          <p class="wrap-pt-text">反省：デザインはキリがなかった。<strong>やめ時を決める</strong>ことも大事な設計</p>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <img src="avatar.png" alt="発表者" class="avatar">
+      <p class="thank-you">ありがとうございました 🌸</p>
+    </div>
+  </div>
+
+</div><!-- #deck -->
+
+<!-- Nav dots -->
+<div id="nav">
+  <button class="nav-dot active"  onclick="goTo(0)"></button>
+  <button class="nav-dot" onclick="goTo(1)"></button>
+  <button class="nav-dot" onclick="goTo(2)"></button>
+  <button class="nav-dot" onclick="goTo(3)"></button>
+  <button class="nav-dot" onclick="goTo(4)"></button>
+  <button class="nav-dot" onclick="goTo(5)"></button>
+  <button class="nav-dot" onclick="goTo(6)"></button>
+  <button class="nav-dot" onclick="goTo(7)"></button>
+  <span id="slide-counter">1 / 8</span>
+</div>
+<div id="hint">左クリック：前へ　右クリック：次へ　← → キーでも移動</div>
+
+<script>
+  const slides   = document.querySelectorAll('.slide');
+  const dots     = document.querySelectorAll('.nav-dot');
+  const agItems  = document.querySelectorAll('.ag-item');
+  const counter  = document.getElementById('slide-counter');
+  let cur = 0;
+
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    dots[cur].classList.remove('active');
+    agItems[cur].classList.remove('active');
+    cur = Math.max(0, Math.min(n, slides.length - 1));
+    slides[cur].classList.add('active');
+    dots[cur].classList.add('active');
+    agItems[cur].classList.add('active');
+    counter.textContent = `${cur + 1} / ${slides.length}`;
+    document.querySelectorAll('.ann-row').forEach(r => r.classList.remove('active-ann'));
+  }
+
+  const next = () => { if (cur < slides.length - 1) goTo(cur + 1); };
+  const prev = () => { if (cur > 0) goTo(cur - 1); };
+
+  document.addEventListener('keydown', e => {
+    if (['ArrowRight','ArrowDown',' '].includes(e.key)) { e.preventDefault(); next(); }
+    if (['ArrowLeft','ArrowUp'].includes(e.key))        { e.preventDefault(); prev(); }
+  });
+
+  // Deck-level click navigation (avoids conflicts with interactive card elements)
+  document.getElementById('deck').addEventListener('click', e => {
+    // Skip clicks on interactive elements: buttons, links, annotation rows, and anything with an onclick
+    if (e.target.closest('button, a, .ann-row, .nav-dot, .ag-item, #timer')) return;
+    const deck = document.getElementById('deck');
+    const rect = deck.getBoundingClientRect();
+    if (e.clientX - rect.left < rect.width / 2) { prev(); } else { next(); }
+  });
+
+  // Annotation highlight — receives the element directly via `this`
+  window.highlightAnn = (id, el) => {
+    document.querySelectorAll('.ann-row').forEach(r => r.classList.remove('active-ann'));
+    if (el) el.classList.add('active-ann');
+    ['a','b','c','d'].forEach(k => {
+      const m = document.getElementById('pm-' + k);
+      if (m) m.style.background = k === id ? '#ef4444' : '#f59e0b';
+    });
+  };
+
+  // Timer
+  let totalSec = 180;
+  let timerRunning = false;
+  let timerInterval;
+  const timerDisplay = document.getElementById('timer-display');
+  const timerEl      = document.getElementById('timer');
+
+  function toggleTimer() {
+    if (timerRunning) {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      document.getElementById('timer-btn').textContent = 'スタート';
+    } else {
+      timerRunning = true;
+      document.getElementById('timer-btn').textContent = '停止';
+      timerInterval = setInterval(() => {
+        if (totalSec <= 0) { clearInterval(timerInterval); timerRunning = false; return; }
+        totalSec--;
+        const m = Math.floor(totalSec / 60);
+        const s = totalSec % 60;
+        timerDisplay.textContent = `${m}:${String(s).padStart(2,'0')}`;
+        if (totalSec <= 30) timerEl.classList.add('warn');
+        if (totalSec <= 0) { timerDisplay.textContent = '終了'; document.getElementById('timer-btn').textContent = 'リセット'; }
+      }, 1000);
+    }
+    // Handle reset after finish
+    if (!timerRunning && totalSec <= 0) {
+      totalSec = 180; timerDisplay.textContent = '3:00'; timerEl.classList.remove('warn');
+      document.getElementById('timer-btn').textContent = 'スタート';
+    }
+  }
+</script>
+</body>
+</html>
