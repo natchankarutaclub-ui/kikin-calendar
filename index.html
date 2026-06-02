@@ -2641,11 +2641,9 @@
   ],
   "kpi": {
     "monthlySupporters": 122,
-    "monthlyDonationYen": 117978,
-    "supportSummary": "【4月の支援】第五回かるフェス！（4/5・文京総合体育館）後援・副賞提供 ／ 大垣大会協賛（5月開催・支援決定）／ あきた総文ブース出展（7/28〜30・申請済み）／ 高校選手権Tシャツ発注（7月大会向け・4/22入稿〆）",
-    "bankNote": "三井住友銀行 メイン口座残高（2026年3月末）：7,466,934円"
+    "monthlyDonationYen": 117978
   },
-  "updatedAt": "2026-06-03T06:46:00.000Z"
+  "updatedAt": "2026-06-03T07:15:00.000Z"
 }
   </script>
 
@@ -3305,12 +3303,13 @@
           ${k.bankNote ? `<p class="mt-4 text-xs text-ink-muted border-t border-sakura-border pt-3">${esc(k.bankNote)}</p>` : ''}
         </div>`;
 
-        /* 支援実績 */
-        html += `
+        if (k.supportSummary) {
+          html += `
         <div class="rounded-2xl bg-gold-soft border border-gold-border shadow-card p-6">
           <p class="text-xs font-bold text-gold uppercase tracking-wider">今月の大会支援</p>
-          ${k.supportSummary ? `<p class="mt-3 text-sm text-ink leading-relaxed">${esc(k.supportSummary)}</p>` : ''}
+          <p class="mt-3 text-sm text-ink leading-relaxed">${esc(k.supportSummary)}</p>
         </div>`;
+        }
 
         html += '</div>';
       }
